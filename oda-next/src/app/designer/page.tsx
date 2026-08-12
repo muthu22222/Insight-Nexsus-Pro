@@ -75,8 +75,12 @@ export default function DesignerUploadPage() {
         });
       }, 200);
 
+      const token = await getToken();
       const response = await fetch('/api/room/upload', {
         method: 'POST',
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: formData,
       });
 
