@@ -25,7 +25,7 @@ const CATEGORY_DEFAULT_PERCENTAGES: Record<string, number> = {
 
 export async function POST(request: NextRequest) {
   try {
-    authenticate(request);
+    await authenticate(request);
     await connectToDatabase();
 
     const body = await request.json();

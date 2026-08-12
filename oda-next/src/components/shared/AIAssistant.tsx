@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send, Sparkles } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Message {
   id: string;
@@ -19,6 +20,7 @@ const quickActions = [
 ];
 
 export default function AIAssistant() {
+  const { getToken } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -58,7 +60,7 @@ export default function AIAssistant() {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem("token");
+      const token = await getToken();
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: {

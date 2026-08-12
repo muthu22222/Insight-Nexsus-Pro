@@ -4,7 +4,7 @@ import { isDemoMode, findDemoUserById, sanitizeDemoUser } from '@/lib/demo-store
 
 export async function GET(request: NextRequest) {
   try {
-    const payload = authenticate(request);
+    const payload = await authenticate(request);
     let useDemo = isDemoMode();
 
     if (!useDemo) {

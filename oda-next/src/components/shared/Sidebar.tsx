@@ -18,6 +18,7 @@ import {
   X,
   ChevronLeft,
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface UserInfo {
   name: string;
@@ -44,33 +45,18 @@ const navItems = [
 export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { userData, logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [user, setUser] = useState<UserInfo | null>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-        if (!token) return;
-        const res = await fetch("/api/auth/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.data) {
-            setUser(data.data);
-          }
-        }
-      } catch {
-        // silently fail
-      }
-    };
-    fetchUser();
-  }, []);
+    if (userData) {
+      setUser({ name: userData.name, email: userData.email, avatar: userData.avatar });
+    }
+  }, [userData]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    router.push("/auth/login");
+  const handleLogout = async () => {
+    await logout();
   };
 
   const isActive = (href: string) => {

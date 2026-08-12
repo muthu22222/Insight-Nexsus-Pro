@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const payload = authenticate(request);
+    const payload = await authenticate(request);
     await connectToDatabase();
     const { id } = await params;
 
@@ -44,7 +44,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const payload = authenticate(request);
+    const payload = await authenticate(request);
     await connectToDatabase();
     const { id } = await params;
 
@@ -83,7 +83,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const payload = authenticate(request);
+    const payload = await authenticate(request);
     await connectToDatabase();
     const { id } = await params;
 

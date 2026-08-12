@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
+import ProtectedRoute from "@/components/shared/ProtectedRoute";
+import { useAuth } from "@/contexts/AuthContext";
 import type { Project } from "@/types";
 import { formatDate } from "@/utils/helpers";
 
@@ -37,6 +39,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function ProjectsPage() {
+  const { getToken } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,7 +50,7 @@ export default function ProjectsPage() {
   }, []);
 
   const fetchProjects = async () => {
-    const token = localStorage.getItem("token");
+    const token = await getToken();
     if (!token) {
       window.location.href = "/auth/login";
       return;
@@ -76,7 +79,7 @@ export default function ProjectsPage() {
     if (!confirm("Are you sure you want to delete this project?")) return;
     setDeletingId(id);
     try {
-      const token = localStorage.getItem("token");
+      const token = await getToken();
       const res = await fetch(`/api/projects/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
@@ -100,6 +103,7 @@ export default function ProjectsPage() {
   }
 
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-gray-50">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
@@ -235,5 +239,6 @@ export default function ProjectsPage() {
 
       <AIAssistant />
     </div>
+    </ProtectedRoute>
   );
 }

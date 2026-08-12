@@ -21,7 +21,7 @@ interface RoomAnalysis {
 
 export async function POST(request: NextRequest) {
   try {
-    authenticate(request);
+    await authenticate(request);
     await connectToDatabase();
 
     const body = await request.json();

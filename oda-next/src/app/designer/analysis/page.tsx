@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
+import { useAuth } from '@/contexts/AuthContext';
 import type { RoomAnalysis } from '@/types';
 
 const steps = [
@@ -39,6 +40,7 @@ const analysisFields = [
 
 export default function AnalysisPage() {
   const router = useRouter();
+  const { getToken } = useAuth();
   const {
     uploadedImage,
     roomAnalysis,
@@ -66,9 +68,13 @@ export default function AnalysisPage() {
   const analyzeImage = async () => {
     setIsAnalyzing(true);
     try {
+      const token = await getToken();
       const response = await fetch('/api/room/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ imageUrl: uploadedImage }),
       });
 

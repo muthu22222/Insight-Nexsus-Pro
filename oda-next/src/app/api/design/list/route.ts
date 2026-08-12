@@ -5,7 +5,7 @@ import { authenticate } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
-    const payload = authenticate(request);
+    const payload = await authenticate(request);
     await connectToDatabase();
 
     const projects = await Project.find({ userId: payload.userId })

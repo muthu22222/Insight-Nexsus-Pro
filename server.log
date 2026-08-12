@@ -6,11 +6,56 @@
 - Local:         http://localhost:3000
 - Network:       http://10.49.150.180:3000
 - Environments: .env.local
-✓ Ready in 1618ms
+✓ Ready in 1897ms
 ⚠ Attempted to load @next/swc-win32-x64-msvc, but an error occurred: \\?\C:\Users\sures\Downloads\nexsus pro\oda-next\node_modules\@next\swc-win32-x64-msvc\next-swc.win32-x64-msvc.node is not a valid Win32 application.
 \\?\C:\Users\sures\Downloads\nexsus pro\oda-next\node_modules\@next\swc-win32-x64-msvc\next-swc.win32-x64-msvc.node
-✓ Running next.config.ts took 705ms
+✓ Running next.config.ts took 654ms
   Skipping creating a lockfile at C:\Users\sures\Downloads\nexsus pro\oda-next\.next\dev\lock because we're using WASM bindings
 
 ○ Compiling / ...
- GET / 200 in 5.6s (next.js: 4.6s, application-code: 987ms)
+ GET / 200 in 9.0s (next.js: 6.5s, application-code: 2.4s)
+ GET /auth/register 200 in 2.3s (next.js: 2.2s, application-code: 69ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET / 200 in 1708ms (next.js: 16ms, application-code: 1692ms)
+ GET /auth/login 200 in 2.9s (next.js: 2.1s, application-code: 797ms)
+ GET /auth/login 200 in 30ms (next.js: 7ms, application-code: 22ms)
+ GET /auth/register 200 in 33ms (next.js: 11ms, application-code: 22ms)
+ GET /api/auth/me 401 in 4.3s (next.js: 3.2s, application-code: 1082ms)
+ POST /api/auth/sync-user 500 in 3.6s (next.js: 2.5s, application-code: 1084ms)
+⨯ unhandledRejection: Error: Error: invalid type: boolean `false`, expected enum CodeFrameColorMode
+    at ignore-listed frames
+ GET /dashboard 200 in 4.4s (next.js: 4.3s, application-code: 57ms)
+ GET /dashboard 200 in 24ms (next.js: 4ms, application-code: 20ms)
+ GET /dashboard 200 in 27ms (next.js: 3ms, application-code: 24ms)
+ GET /api/projects 500 in 2.1s (next.js: 922ms, application-code: 1158ms)
+⨯ unhandledRejection: Error: Error: invalid type: boolean `false`, expected enum CodeFrameColorMode
+    at ignore-listed frames
+ GET /api/projects 500 in 35ms (next.js: 10ms, application-code: 25ms)
+⨯ unhandledRejection: Error: Error: invalid type: boolean `false`, expected enum CodeFrameColorMode
+    at ignore-listed frames
+ GET /dashboard 200 in 262ms (next.js: 101ms, application-code: 161ms)
+ GET /api/projects 500 in 35ms (next.js: 22ms, application-code: 13ms)
+⨯ unhandledRejection: Error: Error: invalid type: boolean `false`, expected enum CodeFrameColorMode
+    at ignore-listed frames
+ POST /api/chat 500 in 940ms (next.js: 906ms, application-code: 34ms)
+⨯ unhandledRejection: Error: Error: invalid type: boolean `false`, expected enum CodeFrameColorMode
+    at ignore-listed frames
+ GET /auth/login 200 in 73ms (next.js: 38ms, application-code: 35ms)
+ GET /auth/login 200 in 16ms (next.js: 3ms, application-code: 14ms)
+ GET /api/auth/me 401 in 29ms (next.js: 10ms, application-code: 19ms)
+ GET /dashboard 200 in 54ms (next.js: 25ms, application-code: 29ms)
+ GET /dashboard 200 in 32ms (next.js: 6ms, application-code: 25ms)
+ GET /api/projects 500 in 19ms (next.js: 6ms, application-code: 13ms)
+⨯ unhandledRejection: Error: Error: invalid type: boolean `false`, expected enum CodeFrameColorMode
+    at ignore-listed frames
+ GET /api/projects 500 in 16ms (next.js: 3ms, application-code: 13ms)
+⨯ unhandledRejection: Error: Error: invalid type: boolean `false`, expected enum CodeFrameColorMode
+    at ignore-listed frames
+  Reload env: .env.local
+  Reload env: .env.local
+  Reload env: .env.local
+ GET / 200 in 1357ms (next.js: 352ms, application-code: 1005ms)
+ GET /auth/login 200 in 84ms (next.js: 8ms, application-code: 77ms)
+ GET /auth/register 200 in 210ms (next.js: 9ms, application-code: 202ms)
+○ Compiling /auth/forgot-password ...
+ GET /auth/forgot-password 200 in 6.0s (next.js: 5.1s, application-code: 879ms)

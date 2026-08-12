@@ -10,7 +10,7 @@ const genAI = new GoogleGenerativeAI(GEMINI_API_KEY!);
 
 export async function POST(request: NextRequest) {
   try {
-    const payload = authenticate(request);
+    const payload = await authenticate(request);
     await connectToDatabase();
 
     const body = await request.json();

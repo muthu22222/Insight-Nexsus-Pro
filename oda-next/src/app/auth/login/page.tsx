@@ -1,20 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, Loader2, ArrowRight } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
+import {
+  firebaseEmailLogin,
+  firebaseGoogleLogin,
+} from '@/lib/firebase-auth';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.push('/dashboard');
+    }
+  }, [user, authLoading, router]);
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string } = {};
@@ -38,23 +50,21 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
-
-      localStorage.setItem('token', data.data.token);
+      await firebaseEmailLogin(email, password);
       toast.success('Login successful!');
       router.push('/dashboard');
     } catch (error: any) {
-      toast.error(error.message || 'Something went wrong');
+      let message = 'Login failed';
+      if (error.code === 'auth/user-not-found') {
+        message = 'No account found with this email';
+      } else if (error.code === 'auth/wrong-password') {
+        message = 'Incorrect password';
+      } else if (error.code === 'auth/invalid-credential') {
+        message = 'Invalid email or password';
+      } else if (error.code === 'auth/too-many-requests') {
+        message = 'Too many attempts. Please try again later';
+      }
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
@@ -63,18 +73,27 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     setIsGoogleLoading(true);
     try {
-      const response = await fetch('/api/auth/google', {
-        method: 'POST',
-      });
-      const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
+      await firebaseGoogleLogin();
+      toast.success('Login successful!');
+      router.push('/dashboard');
     } catch (error: any) {
-      toast.error('Google login failed');
+      if (error.code !== 'auth/popup-closed-by-user') {
+        toast.error('Google login failed');
+      }
+    } finally {
       setIsGoogleLoading(false);
     }
   };
+
+  if (authLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-gray-50">
+        <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
+      </div>
+    );
+  }
+
+  if (user) return null;
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
@@ -218,24 +237,6 @@ export default function LoginPage() {
               Sign Up
             </Link>
           </p>
-
-          <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-            <p className="text-xs font-semibold text-amber-800 mb-2">Demo Credentials</p>
-            <div className="space-y-1 text-xs text-amber-700">
-              <p><span className="font-medium">User:</span> demo@odanext.com / Demo@123</p>
-              <p><span className="font-medium">Admin:</span> admin@odanext.com / Admin@123</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                setEmail('demo@odanext.com');
-                setPassword('Demo@123');
-              }}
-              className="mt-2 text-xs font-medium text-amber-600 hover:text-amber-800 underline"
-            >
-              Use Demo Account
-            </button>
-          </div>
         </div>
       </motion.div>
     </div>

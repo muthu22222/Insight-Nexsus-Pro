@@ -6,7 +6,7 @@ export const runtime = 'nodejs';
 
 export async function POST(request: NextRequest) {
   try {
-    authenticate(request);
+    await authenticate(request);
 
     const formData = await request.formData();
     const file = formData.get('image') as File | null;

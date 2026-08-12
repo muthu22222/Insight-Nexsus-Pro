@@ -7,6 +7,7 @@ export interface IUser extends Document {
   password: string;
   avatar: string;
   role: 'user' | 'admin';
+  firebaseUid: string;
   preferences: {
     favoriteStyles: string[];
     defaultBudget: number;
@@ -35,6 +36,11 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: [true, 'Password is required'],
       minlength: 6,
+    },
+    firebaseUid: {
+      type: String,
+      default: '',
+      sparse: true,
     },
     avatar: {
       type: String,

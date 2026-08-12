@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
+import ProtectedRoute from "@/components/shared/ProtectedRoute";
+import { useAuth } from "@/contexts/AuthContext";
 import type { BudgetPlan } from "@/types";
 import { formatCurrency } from "@/utils/helpers";
 import jsPDF from "jspdf";
@@ -35,6 +37,7 @@ const item = {
 };
 
 export default function BudgetPage() {
+  const { getToken } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [budget, setBudget] = useState("");
   const [plan, setPlan] = useState<BudgetPlan | null>(null);
@@ -46,7 +49,7 @@ export default function BudgetPage() {
 
     setGenerating(true);
     try {
-      const token = localStorage.getItem("token");
+      const token = await getToken();
       const res = await fetch("/api/budget/plan", {
         method: "POST",
         headers: {
@@ -158,6 +161,7 @@ export default function BudgetPage() {
   };
 
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-gray-50">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
@@ -432,5 +436,6 @@ export default function BudgetPage() {
 
       <AIAssistant />
     </div>
+    </ProtectedRoute>
   );
 }

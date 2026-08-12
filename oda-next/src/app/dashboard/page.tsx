@@ -17,13 +17,9 @@ import {
 } from "lucide-react";
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
+import { useAuth } from "@/contexts/AuthContext";
 import type { Project } from "@/types";
 import { formatCurrency } from "@/utils/helpers";
-
-interface UserInfo {
-  name: string;
-  email: string;
-}
 
 const container = {
   hidden: { opacity: 0 },
@@ -36,35 +32,22 @@ const item = {
 };
 
 export default function DashboardPage() {
+  const { user, userData, loading: authLoading, getToken } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [user, setUser] = useState<UserInfo | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (authLoading || !user) return;
+
     const fetchData = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        window.location.href = "/auth/login";
-        return;
-      }
-
       try {
-        const [userRes, projectsRes] = await Promise.all([
-          fetch("/api/auth/me", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch("/api/projects", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+        const token = await getToken();
+        if (!token) return;
 
-        if (userRes.ok) {
-          const userData = await userRes.json();
-          if (userData.success && userData.data) {
-            setUser(userData.data);
-          }
-        }
+        const projectsRes = await fetch("/api/projects", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         if (projectsRes.ok) {
           const projectsData = await projectsRes.json();
@@ -83,7 +66,7 @@ export default function DashboardPage() {
     };
 
     fetchData();
-  }, []);
+  }, [user, authLoading, getToken]);
 
   const totalSavedDesigns = projects.reduce(
     (acc, p) => acc + (p.designs?.length || 0),
@@ -108,7 +91,7 @@ export default function DashboardPage() {
     .slice(-4)
     .reverse();
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-white">
         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
@@ -130,7 +113,7 @@ export default function DashboardPage() {
           </button>
           <div className="flex-1">
             <h1 className="text-xl font-bold text-gray-900">
-              Welcome back, {user?.name?.split(" ")[0] || "Designer"} 👋
+              Welcome back, {userData?.name?.split(" ")[0] || "Designer"} 👋
             </h1>
             <p className="text-sm text-gray-500 mt-0.5">
               Here&apos;s an overview of your design projects

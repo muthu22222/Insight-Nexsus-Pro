@@ -22,6 +22,8 @@ import {
 } from "lucide-react";
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
+import ProtectedRoute from "@/components/shared/ProtectedRoute";
+import { useAuth } from "@/contexts/AuthContext";
 import type { Project, AIDesign, ShoppingListItem } from "@/types";
 import { formatCurrency, formatDate } from "@/utils/helpers";
 import jsPDF from "jspdf";
@@ -48,6 +50,7 @@ const categoryColors: Record<string, string> = {
 export default function ProjectDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { getToken } = useAuth();
   const projectId = params.id as string;
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -67,7 +70,7 @@ export default function ProjectDetailPage() {
   }, [projectId]);
 
   const fetchProject = async () => {
-    const token = localStorage.getItem("token");
+    const token = await getToken();
     if (!token) {
       window.location.href = "/auth/login";
       return;
@@ -104,7 +107,7 @@ export default function ProjectDetailPage() {
     }
     setSavingName(true);
     try {
-      const token = localStorage.getItem("token");
+      const token = await getToken();
       const res = await fetch(`/api/projects/${projectId}`, {
         method: "PATCH",
         headers: {
@@ -130,7 +133,7 @@ export default function ProjectDetailPage() {
     if (!confirm("Are you sure you want to delete this project?")) return;
     setDeleting(true);
     try {
-      const token = localStorage.getItem("token");
+      const token = await getToken();
       const res = await fetch(`/api/projects/${projectId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
@@ -148,7 +151,7 @@ export default function ProjectDetailPage() {
   const handleDeleteDesign = async (designId: string) => {
     setDeletingDesignId(designId);
     try {
-      const token = localStorage.getItem("token");
+      const token = await getToken();
       const res = await fetch(`/api/design/${designId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
@@ -169,7 +172,7 @@ export default function ProjectDetailPage() {
   const handleSelectDesign = async (designId: string) => {
     setSelectedDesignId(designId);
     try {
-      const token = localStorage.getItem("token");
+      const token = await getToken();
       await fetch(`/api/projects/${projectId}`, {
         method: "PATCH",
         headers: {
@@ -263,6 +266,7 @@ export default function ProjectDetailPage() {
   }
 
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-gray-50">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
@@ -815,5 +819,6 @@ export default function ProjectDetailPage() {
 
       <AIAssistant />
     </div>
+    </ProtectedRoute>
   );
 }

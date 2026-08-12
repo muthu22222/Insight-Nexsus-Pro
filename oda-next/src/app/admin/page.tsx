@@ -19,6 +19,7 @@ import {
   LogOut,
   ChevronRight,
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface AdminStats {
   totalUsers: number;
@@ -60,6 +61,7 @@ const item = {
 
 export default function AdminDashboardPage() {
   const router = useRouter();
+  const { getToken, logout } = useAuth();
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [user, setUser] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
@@ -67,7 +69,7 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("token");
+      const token = await getToken();
       if (!token) {
         router.push("/auth/login");
         return;
@@ -114,9 +116,8 @@ export default function AdminDashboardPage() {
     fetchData();
   }, [router]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    router.push("/auth/login");
+  const handleLogout = async () => {
+    await logout();
   };
 
   const formatTimeAgo = (timestamp: string) => {

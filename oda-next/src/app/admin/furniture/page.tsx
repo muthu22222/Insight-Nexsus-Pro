@@ -24,6 +24,7 @@ import {
   ExternalLink,
   AlertTriangle,
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface FurnitureItemData {
   _id: string;
@@ -113,6 +114,7 @@ const itemAnim = {
 
 export default function AdminFurniturePage() {
   const router = useRouter();
+  const { getToken, logout } = useAuth();
   const [items, setItems] = useState<FurnitureItemData[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,

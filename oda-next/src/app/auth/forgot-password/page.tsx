@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Mail, Loader2, ArrowLeft, CheckCircle } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
+import { firebaseResetPassword } from '@/lib/firebase-auth';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -31,22 +32,17 @@ export default function ForgotPasswordPage() {
 
     setIsLoading(true);
     try {
-      const response = await fetch('/api/auth/forgot-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to send reset link');
-      }
-
+      await firebaseResetPassword(email);
       setIsSent(true);
       toast.success('Reset link sent to your email');
     } catch (error: any) {
-      toast.error(error.message || 'Something went wrong');
+      let message = 'Failed to send reset link';
+      if (error.code === 'auth/user-not-found') {
+        message = 'No account found with this email';
+      } else if (error.code === 'auth/invalid-email') {
+        message = 'Invalid email address';
+      }
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }

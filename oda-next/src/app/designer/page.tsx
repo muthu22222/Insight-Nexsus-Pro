@@ -7,6 +7,7 @@ import { useDropzone } from 'react-dropzone';
 import { Upload, X, Image as ImageIcon, Loader2, CheckCircle } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
+import { useAuth } from '@/contexts/AuthContext';
 
 const steps = [
   { id: 'upload', label: 'Upload' },
@@ -18,6 +19,7 @@ const steps = [
 
 export default function DesignerUploadPage() {
   const router = useRouter();
+  const { getToken } = useAuth();
   const { setUploadedImage, setCurrentStep } = useDesignerStore();
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);

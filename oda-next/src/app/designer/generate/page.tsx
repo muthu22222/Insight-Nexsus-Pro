@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
+import { useAuth } from '@/contexts/AuthContext';
 import type { AIDesign } from '@/types';
 
 const steps = [
@@ -47,6 +48,7 @@ const designVariants = [
 
 export default function GeneratePage() {
   const router = useRouter();
+  const { getToken } = useAuth();
   const {
     uploadedImage,
     roomAnalysis,
@@ -84,9 +86,13 @@ export default function GeneratePage() {
     }, 300);
 
     try {
+      const token = await getToken();
       const response = await fetch('/api/design/generate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           imageUrl: uploadedImage,
           analysis: roomAnalysis,
