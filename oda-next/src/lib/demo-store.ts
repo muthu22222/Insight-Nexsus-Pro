@@ -22,7 +22,6 @@ let initialized = false;
 
 async function initializeDemoUsers() {
   if (initialized) return;
-  initialized = true;
 
   const demoPassword = await bcrypt.hash('Demo@123', 10);
   const adminPassword = await bcrypt.hash('Admin@123', 10);
@@ -58,6 +57,8 @@ async function initializeDemoUsers() {
     createdAt: new Date(),
     updatedAt: new Date(),
   });
+
+  initialized = true;
 }
 
 export function isDemoMode(): boolean {
