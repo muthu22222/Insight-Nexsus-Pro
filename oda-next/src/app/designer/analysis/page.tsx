@@ -1,15 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
   ArrowRight,
-  Loader2,
   Home,
   Palette,
-  Armchair,
   Sun,
   DoorOpen,
   LayoutGrid,
@@ -53,19 +51,7 @@ export default function AnalysisPage() {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editValue, setEditValue] = useState('');
 
-  useEffect(() => {
-    if (!uploadedImage) {
-      router.push('/designer');
-      return;
-    }
-    if (roomAnalysis) {
-      setAnalysis(roomAnalysis);
-      return;
-    }
-    analyzeImage();
-  }, [uploadedImage]);
-
-  const analyzeImage = async () => {
+  const analyzeImage = useCallback(async () => {
     setIsAnalyzing(true);
     try {
       const token = await getToken();
@@ -78,19 +64,45 @@ export default function AnalysisPage() {
         body: JSON.stringify({ imageUrl: uploadedImage }),
       });
 
-      if (!response.ok) {
-        throw new Error('Analysis failed');
+      let data;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        const text = await response.text();
+        console.error('Non-JSON response:', text);
+        throw new Error(`Server returned invalid response (${response.status})`);
       }
 
-      const data = await response.json();
-      setAnalysis(data.analysis);
-      setRoomAnalysis(data.analysis);
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to analyze room');
+      if (!response.ok) {
+        throw new Error(data?.error || `Analysis failed (${response.status})`);
+      }
+
+      if (!data.success || !data.data) {
+        throw new Error(data?.error || 'Analysis failed - no data returned');
+      }
+
+      setAnalysis(data.data);
+      setRoomAnalysis(data.data);
+    } catch (error: unknown) {
+      console.error('Analysis error:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to analyze room');
     } finally {
       setIsAnalyzing(false);
     }
-  };
+  }, [uploadedImage, getToken, setRoomAnalysis]);
+
+  useEffect(() => {
+    if (!uploadedImage) {
+      router.push('/designer');
+      return;
+    }
+    if (roomAnalysis) {
+      setAnalysis(roomAnalysis);
+      return;
+    }
+    analyzeImage();
+  }, [uploadedImage, roomAnalysis, router, analyzeImage]);
 
   const handleEditStart = (key: string, value: string | string[]) => {
     setEditingField(key);
