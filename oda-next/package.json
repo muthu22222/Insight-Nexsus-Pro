@@ -1,0 +1,48 @@
+{
+  "name": "oda-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@types/dotenv": "^6.1.1",
+    "@types/leaflet": "^1.9.22",
+    "axios": "^1.19.0",
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.10.0",
+    "date-fns": "^4.4.0",
+    "dotenv": "^17.4.2",
+    "firebase": "^12.17.1",
+    "firebase-admin": "^14.2.0",
+    "framer-motion": "^13.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "jspdf": "^4.2.1",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^1.31.0",
+    "mongoose": "^9.9.2",
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-dropzone": "^20.1.0",
+    "react-hot-toast": "^2.6.0",
+    "react-leaflet": "^5.0.0",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
