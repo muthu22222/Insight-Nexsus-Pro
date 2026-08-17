@@ -47,7 +47,12 @@ async function fetchImageAsBase64(imageUrl: string): Promise<{ mimeType: string;
 export async function POST(request: NextRequest) {
   try {
     await authenticate(request);
-    await connectToDatabase();
+    // MongoDB connection optional - skip if not configured
+    try {
+      await connectToDatabase();
+    } catch {
+      console.log('MongoDB not configured, continuing without database');
+    }
 
     const body = await request.json();
     const { imageUrl } = body;
