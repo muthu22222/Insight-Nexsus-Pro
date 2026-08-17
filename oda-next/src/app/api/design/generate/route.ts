@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { connectToDatabase } from '@/lib/mongodb';
 import { authenticate } from '@/lib/auth';
-
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY!);
+import { GEMINI_MODELS } from '@/lib/gemini';
 
 interface DesignVariant {
   style: string;
@@ -28,7 +26,11 @@ interface DesignVariant {
 export async function POST(request: NextRequest) {
   try {
     await authenticate(request);
-    await connectToDatabase();
+    try {
+      await connectToDatabase();
+    } catch {
+      console.log('MongoDB not configured, continuing without database');
+    }
 
     const body = await request.json();
     const { imageUrl, roomAnalysis, preferences } = body;
@@ -40,9 +42,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { style, mood, color, budget } = preferences;
+    const apiKey = process.env.GEMINI_API_KEY?.trim();
+    if (!apiKey) {
+      return NextResponse.json(
+        { success: false, error: 'AI service not configured. Please set GEMINI_API_KEY.' },
+        { status: 500 }
+      );
+    }
+    const genAI = new GoogleGenerativeAI(apiKey);
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+    const { style, mood, color, budget } = preferences;
 
     const prompt = `Based on this room analysis: ${JSON.stringify(roomAnalysis)}
 
@@ -50,7 +59,7 @@ Generate 3 distinct interior design variants with the following preferences:
 - Style: ${style}
 - Mood: ${mood}
 - Color palette: ${color}
-- Budget: ₹${budget.toLocaleString('en-IN')}
+- Budget: ₹${Number(budget).toLocaleString('en-IN')}
 
 For each variant, provide:
 1. A unique design concept
@@ -64,7 +73,7 @@ Return the response as a JSON array with exactly 3 objects, each having this str
     "style": "specific style name",
     "mood": "mood description",
     "color": "color palette name",
-    "budget": allocated budget number,
+    "budget": ${Number(budget)},
     "description": "detailed design description",
     "furniture": [
       {
@@ -75,7 +84,7 @@ Return the response as a JSON array with exactly 3 objects, each having this str
     ],
     "hotspots": [
       {
-        "id": "unique-id",
+        "id": "unique-id-1",
         "x": 50,
         "y": 50,
         "label": "furniture label"
@@ -85,11 +94,37 @@ Return the response as a JSON array with exactly 3 objects, each having this str
 ]
 Provide only the JSON array, no additional text.`;
 
-    const result = await model.generateContent(prompt);
-    const responseText = result.response.text();
+    let responseText = '';
+    let lastError: unknown = null;
 
-    const jsonMatch = responseText.match(/\[[\s\S]*\]/);
+    for (const modelName of GEMINI_MODELS) {
+      try {
+        console.log(`Generating design with model: ${modelName}`);
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent(prompt);
+        responseText = result.response.text();
+        if (responseText) {
+          console.log(`Design generation success with model: ${modelName}`);
+          break;
+        }
+      } catch (err) {
+        console.warn(`Design generation failed with model ${modelName}:`, err);
+        lastError = err;
+      }
+    }
+
+    if (!responseText) {
+      throw lastError || new Error('Failed to generate design variants');
+    }
+
+    const cleanedText = responseText
+      .replace(/```json/gi, '')
+      .replace(/```/g, '')
+      .trim();
+
+    const jsonMatch = cleanedText.match(/\[[\s\S]*\]/);
     if (!jsonMatch) {
+      console.error('Failed to parse JSON array from design response:', responseText);
       return NextResponse.json(
         { success: false, error: 'Failed to parse AI response' },
         { status: 500 }
@@ -112,3 +147,4 @@ Provide only the JSON array, no additional text.`;
     );
   }
 }
+

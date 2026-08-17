@@ -1,34 +1,71 @@
 import { GoogleGenerativeAI, type GenerativeModel } from "@google/generative-ai";
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+export const GEMINI_MODELS = [
+  "gemini-3.5-flash",
+  "gemini-3.6-flash",
+  "gemini-3.1-flash-lite",
+  "gemini-3.5-flash-lite",
+  "gemini-flash-latest",
+] as const;
 
-if (!GEMINI_API_KEY) {
-  throw new Error("Please define the GEMINI_API_KEY environment variable in .env.local");
+export const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash";
+
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY?.trim();
+
+export function getGenAI(): GoogleGenerativeAI {
+  const key = process.env.GEMINI_API_KEY?.trim() || GEMINI_API_KEY;
+  if (!key) {
+    throw new Error("Please define the GEMINI_API_KEY environment variable in .env.local");
+  }
+  return new GoogleGenerativeAI(key);
 }
 
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-
-export function getGeminiModel(modelName: string = "gemini-1.5-flash"): GenerativeModel {
+export function getGeminiModel(modelName: string = DEFAULT_GEMINI_MODEL): GenerativeModel {
+  const genAI = getGenAI();
   return genAI.getGenerativeModel({ model: modelName });
+}
+
+export async function generateWithFallback(
+  generateFn: (model: GenerativeModel, modelName: string) => Promise<string>
+): Promise<{ text: string; modelName: string }> {
+  let lastError: unknown = null;
+  const genAI = getGenAI();
+
+  for (const modelName of GEMINI_MODELS) {
+    try {
+      const model = genAI.getGenerativeModel({ model: modelName });
+      const text = await generateFn(model, modelName);
+      if (text) {
+        return { text, modelName };
+      }
+    } catch (err) {
+      console.warn(`[Gemini] Model ${modelName} attempt failed:`, err instanceof Error ? err.message : err);
+      lastError = err;
+    }
+  }
+
+  throw lastError || new Error("All Gemini models failed to generate a response.");
 }
 
 export async function analyzeImage(
   imageBase64: string,
-  prompt: string
+  prompt: string,
+  mimeType: string = "image/jpeg"
 ): Promise<string> {
-  const model = getGeminiModel();
-
-  const result = await model.generateContent([
-    prompt,
-    {
-      inlineData: {
-        mimeType: "image/jpeg",
-        data: imageBase64,
+  const { text } = await generateWithFallback(async (model) => {
+    const result = await model.generateContent([
+      prompt,
+      {
+        inlineData: {
+          mimeType,
+          data: imageBase64,
+        },
       },
-    },
-  ]);
+    ]);
+    return result.response.text();
+  });
 
-  return result.response.text();
+  return text;
 }
 
 export async function generateDesign(
@@ -40,8 +77,6 @@ export async function generateDesign(
     budget: number;
   }
 ): Promise<string> {
-  const model = getGeminiModel("gemini-1.5-pro");
-
   const prompt = `Based on this room analysis: ${roomAnalysis}
 
 Generate interior design recommendations with the following preferences:
@@ -59,27 +94,34 @@ Provide detailed recommendations for:
 
 Format the response as structured JSON.`;
 
-  const result = await model.generateContent(prompt);
-  return result.response.text();
+  const { text } = await generateWithFallback(async (model) => {
+    const result = await model.generateContent(prompt);
+    return result.response.text();
+  });
+
+  return text;
 }
 
 export async function chatWithAssistant(
   message: string,
   context?: string
 ): Promise<string> {
-  const model = getGeminiModel();
-
   const systemPrompt = `You are an AI interior design assistant for ODA NEXT, an Indian interior design platform.
 You help users with room analysis, design suggestions, furniture recommendations, and budget planning.
 Always respond in a helpful, professional manner. Use Indian Rupees (₹) for currency.
 ${context ? `Context about the current project: ${context}` : ""}`;
 
-  const result = await model.generateContent([
-    { text: systemPrompt },
-    { text: message },
-  ]);
+  const { text } = await generateWithFallback(async (model) => {
+    const result = await model.generateContent([
+      { text: systemPrompt },
+      { text: message },
+    ]);
+    return result.response.text();
+  });
 
-  return result.response.text();
+  return text;
 }
 
-export default genAI;
+const defaultGenAI = GEMINI_API_KEY ? new GoogleGenerativeAI(GEMINI_API_KEY) : null;
+export default defaultGenAI;
+

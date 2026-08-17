@@ -93,7 +93,8 @@ export default function DesignerUploadPage() {
 
       const data = await response.json();
       setUploadProgress(100);
-      setUploadedImage(data.imageUrl || preview);
+      const imageUrl = data.data?.imageUrl || data.imageUrl || preview;
+      setUploadedImage(imageUrl);
       setCurrentStep('analysis');
 
       toast.success('Image uploaded successfully!');

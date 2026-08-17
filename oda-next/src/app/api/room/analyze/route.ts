@@ -2,12 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { connectToDatabase } from '@/lib/mongodb';
 import { authenticate } from '@/lib/auth';
-
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY?.trim();
-if (!GEMINI_API_KEY) {
-  console.error('GEMINI_API_KEY is not set in environment variables');
-}
-const genAI = GEMINI_API_KEY ? new GoogleGenerativeAI(GEMINI_API_KEY) : null;
+import { GEMINI_MODELS } from '@/lib/gemini';
 
 interface RoomAnalysis {
   roomType: string;
@@ -64,7 +59,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!genAI) {
+    const apiKey = process.env.GEMINI_API_KEY?.trim();
+    if (!apiKey) {
       console.error('Gemini API not initialized - GEMINI_API_KEY missing');
       return NextResponse.json(
         { success: false, error: 'AI service not configured. Please set GEMINI_API_KEY.' },
@@ -72,7 +68,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const genAI = new GoogleGenerativeAI(apiKey);
 
     const prompt = `Analyze this room image and provide detailed information in JSON format with the following structure:
 {
@@ -102,30 +98,50 @@ Provide only the JSON response, no additional text.`;
 
     console.log('Sending image to Gemini:', { mimeType: imageData.mimeType, base64Length: imageData.base64.length });
 
-    let result;
-    try {
-      result = await model.generateContent([
-        prompt,
-        {
-          inlineData: {
-            mimeType: imageData.mimeType,
-            data: imageData.base64,
+    let responseText = '';
+    let lastGeminiError: unknown = null;
+
+    for (const modelName of GEMINI_MODELS) {
+      try {
+        console.log(`Analyzing image with Gemini model: ${modelName}`);
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent([
+          prompt,
+          {
+            inlineData: {
+              mimeType: imageData.mimeType,
+              data: imageData.base64,
+            },
           },
-        },
-      ]);
-    } catch (geminiError) {
-      console.error('Gemini API error:', geminiError);
-      const errorMessage = geminiError instanceof Error ? geminiError.message : String(geminiError);
+        ]);
+        responseText = result.response.text();
+        if (responseText) {
+          console.log(`Image analysis succeeded with model: ${modelName}`);
+          break;
+        }
+      } catch (geminiError) {
+        console.warn(`Gemini model ${modelName} error:`, geminiError);
+        lastGeminiError = geminiError;
+      }
+    }
+
+    if (!responseText) {
+      const errorMessage = lastGeminiError instanceof Error ? lastGeminiError.message : String(lastGeminiError);
       return NextResponse.json(
         { success: false, error: `Gemini API error: ${errorMessage}` },
         { status: 500 }
       );
     }
 
-    const responseText = result.response.text();
     console.log('Gemini raw response:', responseText);
     
-    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    // Clean markdown code fences if present
+    const cleanedText = responseText
+      .replace(/```json/gi, '')
+      .replace(/```/g, '')
+      .trim();
+
+    const jsonMatch = cleanedText.match(/\{[\s\S]*\}/);
 
     if (!jsonMatch) {
       console.error('Failed to parse JSON from response:', responseText);
@@ -146,6 +162,14 @@ Provide only the JSON response, no additional text.`;
       );
     }
 
+    // Ensure array fields are arrays
+    if (!Array.isArray(analysis.furniture)) {
+      analysis.furniture = typeof analysis.furniture === 'string' ? [analysis.furniture] : [];
+    }
+    if (!Array.isArray(analysis.emptyAreas)) {
+      analysis.emptyAreas = typeof analysis.emptyAreas === 'string' ? [analysis.emptyAreas] : [];
+    }
+
     return NextResponse.json({
       success: true,
       data: analysis,
@@ -160,3 +184,4 @@ Provide only the JSON response, no additional text.`;
     );
   }
 }
+
