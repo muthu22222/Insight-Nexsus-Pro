@@ -84,7 +84,7 @@ export default function Hero() {
               variants={itemVariants}
               className="text-lg md:text-xl text-amber-400/80 font-medium mb-4"
             >
-              Turn Your Room Into Your Dream Home
+              Turn Your Room Into Your Dream room
             </motion.p>
 
             <motion.p
