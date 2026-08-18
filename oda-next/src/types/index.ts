@@ -10,6 +10,7 @@ export interface User {
 
 export interface DesignPreferences {
   style: string;
+  furnitureStyle?: string;
   mood: string;
   color: string;
   budget: number;
@@ -52,18 +53,29 @@ export interface AIDesign {
   _id: string;
   projectId: string;
   style: string;
+  furnitureStyle?: string;
   mood: string;
   color: string;
   budget: number;
+  description?: string;
   generatedImages: string[];
   hotspots: Hotspot[];
 }
 
 export interface Hotspot {
+  id?: string | number;
   x: number;
   y: number;
   label: string;
+  category?: string;
   description: string;
+  price?: string;
+  store?: string;
+  brand?: string;
+  material?: string;
+  productUrl?: string;
+  image?: string;
+  match?: number;
   furnitureId?: string;
 }
 
@@ -96,6 +108,8 @@ export interface BudgetAllocation {
 
 export interface ShoppingListItem {
   furnitureId: string;
+  productName?: string;
+  category?: string;
   quantity: number;
   price: number;
   store: string;
@@ -109,20 +123,18 @@ export interface Store {
   address: string;
   lat: number;
   lng: number;
-  phone: string;
-  website: string;
-  category: string;
   rating: number;
+  city: string;
+  phone?: string;
+  website?: string;
+  timings?: string;
+  storeUrl?: string;
+  distance?: number;
 }
 
-export interface ChatMessage {
-  role: "user" | "assistant";
-  content: string;
-  timestamp: string;
-}
-
-export interface ApiResponse<T = unknown> {
+export interface ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: string;
+  message?: string;
 }

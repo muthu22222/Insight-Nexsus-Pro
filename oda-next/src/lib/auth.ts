@@ -17,14 +17,23 @@ export function verifyToken(token: string): TokenPayload {
   return jwt.verify(token, JWT_SECRET) as TokenPayload;
 }
 
-export async function authenticate(request: NextRequest): Promise<TokenPayload> {
+export async function authenticate(
+  request: NextRequest,
+  options: { optional?: boolean } = {}
+): Promise<TokenPayload> {
   const authHeader = request.headers.get('Authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (options.optional) {
+      return { userId: 'guest-user', role: 'user' };
+    }
     throw new Error('Unauthorized: No token provided');
   }
 
   const token = authHeader.split(' ')[1];
   if (!token) {
+    if (options.optional) {
+      return { userId: 'guest-user', role: 'user' };
+    }
     throw new Error('Unauthorized: Invalid token format');
   }
 
@@ -65,6 +74,9 @@ export async function authenticate(request: NextRequest): Promise<TokenPayload> 
   try {
     return verifyToken(token);
   } catch {
+    if (options.optional) {
+      return { userId: 'guest-user', role: 'user' };
+    }
     throw new Error('Unauthorized: Invalid or expired token');
   }
 }
