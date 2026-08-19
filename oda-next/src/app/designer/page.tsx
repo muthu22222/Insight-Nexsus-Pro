@@ -8,6 +8,7 @@ import { Upload, X, Image as ImageIcon, Loader2, CheckCircle } from 'lucide-reac
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
 import { useAuth } from '@/contexts/AuthContext';
+import BackButton from '@/components/common/BackButton';
 
 const steps = [
   { id: 'upload', label: 'Upload' },
@@ -48,35 +49,35 @@ export default function DesignerUploadPage() {
     },
   });
 
-  const handleRetake = () => {
+  const handleRemove = () => {
     setPreview(null);
     setFile(null);
     setUploadProgress(0);
     clearPreviousUpload();
   };
 
-  const handleContinue = async () => {
+  const handleUpload = async () => {
     if (!file || !preview) {
-      toast.error('Please upload an image first');
+      toast.error('Please select an image first');
       return;
     }
 
     setIsUploading(true);
-    setUploadProgress(0);
+    setUploadProgress(10);
+
+    const progressInterval = setInterval(() => {
+      setUploadProgress((prev) => {
+        if (prev >= 90) {
+          clearInterval(progressInterval);
+          return 90;
+        }
+        return prev + 15;
+      });
+    }, 200);
 
     try {
       const formData = new FormData();
       formData.append('image', file);
-
-      const progressInterval = setInterval(() => {
-        setUploadProgress((prev) => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return 90;
-          }
-          return prev + 10;
-        });
-      }, 200);
 
       const token = await getToken();
       const response = await fetch('/api/room/upload', {
@@ -120,6 +121,11 @@ export default function DesignerUploadPage() {
       <Toaster position="top-center" />
 
       <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Navigation Bar */}
+        <div className="flex items-center justify-between mb-6">
+          <BackButton fallbackHref="/" label="Back to Home" />
+        </div>
+
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-1">AI Room Designer</h1>
           <p className="text-sm text-gray-500">Upload a photo of your room to get started</p>

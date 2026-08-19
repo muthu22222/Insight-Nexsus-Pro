@@ -197,7 +197,20 @@ async function resolveAndSaveGeneratedImage(
     console.warn('[Design Generate] AI endpoint fetch timed out or failed, using curated image:', e instanceof Error ? e.message : e);
   }
 
-  // If remote generation is slow, fetch fallback image and save locally
+  // If remote generation is slow, copy or fetch fallback image and save locally
+  if (fallbackUrl.startsWith('/')) {
+    try {
+      const srcPath = path.join(process.cwd(), 'public', fallbackUrl.startsWith('/') ? fallbackUrl.slice(1) : fallbackUrl);
+      if (fs.existsSync(srcPath)) {
+        fs.copyFileSync(srcPath, localFilePath);
+        return publicUrl;
+      }
+    } catch (copyErr) {
+      console.warn('Failed to copy local design asset:', copyErr);
+    }
+    return fallbackUrl;
+  }
+
   try {
     const resFallback = await fetch(fallbackUrl, { signal: AbortSignal.timeout(5000) });
     if (resFallback.ok) {
