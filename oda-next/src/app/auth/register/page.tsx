@@ -11,6 +11,7 @@ import {
   firebaseGoogleLogin,
 } from '@/lib/firebase-auth';
 import { useAuth } from '@/contexts/AuthContext';
+import BackButton from '@/components/common/BackButton';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -155,6 +156,9 @@ export default function RegisterPage() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
+        <div className="mb-4">
+          <BackButton fallbackHref="/auth/login" label="Back to Login" variant="subtle" />
+        </div>
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
           <div className="text-center mb-8">
             <Link href="/" className="inline-block">

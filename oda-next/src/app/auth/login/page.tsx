@@ -105,6 +105,9 @@ export default function LoginPage() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
+        <div className="mb-4">
+          <BackButton fallbackHref="/" label="Back to Home" variant="subtle" />
+        </div>
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
           <div className="text-center mb-8">
             <Link href="/" className="inline-block">
