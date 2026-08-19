@@ -11,6 +11,7 @@ import {
   firebaseGoogleLogin,
 } from '@/lib/firebase-auth';
 import { useAuth } from '@/contexts/AuthContext';
+import BackButton from '@/components/common/BackButton';
 
 export default function LoginPage() {
   const router = useRouter();

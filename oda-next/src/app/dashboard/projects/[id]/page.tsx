@@ -23,6 +23,7 @@ import {
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
+import BackButton from "@/components/common/BackButton";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Project, AIDesign, ShoppingListItem } from "@/types";
 import { formatCurrency, formatDate } from "@/utils/helpers";
@@ -278,12 +279,7 @@ export default function ProjectDetailPage() {
           >
             <Menu className="h-5 w-5 text-gray-600" />
           </button>
-          <button
-            onClick={() => router.push("/dashboard/projects")}
-            className="h-10 w-10 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
-          >
-            <ArrowLeft className="h-5 w-5 text-gray-600" />
-          </button>
+          <BackButton fallbackHref="/dashboard/projects" label="Back to Projects" variant="subtle" />
 
           <div className="flex-1 min-w-0">
             {editingName ? (

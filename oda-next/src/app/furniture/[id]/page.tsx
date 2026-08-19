@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
+import BackButton from "@/components/common/BackButton";
 import type { FurnitureItem, Project } from "@/types";
 import { formatCurrency } from "@/utils/helpers";
 
@@ -168,12 +169,7 @@ export default function ProductDetailPage() {
           >
             <Menu className="h-5 w-5 text-gray-600" />
           </button>
-          <button
-            onClick={() => router.back()}
-            className="h-10 w-10 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
-          >
-            <ArrowLeft className="h-5 w-5 text-gray-600" />
-          </button>
+          <BackButton fallbackHref="/furniture" label="Back to Catalog" variant="subtle" />
           <h1 className="text-lg font-semibold text-gray-900 truncate">
             Product Details
           </h1>

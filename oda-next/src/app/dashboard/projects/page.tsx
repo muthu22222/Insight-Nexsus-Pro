@@ -17,6 +17,7 @@ import {
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
+import BackButton from "@/components/common/BackButton";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Project } from "@/types";
 import { formatDate } from "@/utils/helpers";
@@ -115,6 +116,7 @@ export default function ProjectsPage() {
           >
             <Menu className="h-5 w-5 text-gray-600" />
           </button>
+          <BackButton fallbackHref="/dashboard" label="Back" variant="subtle" />
           <div className="flex-1">
             <h1 className="text-xl font-bold text-gray-900">My Projects</h1>
             <p className="text-sm text-gray-500 mt-0.5">

@@ -165,26 +165,18 @@ export default function ViewerPage() {
             className="w-full h-full"
           />
 
-          {/* FLOATING TOP-LEFT CONTROL PILL (Reference UI) */}
+          {/* FLOATING TOP-LEFT CONTROL PILL */}
           <div className="absolute top-4 left-4 z-40 flex items-center gap-2">
+            <BackButton fallbackHref="/designer/generate" label="Back to Generate" variant="floating" />
             <div className="bg-black/75 backdrop-blur-xl border border-white/15 rounded-2xl px-2.5 py-1.5 flex items-center gap-2 shadow-2xl text-white">
-              <button
-                onClick={() => router.push('/designer/generate')}
-                className="p-1.5 hover:bg-white/15 rounded-xl transition-colors text-white/90"
-                title="Back to Design"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </button>
-              <div className="h-4 w-px bg-white/20" />
               <button
                 onClick={handleExport}
                 className="flex items-center gap-1.5 px-2.5 py-1 hover:bg-white/15 rounded-xl text-xs font-semibold text-white/90 transition-colors"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>Export</span>
+                <span>Export HD</span>
               </button>
             </div>
-
             <div className="bg-black/75 backdrop-blur-xl border border-white/15 rounded-2xl px-3 py-1.5 flex items-center gap-2 shadow-2xl text-white text-xs font-semibold">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>{selectedDesign?.style || 'Photorealistic Design'}</span>

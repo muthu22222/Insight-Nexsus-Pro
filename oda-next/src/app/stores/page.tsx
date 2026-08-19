@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
+import BackButton from "@/components/common/BackButton";
 import type { Store as StoreType } from "@/types";
 
 const categories = ["All", "Furniture", "Home Decor", "Lighting", "Curtains", "Mattress"];
@@ -112,6 +113,7 @@ export default function StoresPage() {
           >
             <Menu className="h-5 w-5 text-gray-600" />
           </button>
+          <BackButton fallbackHref="/" label="Back" variant="subtle" />
           <div className="flex-1">
             <h1 className="text-xl font-bold text-gray-900">Nearby Stores</h1>
             <p className="text-sm text-gray-500 mt-0.5">
