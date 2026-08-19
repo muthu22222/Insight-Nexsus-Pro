@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
 export const runtime = 'nodejs';
 
@@ -25,6 +27,7 @@ export async function POST(request: NextRequest) {
     const mimeType = file.type || 'image/jpeg';
     const base64String = `data:${mimeType};base64,${buffer.toString('base64')}`;
 
+    // 1. Cloudinary storage if configured
     if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
       const cloudinary = (await import('@/config/cloudinary')).default;
       const result = await cloudinary.uploader.upload(base64String, {
@@ -54,24 +57,57 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(
-      {
-        success: true,
-        data: {
-          imageUrl: base64String,
-          imageId: uniqueId,
-          publicId: uniqueId,
-          timestamp: Date.now(),
-        },
-      },
-      {
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          Pragma: 'no-cache',
-          Expires: '0',
-        },
+    // 2. Save locally into public/uploads/rooms/ for fast static serving
+    try {
+      const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'rooms');
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
       }
-    );
+      const filePath = path.join(uploadDir, `${uniqueId}.jpg`);
+      fs.writeFileSync(filePath, buffer);
+
+      const localUrl = `/uploads/rooms/${uniqueId}.jpg`;
+
+      return NextResponse.json(
+        {
+          success: true,
+          data: {
+            imageUrl: localUrl,
+            imageBase64: base64String,
+            imageId: uniqueId,
+            publicId: uniqueId,
+            timestamp: Date.now(),
+          },
+        },
+        {
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            Pragma: 'no-cache',
+            Expires: '0',
+          },
+        }
+      );
+    } catch (saveErr) {
+      console.warn('Failed to save to local uploads dir, using base64:', saveErr);
+      return NextResponse.json(
+        {
+          success: true,
+          data: {
+            imageUrl: base64String,
+            imageId: uniqueId,
+            publicId: uniqueId,
+            timestamp: Date.now(),
+          },
+        },
+        {
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            Pragma: 'no-cache',
+            Expires: '0',
+          },
+        }
+      );
+    }
   } catch (error) {
     console.error('Upload error:', error);
     const message = error instanceof Error ? error.message : 'Internal server error';
@@ -86,4 +122,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

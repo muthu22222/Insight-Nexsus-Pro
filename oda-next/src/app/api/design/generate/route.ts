@@ -195,11 +195,14 @@ export async function POST(request: NextRequest) {
     const suggestedFurniture = Array.isArray(roomAnalysis?.suggestedFurniture) ? roomAnalysis.suggestedFurniture : [];
 
     const hasExisting = existingFurniture.length > 0;
+    
+    // Unique deterministic seed derived from imageId, imageUrl, and timestamp
+    const seedInput = `${imageId || ''}_${imageUrl ? imageUrl.slice(-30) : ''}_${Date.now()}`;
     const baseSeed = Math.abs(
-      (imageId ? imageId.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 0) : Date.now()) % 999999
-    );
+      seedInput.split('').reduce((acc: number, c: string) => ((acc << 5) - acc + c.charCodeAt(0)) | 0, 0)
+    ) % 999999;
 
-    const curatedImages = getDesignImagesForStyle(furnitureStyle, roomType);
+    const curatedImages = getDesignImagesForStyle(furnitureStyle, roomType, baseSeed);
     const furnitureList = normListForRoom(roomType, existingFurniture, suggestedFurniture, furnitureStyle);
 
     let singleDesign: AIDesign | null = null;
@@ -314,7 +317,10 @@ Return ONLY a single JSON object structured as:
 
             const visualPrompt = buildVisualPrompt(roomType, perspective, wallColor, flooring, windows, furnitureStyle, furnitureList, preferences.mood, preferences.color);
 
-            const visualImage = curatedImages[0];
+            const isWebUrl = imageUrl && typeof imageUrl === 'string' && imageUrl.startsWith('http');
+            const imageParam = isWebUrl ? `&image=${encodeURIComponent(imageUrl)}` : '';
+            const fluxAiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1280&height=853&model=flux&seed=${baseSeed}&nologo=true${imageParam}`;
+            const visualImage = fluxAiUrl || curatedImages[0];
 
             const preservedText = hasExisting
               ? `Preserving existing ${existingFurniture.join(', ')} (upgraded to ${furnitureStyle} style) + ${matchedHotspots.length - existingFurniture.length} added designer furniture pieces.`
@@ -349,7 +355,12 @@ Return ONLY a single JSON object structured as:
         budget
       );
       const matchedHotspots = await matchFurnitureWithCatalog(detectedItems, budget, furnitureStyle);
-      const visualImage = curatedImages[0];
+      const visualPrompt = buildVisualPrompt(roomType, perspective, wallColor, flooring, windows, furnitureStyle, furnitureList, preferences.mood, preferences.color);
+
+      const isWebUrl = imageUrl && typeof imageUrl === 'string' && imageUrl.startsWith('http');
+      const imageParam = isWebUrl ? `&image=${encodeURIComponent(imageUrl)}` : '';
+      const fluxAiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1280&height=853&model=flux&seed=${baseSeed}&nologo=true${imageParam}`;
+      const visualImage = fluxAiUrl || curatedImages[0];
 
       const preservedText = hasExisting
         ? `Preserving existing ${existingFurniture.join(', ')} (upgraded to ${furnitureStyle} aesthetic) with ${matchedHotspots.length - existingFurniture.length} added designer pieces.`
@@ -493,5 +504,5 @@ function buildVisualPrompt(
   color: string
 ): string {
   const itemsText = furnitureList.join(', ');
-  return `Fully furnished ${fStyle} ${roomType} interior redesign, wide-angle ${perspective} architectural photo of THIS EXACT ROOM with ${wallColor} walls, ${flooring} flooring, ${windows}. Visibly containing complete furniture suite: ${itemsText}. ${mood} lighting atmosphere, ${color} color harmony, photorealistic 8k architectural digest photography, realistic daylight, realistic furniture scale and placement, beautifully furnished room, no empty room, no bare floor.`;
+  return `Photorealistic 8k architectural interior redesign of this ${roomType}, wide-angle ${perspective} photo of this room with ${wallColor} walls, ${flooring} flooring, ${windows}. Visibly containing complete furniture suite: ${itemsText}. ${mood} lighting atmosphere, ${color} color harmony, Architectural Digest photography, realistic daylight, realistic furniture scale and placement, beautifully furnished room, no empty room, no bare floor.`;
 }

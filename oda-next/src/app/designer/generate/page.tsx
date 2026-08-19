@@ -108,7 +108,7 @@ export default function GeneratePage() {
       const resDesign = data?.design || (Array.isArray(data?.designs) ? data.designs[0] : null) || data?.data?.[0];
 
       const roomType = roomAnalysis?.roomType || 'Living Room';
-      const fallbackImages = getDesignImagesForStyle(preferences?.furnitureStyle || 'modern', roomType);
+      const fallbackImages = getDesignImagesForStyle(preferences?.furnitureStyle || 'modern', roomType, Date.now());
 
       let finalDesign: AIDesign;
 

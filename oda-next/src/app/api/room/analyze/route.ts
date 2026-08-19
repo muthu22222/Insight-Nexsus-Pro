@@ -11,10 +11,30 @@ function parseDataUrl(dataUrl: string): { mimeType: string; base64: string } | n
   return { mimeType: match[1], base64: match[2] };
 }
 
+import fs from 'fs';
+import path from 'path';
+
 async function fetchImageAsBase64(imageUrl: string): Promise<{ mimeType: string; base64: string }> {
   const dataUrlResult = parseDataUrl(imageUrl);
   if (dataUrlResult) {
     return dataUrlResult;
+  }
+
+  // Handle local relative paths e.g. /uploads/rooms/...
+  if (imageUrl.startsWith('/uploads/') || imageUrl.startsWith('uploads/')) {
+    try {
+      const cleanPath = imageUrl.startsWith('/') ? imageUrl.slice(1) : imageUrl;
+      const fullPath = path.join(process.cwd(), 'public', cleanPath);
+      if (fs.existsSync(fullPath)) {
+        const fileBuffer = fs.readFileSync(fullPath);
+        return {
+          mimeType: cleanPath.endsWith('.png') ? 'image/png' : 'image/jpeg',
+          base64: fileBuffer.toString('base64'),
+        };
+      }
+    } catch (e) {
+      console.warn('Failed to read local image file:', e);
+    }
   }
 
   const response = await fetch(imageUrl, { cache: 'no-store' });
