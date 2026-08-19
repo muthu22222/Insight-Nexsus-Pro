@@ -27,6 +27,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import BackButton from '@/components/common/BackButton';
 import FurnishedRoomView from '@/components/designer/FurnishedRoomView';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
+import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
 import type { AIDesign, Hotspot } from '@/types';
 
 const steps = [
@@ -459,26 +460,22 @@ export default function GeneratePage() {
                         <div className="text-right shrink-0 ml-2 flex flex-col items-end">
                           <p className="text-xs font-bold text-gray-900">{item.price}</p>
                           <div className="flex items-center gap-1.5 mt-0.5">
-                            {item.amazonUrl && (
-                              <a
-                                href={item.amazonUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-[10px] text-amber-800 bg-amber-100 hover:bg-amber-200 px-1.5 py-0.5 rounded font-bold transition-colors"
-                              >
-                                Amazon
-                              </a>
-                            )}
-                            {item.flipkartUrl && (
-                              <a
-                                href={item.flipkartUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-[10px] text-blue-800 bg-blue-100 hover:bg-blue-200 px-1.5 py-0.5 rounded font-bold transition-colors"
-                              >
-                                Flipkart
-                              </a>
-                            )}
+                            <a
+                              href={getAmazonProductUrl(item.label || item.category || 'Furniture', item.amazonUrl)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[10px] text-amber-800 bg-amber-100 hover:bg-amber-200 px-1.5 py-0.5 rounded font-bold transition-colors"
+                            >
+                              Amazon
+                            </a>
+                            <a
+                              href={getFlipkartProductUrl(item.label || item.category || 'Furniture', item.flipkartUrl)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[10px] text-blue-800 bg-blue-100 hover:bg-blue-200 px-1.5 py-0.5 rounded font-bold transition-colors"
+                            >
+                              Flipkart
+                            </a>
                             {item.productUrl && (
                               <a
                                 href={item.productUrl}
