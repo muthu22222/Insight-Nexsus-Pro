@@ -199,6 +199,11 @@ export default function GeneratePage() {
       <Toaster position="top-center" />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Navigation Bar */}
+        <div className="flex items-center justify-between mb-6">
+          <BackButton fallbackHref="/designer/preferences" label="Back to Preferences" />
+        </div>
+
         {/* Header Title */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-full text-xs font-semibold mb-2 shadow-2xs">

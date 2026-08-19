@@ -31,6 +31,7 @@ import { useDesignerStore } from '@/store/useDesignerStore';
 import { useAuth } from '@/contexts/AuthContext';
 import FurnishedRoomView, { HotspotItem } from '@/components/designer/FurnishedRoomView';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
+import BackButton from '@/components/common/BackButton';
 
 export default function ViewerPage() {
   const router = useRouter();
