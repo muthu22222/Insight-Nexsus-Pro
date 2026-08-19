@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, ShoppingBag, Sparkles, Check, Armchair } from 'lucide-react';
+import { ExternalLink, ShoppingBag, Sparkles, Check, Armchair, Loader2 } from 'lucide-react';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
 
 export interface HotspotItem {
@@ -53,6 +53,7 @@ export default function FurnishedRoomView({
   const [hoveredHotspotId, setHoveredHotspotId] = useState<number | string | null>(null);
   const [internalSlider, setInternalSlider] = useState<number>(sliderPosition);
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [isRedesignLoading, setIsRedesignLoading] = useState<boolean>(false);
   const [renderedBounds, setRenderedBounds] = useState<{
     width: number;
     height: number;
@@ -70,11 +71,22 @@ export default function FurnishedRoomView({
     setInternalSlider(sliderPosition);
   }, [sliderPosition]);
 
+  useEffect(() => {
+    if (displayRedesignImage) {
+      setIsRedesignLoading(true);
+    }
+  }, [displayRedesignImage]);
+
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
     if (img.naturalWidth && img.naturalHeight && img.naturalHeight > 0) {
       setImageAspect(img.naturalWidth / img.naturalHeight);
     }
+  };
+
+  const handleRedesignImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    handleImageLoad(e);
+    setIsRedesignLoading(false);
   };
 
   const calculateBounds = useCallback(() => {
@@ -203,15 +215,27 @@ export default function FurnishedRoomView({
               key={`redesign-img-${displayRedesignImage}`}
               src={displayRedesignImage}
               alt="Photorealistic Furnished Room"
-              onLoad={handleImageLoad}
+              onLoad={handleRedesignImageLoad}
               onError={(e) => {
                 const target = e.currentTarget;
+                setIsRedesignLoading(false);
                 if (target.src !== fallbackFurnishedImage) {
                   target.src = fallbackFurnishedImage;
                 }
               }}
-              className="w-full h-full object-fill pointer-events-none"
+              className="w-full h-full object-fill pointer-events-none transition-opacity duration-300"
+              style={{ opacity: isRedesignLoading ? 0.7 : 1 }}
             />
+
+            {/* Subtle loading shimmer if AI image is currently generating */}
+            {isRedesignLoading && (
+              <div className="absolute inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center pointer-events-none">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/80 border border-amber-500/40 rounded-full shadow-2xl">
+                  <Loader2 className="w-3.5 h-3.5 text-amber-400 animate-spin" />
+                  <span className="text-[11px] font-semibold text-white">Loading Redesigned Room...</span>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
