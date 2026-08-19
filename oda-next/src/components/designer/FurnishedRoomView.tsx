@@ -63,7 +63,7 @@ export default function FurnishedRoomView({
 
   // Guaranteed high-resolution fully-furnished room photography
   const fallbackFurnishedImage = getDesignImagesForStyle(styleName)[0];
-  const displayRedesignImage = (redesignImage && redesignImage.startsWith('http') && redesignImage !== roomImage)
+  const displayRedesignImage = (redesignImage && (redesignImage.startsWith('http') || redesignImage.startsWith('/')) && redesignImage !== roomImage)
     ? redesignImage
     : fallbackFurnishedImage;
 

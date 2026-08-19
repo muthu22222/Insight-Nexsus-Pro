@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import fs from 'fs';
+import path from 'path';
 import { connectToDatabase } from '@/lib/mongodb';
 import { authenticate } from '@/lib/auth';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
 import { matchFurnitureWithCatalog, DetectedItem } from '@/lib/furniture-matcher';
 import { GEMINI_MODELS } from '@/lib/gemini';
 import type { AIDesign, RoomAnalysis } from '@/types';
+
+export const runtime = 'nodejs';
 
 interface RawFurnitureDetection {
   style?: string;
@@ -162,6 +166,50 @@ function buildDynamicSuite(
   return items;
 }
 
+// Server-side image fetcher and persistent file saver
+async function resolveAndSaveGeneratedImage(
+  visualPrompt: string,
+  baseSeed: number,
+  fallbackUrl: string,
+  designId: string
+): Promise<string> {
+  const generatedDir = path.join(process.cwd(), 'public', 'generated');
+  if (!fs.existsSync(generatedDir)) {
+    fs.mkdirSync(generatedDir, { recursive: true });
+  }
+
+  const localFileName = `${designId}.jpg`;
+  const localFilePath = path.join(generatedDir, localFileName);
+  const publicUrl = `/generated/${localFileName}`;
+
+  const fluxAiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1280&height=853&model=flux&seed=${baseSeed}&nologo=true`;
+
+  try {
+    const res = await fetch(fluxAiUrl, { signal: AbortSignal.timeout(8000) });
+    if (res.ok) {
+      const buffer = await res.arrayBuffer();
+      if (buffer.byteLength > 5000) {
+        fs.writeFileSync(localFilePath, Buffer.from(buffer));
+        return publicUrl;
+      }
+    }
+  } catch (e) {
+    console.warn('[Design Generate] AI endpoint fetch timed out or failed, using curated image:', e instanceof Error ? e.message : e);
+  }
+
+  // If remote generation is slow, fetch fallback image and save locally
+  try {
+    const resFallback = await fetch(fallbackUrl, { signal: AbortSignal.timeout(5000) });
+    if (resFallback.ok) {
+      const buffer = await resFallback.arrayBuffer();
+      fs.writeFileSync(localFilePath, Buffer.from(buffer));
+      return publicUrl;
+    }
+  } catch {}
+
+  return fallbackUrl;
+}
+
 export async function POST(request: NextRequest) {
   try {
     await authenticate(request, { optional: true });
@@ -204,6 +252,7 @@ export async function POST(request: NextRequest) {
 
     const curatedImages = getDesignImagesForStyle(furnitureStyle, roomType, baseSeed);
     const furnitureList = normListForRoom(roomType, existingFurniture, suggestedFurniture, furnitureStyle);
+    const designId = `${imageId || 'design'}_${baseSeed}`;
 
     let singleDesign: AIDesign | null = null;
 
@@ -317,17 +366,19 @@ Return ONLY a single JSON object structured as:
 
             const visualPrompt = buildVisualPrompt(roomType, perspective, wallColor, flooring, windows, furnitureStyle, furnitureList, preferences.mood, preferences.color);
 
-            const isPublicWebUrl = imageUrl && typeof imageUrl === 'string' && imageUrl.startsWith('https://') && !imageUrl.includes('localhost') && !imageUrl.includes('127.0.0.1');
-            const imageParam = isPublicWebUrl ? `&image=${encodeURIComponent(imageUrl)}` : '';
-            const fluxAiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1280&height=853&model=flux&seed=${baseSeed}&nologo=true${imageParam}`;
-            const visualImage = fluxAiUrl || curatedImages[0];
+            const visualImage = await resolveAndSaveGeneratedImage(
+              visualPrompt,
+              baseSeed,
+              curatedImages[0],
+              designId
+            );
 
             const preservedText = hasExisting
               ? `Preserving existing ${existingFurniture.join(', ')} (upgraded to ${furnitureStyle} style) + ${matchedHotspots.length - existingFurniture.length} added designer furniture pieces.`
               : `Fully furnished ${roomType} suite with ${matchedHotspots.length} verified products.`;
 
             singleDesign = {
-              _id: `${imageId || 'design'}-${Date.now()}`,
+              _id: designId,
               projectId: 'current',
               style: parsedDesign.style || `${style.charAt(0).toUpperCase() + style.slice(1)} ${furnitureStyle.toUpperCase()} Redesign`,
               furnitureStyle,
@@ -357,17 +408,19 @@ Return ONLY a single JSON object structured as:
       const matchedHotspots = await matchFurnitureWithCatalog(detectedItems, budget, furnitureStyle);
       const visualPrompt = buildVisualPrompt(roomType, perspective, wallColor, flooring, windows, furnitureStyle, furnitureList, preferences.mood, preferences.color);
 
-      const isPublicWebUrl = imageUrl && typeof imageUrl === 'string' && imageUrl.startsWith('https://') && !imageUrl.includes('localhost') && !imageUrl.includes('127.0.0.1');
-      const imageParam = isPublicWebUrl ? `&image=${encodeURIComponent(imageUrl)}` : '';
-      const fluxAiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1280&height=853&model=flux&seed=${baseSeed}&nologo=true${imageParam}`;
-      const visualImage = fluxAiUrl || curatedImages[0];
+      const visualImage = await resolveAndSaveGeneratedImage(
+        visualPrompt,
+        baseSeed,
+        curatedImages[0],
+        designId
+      );
 
       const preservedText = hasExisting
         ? `Preserving existing ${existingFurniture.join(', ')} (upgraded to ${furnitureStyle} aesthetic) with ${matchedHotspots.length - existingFurniture.length} added designer pieces.`
         : `Complete ${furnitureStyle} furniture suite with ${matchedHotspots.length} catalog items.`;
 
       singleDesign = {
-        _id: `${imageId || 'design'}-${Date.now()}`,
+        _id: designId,
         projectId: 'current',
         style: `${style.charAt(0).toUpperCase() + style.slice(1)} ${furnitureStyle.toUpperCase()} Redesign`,
         furnitureStyle,
@@ -504,5 +557,5 @@ function buildVisualPrompt(
   color: string
 ): string {
   const itemsText = furnitureList.join(', ');
-  return `Photorealistic 8k architectural interior redesign of this ${roomType}, wide-angle ${perspective} photo of this room with ${wallColor} walls, ${flooring} flooring, ${windows}. Visibly containing complete furniture suite: ${itemsText}. ${mood} lighting atmosphere, ${color} color harmony, Architectural Digest photography, realistic daylight, realistic furniture scale and placement, beautifully furnished room, no empty room, no bare floor.`;
+  return `Photorealistic 8k architectural interior redesign of this ${roomType}, wide-angle ${perspective} photo with ${wallColor} walls, ${flooring} flooring, ${windows}. Visibly furnished with: ${itemsText}. ${mood} lighting atmosphere, ${color} color harmony, Architectural Digest photography, completely furnished room, realistic furniture placement, no empty room, no bare floor.`;
 }

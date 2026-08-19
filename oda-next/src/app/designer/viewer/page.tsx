@@ -47,7 +47,7 @@ export default function ViewerPage() {
 
   const baseRoomImage = uploadedImage || 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&auto=format&fit=crop&q=85';
   const fallbackFurnished = getDesignImagesForStyle(selectedDesign?.style || selectedDesign?.furnitureStyle || 'Modern', undefined, Date.now())[0];
-  const redesignImage = (selectedDesign?.generatedImages?.[0] && selectedDesign.generatedImages[0] !== uploadedImage && selectedDesign.generatedImages[0].startsWith('http'))
+  const redesignImage = (selectedDesign?.generatedImages?.[0] && selectedDesign.generatedImages[0] !== uploadedImage && (selectedDesign.generatedImages[0].startsWith('http') || selectedDesign.generatedImages[0].startsWith('/')))
     ? selectedDesign.generatedImages[0]
     : fallbackFurnished;
 

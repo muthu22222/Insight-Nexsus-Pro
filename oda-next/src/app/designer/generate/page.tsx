@@ -122,7 +122,7 @@ export default function GeneratePage() {
           color: resDesign.color || preferences?.color || 'Neutral',
           budget: resDesign.budget || preferences?.budget || 200000,
           description: resDesign.description || '',
-          generatedImages: Array.isArray(resDesign.generatedImages) && resDesign.generatedImages.length > 0 && resDesign.generatedImages[0].startsWith('http')
+          generatedImages: Array.isArray(resDesign.generatedImages) && resDesign.generatedImages.length > 0 && (resDesign.generatedImages[0].startsWith('http') || resDesign.generatedImages[0].startsWith('/'))
             ? resDesign.generatedImages
             : [fallbackImages[0]],
           hotspots: Array.isArray(resDesign.hotspots) ? resDesign.hotspots : [],
