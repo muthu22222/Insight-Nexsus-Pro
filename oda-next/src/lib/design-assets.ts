@@ -2,66 +2,63 @@ export interface DesignVisuals {
   images: [string, string, string];
 }
 
-// Guaranteed 100% fully furnished, photorealistic interior photography verified to contain complete furniture suites
+// Guaranteed 100% fully furnished, photorealistic interior photography stored locally on disk
 const STYLE_ROOM_IMAGES: Record<string, string[]> = {
   modern: [
-    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&auto=format&fit=crop&q=85', // Large cognac leather sofa, coffee table, rug, chair, lighting
-    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&auto=format&fit=crop&q=85', // Modern sectional sofa, center table, floor lamp, art
-    'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&auto=format&fit=crop&q=85', // Contemporary furnished room with full seating suite
-    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&auto=format&fit=crop&q=85',
+    '/images/designs/modern_living_1.jpg', // 2 Sofas, Coffee Table, Area Rug, TV/Media Wall Unit
+    '/images/designs/modern_living_2.jpg', // Large Sectional Sofa, Dual Coffee Tables, Large Rug, TV Console Cabinetry
+    '/images/designs/luxury_living.jpg',   // Velvet Sofa, Coffee Table, Rug, Lounge Chairs, Ottomans, Lamp
+    '/images/designs/scandi_living.jpg',   // Large Sectional Sofa, Round Coffee Table, Rug, Armchair, Side Table
   ],
   scandinavian: [
-    'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=1600&auto=format&fit=crop&q=85', // Light gray sofa, dual wooden coffee tables, side table, floor lamp, plant
-    'https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=1600&auto=format&fit=crop&q=85', // Nordic furnished room with full seating, center table, natural light
-    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&auto=format&fit=crop&q=85', // Japandi warm wooden furnished living room
+    '/images/designs/scandi_living.jpg',   // Nordic Sectional Sofa, Round Wood Coffee Table, Textured Rug, Armchair, Lamp
+    '/images/designs/modern_living_1.jpg', // Dual Sofas, Wood Coffee Table, Media Unit, Wool Rug
+    '/images/designs/luxury_living.jpg',
   ],
   luxury: [
-    'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&auto=format&fit=crop&q=85', // Luxury furnished living room: grey sofa, coffee table, leather ottomans, accent chairs, lamp
-    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&auto=format&fit=crop&q=85', // Bespoke interior with full seating suite and designer lighting
-    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&auto=format&fit=crop&q=85', // Luxury penthouse living room with full furniture suite
+    '/images/designs/luxury_living.jpg',   // Luxury Penthouse: Velvet Sofa, Coffee Table, Leather Chairs, Ottomans, Lamp, Rug
+    '/images/designs/modern_living_2.jpg', // Sectional Sofa, Marble Coffee Table, TV Wall Cabinetry, Rug
+    '/images/designs/modern_living_1.jpg',
   ],
   minimalist: [
-    'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=1600&auto=format&fit=crop&q=85', // Clean minimal sofa, dual coffee tables, side table, lamp
-    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&auto=format&fit=crop&q=85', // Minimalist tailored sofa and rug suite
-    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&auto=format&fit=crop&q=85',
+    '/images/designs/scandi_living.jpg',   // Tailored Minimal Sofa, Round Coffee Table, Neutral Rug, Armchair
+    '/images/designs/modern_living_1.jpg',
+    '/images/designs/modern_living_2.jpg',
   ],
   industrial: [
-    'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1600&auto=format&fit=crop&q=85', // Industrial loft furnished: sofa, reclaimed wood table, metal lamps
-    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&auto=format&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&auto=format&fit=crop&q=85',
+    '/images/designs/modern_living_1.jpg', // Industrial Loft: Sofas, Wood & Metal Coffee Table, Media Unit, Rug
+    '/images/designs/luxury_living.jpg',
+    '/images/designs/modern_living_2.jpg',
   ],
   traditional: [
-    'https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=1600&auto=format&fit=crop&q=85', // Traditional furnished room: two sofas, coffee table, large shelving/TV media console
-    'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1600&auto=format&fit=crop&q=85', // Classic warm furnished living room with armchair, sofa, wood table
-    'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&auto=format&fit=crop&q=85',
+    '/images/designs/modern_living_1.jpg', // Traditional: 2 Full Sofas, Center Coffee Table, TV Media Shelving Console, Rug
+    '/images/designs/luxury_living.jpg',
+    '/images/designs/modern_living_2.jpg',
   ],
   contemporary: [
-    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&auto=format&fit=crop&q=85', // Contemporary furnished room with sofa, coffee table, rug, chair
-    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&auto=format&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&auto=format&fit=crop&q=85',
+    '/images/designs/modern_living_2.jpg', // Contemporary Sectional, Coffee Table, Media Unit, Area Rug
+    '/images/designs/modern_living_1.jpg',
+    '/images/designs/luxury_living.jpg',
+    '/images/designs/scandi_living.jpg',
   ],
 };
 
 const ROOM_TYPE_SPECIFIC_IMAGES: Record<string, string[]> = {
   bedroom: [
-    'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=1600&auto=format&fit=crop&q=85', // Modern furnished bedroom: platform bed, nightstands, wardrobe, lighting
-    'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1600&auto=format&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=1600&auto=format&fit=crop&q=85',
+    '/images/designs/bedroom.jpg', // Platform Bed, Bedside Tables, Large Rug, Accent Chair, Lighting
+    '/images/designs/bedroom.jpg',
   ],
   office: [
-    'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1600&auto=format&fit=crop&q=85', // Fully furnished home office: executive desk, ergonomic chair, bookshelf
-    'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&auto=format&fit=crop&q=85', // Designer study with desk suite, task lamp, rug
-    'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1600&auto=format&fit=crop&q=85',
+    '/images/designs/office.jpg',  // Executive Desk Suite, Ergonomic Seating, Coffee Tables, Rugs, Shelving
+    '/images/designs/office.jpg',
   ],
   kitchen: [
-    'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1600&auto=format&fit=crop&q=85', // Fully fitted modern kitchen with island and stools
-    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&auto=format&fit=crop&q=85', // Luxury kitchen with cabinetry, pendant lights
-    'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1600&auto=format&fit=crop&q=85',
+    '/images/designs/modern_living_2.jpg', // Kitchen Island, Counter Stools, Cabinetry, Living Seating Suite
+    '/images/designs/modern_living_2.jpg',
   ],
   dining: [
-    'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1600&auto=format&fit=crop&q=85', // Fully furnished dining room: solid table, 6 chairs, chandelier, sideboard
-    'https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=1600&auto=format&fit=crop&q=85', // Modern dining room suite with tableware and rug
-    'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1600&auto=format&fit=crop&q=85',
+    '/images/designs/dining.jpg',  // Solid Dining Table, 6 Dining Chairs, Sideboard Buffet, Area Rug, Chandelier
+    '/images/designs/dining.jpg',
   ],
 };
 
