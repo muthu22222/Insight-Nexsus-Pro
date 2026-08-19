@@ -24,6 +24,7 @@ import {
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
 import { useAuth } from '@/contexts/AuthContext';
+import BackButton from '@/components/common/BackButton';
 import FurnishedRoomView from '@/components/designer/FurnishedRoomView';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
 import type { AIDesign, Hotspot } from '@/types';

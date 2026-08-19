@@ -24,6 +24,7 @@ import {
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
 import { useAuth } from '@/contexts/AuthContext';
+import BackButton from '@/components/common/BackButton';
 import type { RoomAnalysis } from '@/types';
 
 const steps = [
@@ -223,6 +224,11 @@ export default function AnalysisPage() {
       <Toaster position="top-center" />
 
       <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Navigation Bar */}
+        <div className="flex items-center justify-between mb-6">
+          <BackButton fallbackHref="/designer" label="Back to Upload" />
+        </div>
+
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200 rounded-full text-xs font-semibold mb-2 shadow-2xs">
             <Armchair className="w-3.5 h-3.5 text-amber-600" />

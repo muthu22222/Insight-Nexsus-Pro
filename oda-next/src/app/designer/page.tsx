@@ -56,6 +56,9 @@ export default function DesignerUploadPage() {
     clearPreviousUpload();
   };
 
+  const handleRetake = handleRemove;
+  const handleContinue = handleUpload;
+
   const handleUpload = async () => {
     if (!file || !preview) {
       toast.error('Please select an image first');

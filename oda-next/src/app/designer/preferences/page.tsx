@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Check, Sparkles, Armchair } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
+import BackButton from '@/components/common/BackButton';
 
 const steps = [
   { id: 'upload', label: 'Upload' },
@@ -109,6 +110,11 @@ export default function PreferencesPage() {
       <Toaster position="top-center" />
 
       <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Navigation Bar */}
+        <div className="flex items-center justify-between mb-6">
+          <BackButton fallbackHref="/designer/analysis" label="Back to Analysis" />
+        </div>
+
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-1">Design & Furniture Preferences</h1>
           <p className="text-sm text-gray-500">Configure your style, furniture aesthetic, and budget for photorealistic redesign</p>
