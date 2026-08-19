@@ -8,6 +8,8 @@ export interface IFurnitureItem extends Document {
   image: string;
   storeName: string;
   productUrl: string;
+  amazonUrl?: string | null;
+  flipkartUrl?: string | null;
   style: string;
   rating: number;
   description: string;
@@ -51,6 +53,16 @@ const FurnitureItemSchema = new Schema<IFurnitureItem>(
     productUrl: {
       type: String,
       required: [true, 'Product URL is required'],
+      trim: true,
+    },
+    amazonUrl: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    flipkartUrl: {
+      type: String,
+      default: null,
       trim: true,
     },
     style: {

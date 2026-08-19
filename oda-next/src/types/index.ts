@@ -84,6 +84,8 @@ export interface Hotspot {
   brand?: string;
   material?: string;
   productUrl?: string;
+  amazonUrl?: string | null;
+  flipkartUrl?: string | null;
   image?: string;
   match?: number;
   furnitureId?: string;
@@ -98,6 +100,8 @@ export interface FurnitureItem {
   image: string;
   storeName: string;
   productUrl: string;
+  amazonUrl?: string | null;
+  flipkartUrl?: string | null;
   style: string;
   rating: number;
   description: string;
@@ -124,6 +128,8 @@ export interface ShoppingListItem {
   price: number;
   store: string;
   productLink: string;
+  amazonUrl?: string | null;
+  flipkartUrl?: string | null;
   checked: boolean;
 }
 
