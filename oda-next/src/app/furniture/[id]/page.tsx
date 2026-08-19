@@ -239,21 +239,51 @@ export default function ProductDetailPage() {
                 </div>
               )}
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <a
-                  href={product.productUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-medium rounded-xl hover:shadow-lg transition-shadow"
-                >
-                  Buy Now
-                  <ExternalLink className="h-4 w-4" />
-                </a>
+              {/* Purchase Options */}
+              <div className="space-y-3 pt-2">
+                <p className="text-xs font-bold uppercase tracking-wider text-gray-500">Purchase Options</p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  {product.amazonUrl && (
+                    <a
+                      href={product.amazonUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm rounded-xl shadow-sm hover:shadow-md transition-all"
+                    >
+                      <span>Buy on Amazon</span>
+                      <span>→</span>
+                    </a>
+                  )}
+                  {product.flipkartUrl && (
+                    <a
+                      href={product.flipkartUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-sm hover:shadow-md transition-all"
+                    >
+                      <span>Buy on Flipkart</span>
+                      <span>→</span>
+                    </a>
+                  )}
+                  {product.productUrl && (
+                    <a
+                      href={product.productUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${(product.amazonUrl || product.flipkartUrl) ? 'sm:w-auto px-5' : 'flex-1'} flex items-center justify-center gap-2 py-3.5 bg-gray-900 hover:bg-black text-white font-bold text-sm rounded-xl shadow-sm hover:shadow-md transition-all`}
+                    >
+                      <span>Store Link ({product.storeName || 'Store'})</span>
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
+              </div>
 
-                <div className="relative">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <div className="relative flex-1">
                   <button
                     onClick={() => setShowProjectDropdown(!showProjectDropdown)}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-white border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-white border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors"
                   >
                     <Bookmark className="h-4 w-4" />
                     Save to Project

@@ -456,19 +456,41 @@ export default function GeneratePage() {
                           </div>
                         </div>
 
-                        <div className="text-right shrink-0 ml-2">
+                        <div className="text-right shrink-0 ml-2 flex flex-col items-end">
                           <p className="text-xs font-bold text-gray-900">{item.price}</p>
-                          {item.productUrl && (
-                            <a
-                              href={item.productUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-[10px] text-amber-600 font-semibold hover:underline inline-flex items-center gap-0.5 mt-0.5"
-                            >
-                              <span>Store Link</span>
-                              <ExternalLink className="w-2.5 h-2.5" />
-                            </a>
-                          )}
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            {item.amazonUrl && (
+                              <a
+                                href={item.amazonUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[10px] text-amber-800 bg-amber-100 hover:bg-amber-200 px-1.5 py-0.5 rounded font-bold transition-colors"
+                              >
+                                Amazon
+                              </a>
+                            )}
+                            {item.flipkartUrl && (
+                              <a
+                                href={item.flipkartUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[10px] text-blue-800 bg-blue-100 hover:bg-blue-200 px-1.5 py-0.5 rounded font-bold transition-colors"
+                              >
+                                Flipkart
+                              </a>
+                            )}
+                            {item.productUrl && (
+                              <a
+                                href={item.productUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[10px] text-gray-600 hover:underline inline-flex items-center gap-0.5"
+                              >
+                                <span>Store</span>
+                                <ExternalLink className="w-2.5 h-2.5" />
+                              </a>
+                            )}
+                          </div>
                         </div>
                       </div>
                     ))}

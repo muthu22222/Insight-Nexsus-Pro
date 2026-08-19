@@ -69,6 +69,8 @@ export default function ViewerPage() {
         store: h.store || 'Urban Ladder',
         brand: h.brand || 'Retail Brand',
         productUrl: h.productUrl || 'https://www.urbanladder.com',
+        amazonUrl: h.amazonUrl || null,
+        flipkartUrl: h.flipkartUrl || null,
         material: h.material || 'Premium Finish',
         description: h.description || 'Configured to fit the exact floor and walls of your room.',
       }))
@@ -361,26 +363,42 @@ export default function ViewerPage() {
                       </div>
                     </div>
 
-                    {/* Store Button */}
-                    <div className="space-y-1.5 pt-1">
-                      {currentItem.productUrl && currentItem.productUrl.startsWith('http') ? (
+                    {/* Purchase & Store Buttons */}
+                    <div className="space-y-2 pt-1">
+                      {currentItem.amazonUrl && (
+                        <a
+                          href={currentItem.amazonUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+                        >
+                          <span>Buy on Amazon</span>
+                          <span className="text-xs">→</span>
+                        </a>
+                      )}
+
+                      {currentItem.flipkartUrl && (
+                        <a
+                          href={currentItem.flipkartUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+                        >
+                          <span>Buy on Flipkart</span>
+                          <span className="text-xs">→</span>
+                        </a>
+                      )}
+
+                      {currentItem.productUrl && currentItem.productUrl.startsWith('http') && (
                         <a
                           href={currentItem.productUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full bg-gray-900 text-white py-2.5 rounded-xl text-xs font-bold hover:bg-black transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+                          className="w-full bg-gray-900 hover:bg-black text-white py-2 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
-                          <span>View on {currentItem.store}</span>
+                          <span>View on {currentItem.store || 'Store'}</span>
                         </a>
-                      ) : (
-                        <button
-                          onClick={() => router.push('/furniture')}
-                          className="w-full bg-gray-900 text-white py-2.5 rounded-xl text-xs font-bold hover:bg-black transition-colors flex items-center justify-center gap-1.5"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                          <span>Find in Furniture Catalog</span>
-                        </button>
                       )}
 
                       <button

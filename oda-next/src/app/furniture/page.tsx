@@ -356,10 +356,37 @@ export default function FurniturePage() {
                           </p>
                           <Link
                             href={`/furniture/${product._id}`}
-                            className="mt-3 flex items-center justify-center w-full py-2.5 bg-gray-50 text-gray-700 text-sm font-medium rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                            className="mt-3 flex items-center justify-center w-full py-2 bg-gray-900 text-white text-xs font-semibold rounded-lg hover:bg-black transition-colors"
                           >
-                            View Product
+                            View Details
                           </Link>
+
+                          {(product.amazonUrl || product.flipkartUrl) && (
+                            <div className="mt-2 flex flex-col gap-1.5 pt-2 border-t border-gray-100">
+                              {product.amazonUrl && (
+                                <a
+                                  href={product.amazonUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center justify-center gap-1.5 w-full py-1.5 px-3 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-bold rounded-lg shadow-2xs transition-colors"
+                                >
+                                  <span>Buy on Amazon</span>
+                                  <span className="text-xs">→</span>
+                                </a>
+                              )}
+                              {product.flipkartUrl && (
+                                <a
+                                  href={product.flipkartUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center justify-center gap-1.5 w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold rounded-lg shadow-2xs transition-colors"
+                                >
+                                  <span>Buy on Flipkart</span>
+                                  <span className="text-xs">→</span>
+                                </a>
+                              )}
+                            </div>
+                          )}
                         </div>
                       </motion.div>
                     ))}

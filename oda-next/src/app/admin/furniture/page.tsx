@@ -35,6 +35,8 @@ interface FurnitureItemData {
   image: string;
   storeName: string;
   productUrl: string;
+  amazonUrl?: string | null;
+  flipkartUrl?: string | null;
   style: string;
   rating: number;
   description: string;
@@ -49,6 +51,8 @@ interface FurnitureForm {
   image: string;
   storeName: string;
   productUrl: string;
+  amazonUrl?: string;
+  flipkartUrl?: string;
   style: string;
   rating: number;
   description: string;
@@ -70,6 +74,8 @@ const emptyForm: FurnitureForm = {
   image: "",
   storeName: "",
   productUrl: "",
+  amazonUrl: "",
+  flipkartUrl: "",
   style: "",
   rating: 0,
   description: "",
@@ -227,6 +233,8 @@ export default function AdminFurniturePage() {
       image: item.image,
       storeName: item.storeName,
       productUrl: item.productUrl,
+      amazonUrl: item.amazonUrl || "",
+      flipkartUrl: item.flipkartUrl || "",
       style: item.style,
       rating: item.rating,
       description: item.description,
@@ -760,6 +768,32 @@ export default function AdminFurniturePage() {
                       className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="https://..."
                       required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Amazon Product URL (Optional)
+                    </label>
+                    <input
+                      type="url"
+                      value={form.amazonUrl || ""}
+                      onChange={(e) => setForm({ ...form, amazonUrl: e.target.value })}
+                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                      placeholder="https://www.amazon.in/dp/..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Flipkart Product URL (Optional)
+                    </label>
+                    <input
+                      type="url"
+                      value={form.flipkartUrl || ""}
+                      onChange={(e) => setForm({ ...form, flipkartUrl: e.target.value })}
+                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="https://www.flipkart.com/..."
                     />
                   </div>
 

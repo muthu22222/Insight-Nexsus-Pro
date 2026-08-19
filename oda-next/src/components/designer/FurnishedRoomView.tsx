@@ -17,6 +17,8 @@ export interface HotspotItem {
   material?: string;
   category?: string;
   productUrl?: string;
+  amazonUrl?: string | null;
+  flipkartUrl?: string | null;
   description?: string;
   image?: string;
 }
@@ -340,15 +342,40 @@ export default function FurnishedRoomView({
                               </p>
                             )}
                           </div>
+                        </div>
 
-                          {hotspot.productUrl && (
+                        {/* Store Links */}
+                        <div className="flex flex-col gap-1 mt-2">
+                          {hotspot.amazonUrl && (
+                            <a
+                              href={hotspot.amazonUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-full py-1 px-2 bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-[10px] rounded-md transition-colors flex items-center justify-between shadow"
+                            >
+                              <span>Buy on Amazon</span>
+                              <ExternalLink className="w-2.5 h-2.5" />
+                            </a>
+                          )}
+                          {hotspot.flipkartUrl && (
+                            <a
+                              href={hotspot.flipkartUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-full py-1 px-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] rounded-md transition-colors flex items-center justify-between shadow"
+                            >
+                              <span>Buy on Flipkart</span>
+                              <ExternalLink className="w-2.5 h-2.5" />
+                            </a>
+                          )}
+                          {hotspot.productUrl && !hotspot.amazonUrl && !hotspot.flipkartUrl && (
                             <a
                               href={hotspot.productUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-2 py-1 bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-[10px] rounded-md transition-colors flex items-center gap-1 shadow"
+                              className="w-full py-1 px-2 bg-white/20 hover:bg-white/30 text-white font-bold text-[10px] rounded-md transition-colors flex items-center justify-between"
                             >
-                              <span>Buy</span>
+                              <span>Buy on {hotspot.store || 'Store'}</span>
                               <ExternalLink className="w-2.5 h-2.5" />
                             </a>
                           )}
