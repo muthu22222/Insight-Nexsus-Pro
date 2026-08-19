@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Check, Sparkles, Armchair } from 'lucide-react';
@@ -69,7 +69,7 @@ const budgets = [
 
 export default function PreferencesPage() {
   const router = useRouter();
-  const { preferences, setPreferences, setCurrentStep } = useDesignerStore();
+  const { uploadedImage, preferences, setPreferences, setCurrentStep } = useDesignerStore();
   const [currentSection, setCurrentSection] = useState(0);
   const [selectedStyle, setSelectedStyle] = useState(preferences.style || 'modern');
   const [selectedFurnitureStyle, setSelectedFurnitureStyle] = useState(preferences.furnitureStyle || 'modern');
@@ -78,6 +78,12 @@ export default function PreferencesPage() {
   const [selectedBudget, setSelectedBudget] = useState(preferences.budget || 200000);
   const [customBudget, setCustomBudget] = useState('');
   const [isCustomBudget, setIsCustomBudget] = useState(false);
+
+  useEffect(() => {
+    if (!uploadedImage) {
+      router.push('/designer');
+    }
+  }, [uploadedImage, router]);
 
   const sections = ['Style', 'Furniture Style', 'Mood', 'Color', 'Budget'];
 

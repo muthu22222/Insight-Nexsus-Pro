@@ -57,7 +57,6 @@ export default function DesignerUploadPage() {
   };
 
   const handleRetake = handleRemove;
-  const handleContinue = handleUpload;
 
   const handleUpload = async () => {
     if (!file || !preview) {
@@ -118,6 +117,8 @@ export default function DesignerUploadPage() {
       setIsUploading(false);
     }
   };
+
+  const handleContinue = handleUpload;
 
   return (
     <div className="min-h-screen bg-gray-50">

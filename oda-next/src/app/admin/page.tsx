@@ -20,6 +20,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import BackButton from "@/components/common/BackButton";
 
 interface AdminStats {
   totalUsers: number;
@@ -269,11 +270,14 @@ export default function AdminDashboardPage() {
         {/* Top Bar */}
         <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">Admin Dashboard</h1>
-              <p className="text-sm text-gray-500 mt-0.5">
-                Overview of your platform metrics
-              </p>
+            <div className="flex items-center gap-4">
+              <BackButton fallbackHref="/dashboard" label="Back to App" variant="subtle" />
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">Admin Dashboard</h1>
+                <p className="text-sm text-gray-500 mt-0.5">
+                  Overview of your platform metrics
+                </p>
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-700 text-xs font-medium rounded-full">
