@@ -38,15 +38,25 @@ export interface RoomAnalysis {
   flooring: string;
   ceiling: string;
   furniture: string[];
-  windows: string[];
-  doors: string[];
+  existingFurniture?: Array<{
+    item: string;
+    placement: string;
+    action?: 'preserve' | 'upgrade' | 'replace';
+  }>;
+  suggestedFurniture?: string[];
+  isEmptyRoom?: boolean;
+  perspective?: string;
+  windows: string | string[];
+  doors: string | string[];
   lighting: string;
   emptyAreas: string[];
-  proportions: {
-    width: number;
-    height: number;
-    length: number;
-  };
+  proportions:
+    | {
+        width?: number;
+        height?: number;
+        length?: number;
+      }
+    | string;
 }
 
 export interface AIDesign {

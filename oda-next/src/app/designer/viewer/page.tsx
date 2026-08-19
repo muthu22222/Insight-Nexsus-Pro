@@ -165,7 +165,7 @@ export default function ViewerPage() {
               <button
                 onClick={() => router.push('/designer/generate')}
                 className="p-1.5 hover:bg-white/15 rounded-xl transition-colors text-white/90"
-                title="Back to Variants"
+                title="Back to Design"
               >
                 <ArrowLeft className="w-4 h-4" />
               </button>

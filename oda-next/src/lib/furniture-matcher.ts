@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import FurnitureItem from '@/models/FurnitureItem';
 import { connectToDatabase } from '@/lib/mongodb';
 import type { Hotspot } from '@/types';
@@ -352,16 +353,16 @@ export async function matchFurnitureWithCatalog(
     const itemId = item.id || (i + 1);
     let matchedDoc: any = null;
 
-    // 1. Try matching against MongoDB collection
+    // 1. Try matching against MongoDB collection if DB is actively connected
     try {
-      if (FurnitureItem) {
+      if (mongoose.connection.readyState === 1 && FurnitureItem) {
         matchedDoc = await FurnitureItem.findOne({
           $or: [
             { productName: { $regex: item.name.split(' ')[0] || item.category, $options: 'i' } },
             { category: { $regex: item.category, $options: 'i' } },
             { tags: { $in: [new RegExp(item.category, 'i')] } },
           ],
-        });
+        }).maxTimeMS(1500);
       }
     } catch {}
 

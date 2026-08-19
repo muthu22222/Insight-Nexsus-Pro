@@ -4,7 +4,8 @@ import { connectToDatabase } from '@/lib/mongodb';
 import { authenticate } from '@/lib/auth';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
 import { matchFurnitureWithCatalog, DetectedItem } from '@/lib/furniture-matcher';
-import type { AIDesign } from '@/types';
+import { GEMINI_MODELS } from '@/lib/gemini';
+import type { AIDesign, RoomAnalysis } from '@/types';
 
 interface RawFurnitureDetection {
   style?: string;
@@ -24,87 +25,141 @@ interface RawFurnitureDetection {
   }>;
 }
 
-// Generate dynamic room-type specific furniture inventory with exact physical product coordinates
-function getDynamicRoomInventory(
-  roomType: string = 'Living Room',
-  style: string = 'modern',
-  furnitureStyle: string = 'modern',
-  budget: number = 200000
-): DetectedItem[] {
-  const normRoom = roomType.toLowerCase();
-  const b = Number(budget) || 200000;
+// Generate realistic spatial coordinates for furniture categories based on room perspective
+function getCoordinatesForCategory(category: string, index: number, roomType: string = 'Living Room'): { x: number; y: number; location: string } {
+  const cat = (category || '').toLowerCase();
+  const room = (roomType || 'Living Room').toLowerCase();
 
-  if (normRoom.includes('bedroom')) {
-    return [
-      { id: 1, name: `${furnitureStyle} Platform Bed Frame`, category: 'Bed', location: 'Center back wall', x: 50, y: 56, estimated_price: Math.round(b * 0.35) },
-      { id: 2, name: 'Dual Bedside Nightstands', category: 'Bedside Table', location: 'Beside bed', x: 22, y: 60, estimated_price: Math.round(b * 0.10) },
-      { id: 3, name: 'Sliding Full-Height Wardrobe', category: 'Wardrobe', location: 'Right wall', x: 88, y: 48, estimated_price: Math.round(b * 0.25) },
-      { id: 4, name: 'Plush High-Pile Bedroom Area Rug', category: 'Rug', location: 'Under bed footprint', x: 50, y: 84, estimated_price: Math.round(b * 0.09) },
-      { id: 5, name: 'Warm Ambient Bedside Table Lamps', category: 'Lighting', location: 'On nightstands', x: 22, y: 46, estimated_price: Math.round(b * 0.05) },
-      { id: 6, name: 'Blackout Linen Window Drapes', category: 'Curtains', location: 'Window drape fold', x: 12, y: 40, estimated_price: Math.round(b * 0.05) },
-      { id: 7, name: 'Framed Minimalist Wall Art', category: 'Wall Art', location: 'Above headboard', x: 50, y: 26, estimated_price: Math.round(b * 0.04) },
-      { id: 8, name: 'Potted Indoor Greenery', category: 'Plants', location: 'Corner of bedroom', x: 88, y: 74, estimated_price: Math.round(b * 0.03) },
-    ];
+  if (room.includes('bedroom')) {
+    if (cat.includes('bed') && !cat.includes('side') && !cat.includes('table')) return { x: 50, y: 58, location: 'Center back wall' };
+    if (cat.includes('nightstand') || cat.includes('bedside') || cat.includes('side table')) {
+      return index % 2 === 0 ? { x: 22, y: 62, location: 'Left bedside' } : { x: 78, y: 62, location: 'Right bedside' };
+    }
+    if (cat.includes('wardrobe') || cat.includes('closet') || cat.includes('dresser')) return { x: 88, y: 48, location: 'Right wall' };
+    if (cat.includes('rug') || cat.includes('carpet')) return { x: 50, y: 82, location: 'Under bed footprint' };
+    if (cat.includes('lamp') || cat.includes('light')) return { x: 24, y: 46, location: 'On nightstand' };
+    if (cat.includes('curtain') || cat.includes('drape')) return { x: 12, y: 40, location: 'Window drape fold' };
+    if (cat.includes('art') || cat.includes('canvas') || cat.includes('mirror')) return { x: 50, y: 25, location: 'Above headboard' };
+    if (cat.includes('plant') || cat.includes('tree')) return { x: 88, y: 76, location: 'Corner of bedroom' };
   }
 
-  if (normRoom.includes('office') || normRoom.includes('study') || normRoom.includes('work')) {
-    return [
-      { id: 1, name: `Executive ${furnitureStyle} Computer Desk`, category: 'Desk', location: 'Main center study area', x: 50, y: 62, estimated_price: Math.round(b * 0.32) },
-      { id: 2, name: 'Ergonomic High-Back Mesh Office Chair', category: 'Office Chair', location: 'At executive desk', x: 50, y: 52, estimated_price: Math.round(b * 0.18) },
-      { id: 3, name: 'Modular Open Display Bookshelf', category: 'Bookshelf', location: 'Left wall', x: 20, y: 45, estimated_price: Math.round(b * 0.18) },
-      { id: 4, name: 'Storage Credenza & File Cabinet', category: 'Storage Unit', location: 'Right perimeter', x: 82, y: 58, estimated_price: Math.round(b * 0.12) },
-      { id: 5, name: 'Architectural LED Desk Task Lamp', category: 'Lighting', location: 'On work surface', x: 62, y: 48, estimated_price: Math.round(b * 0.05) },
-      { id: 6, name: 'Low-Pile Acoustic Floor Rug', category: 'Rug', location: 'Under desk footprint', x: 50, y: 84, estimated_price: Math.round(b * 0.08) },
-      { id: 7, name: 'Potted Snake Plant in Ceramic Pot', category: 'Plants', location: 'Corner of study', x: 86, y: 72, estimated_price: Math.round(b * 0.03) },
-    ];
+  if (room.includes('office') || room.includes('study') || room.includes('work')) {
+    if (cat.includes('desk') || cat.includes('table')) return { x: 50, y: 62, location: 'Main study area' };
+    if (cat.includes('chair')) return { x: 50, y: 52, location: 'At executive desk' };
+    if (cat.includes('bookshelf') || cat.includes('shelf')) return { x: 20, y: 45, location: 'Left accent wall' };
+    if (cat.includes('storage') || cat.includes('credenza') || cat.includes('cabinet')) return { x: 82, y: 56, location: 'Right wall' };
+    if (cat.includes('lamp') || cat.includes('light')) return { x: 64, y: 48, location: 'On work desk' };
+    if (cat.includes('rug')) return { x: 50, y: 84, location: 'Under desk footprint' };
+    if (cat.includes('plant')) return { x: 86, y: 74, location: 'Study corner' };
   }
 
-  if (normRoom.includes('dining')) {
-    return [
-      { id: 1, name: `Solid Hardwood 6-Seater Dining Table`, category: 'Dining Table', location: 'Center of room', x: 50, y: 62, estimated_price: Math.round(b * 0.40) },
-      { id: 2, name: 'Ergonomic Upholstered Dining Chairs', category: 'Dining Chair', location: 'Around dining table', x: 50, y: 54, estimated_price: Math.round(b * 0.28) },
-      { id: 3, name: 'Contemporary Dining Sideboard / Buffet', category: 'Storage Unit', location: 'Back right wall', x: 84, y: 48, estimated_price: Math.round(b * 0.14) },
-      { id: 4, name: 'Linear Pendant Chandelier Fixture', category: 'Lighting', location: 'Suspended above table', x: 50, y: 24, estimated_price: Math.round(b * 0.08) },
-      { id: 5, name: 'Stain-Resistant Flatweave Dining Rug', category: 'Rug', location: 'Under dining suite', x: 50, y: 84, estimated_price: Math.round(b * 0.06) },
-      { id: 6, name: 'Gallery Framed Wall Canvas Art', category: 'Wall Art', location: 'Main wall', x: 22, y: 30, estimated_price: Math.round(b * 0.04) },
-    ];
+  if (room.includes('dining')) {
+    if (cat.includes('dining table') || cat.includes('table')) return { x: 50, y: 62, location: 'Center dining area' };
+    if (cat.includes('chair')) return { x: 50, y: 54, location: 'Around dining table' };
+    if (cat.includes('sideboard') || cat.includes('buffet') || cat.includes('storage')) return { x: 84, y: 48, location: 'Back wall' };
+    if (cat.includes('chandelier') || cat.includes('pendant') || cat.includes('light')) return { x: 50, y: 24, location: 'Suspended above dining table' };
+    if (cat.includes('rug')) return { x: 50, y: 84, location: 'Under dining suite' };
+    if (cat.includes('art') || cat.includes('mirror')) return { x: 22, y: 30, location: 'Main dining wall' };
   }
 
-  // DEFAULT: LIVING ROOM (Exact Physical Placement Matching Reference Image)
-  return [
-    { id: 1, name: `L-Shape Sectional ${furnitureStyle} Sofa`, category: 'Sofa', location: 'Main seating cushion', x: 31, y: 64, estimated_price: Math.round(b * 0.32) },
-    { id: 2, name: 'Round Nested Glass & Wood Coffee Table', category: 'Coffee Table', location: 'Center coffee table surface', x: 54, y: 78, estimated_price: Math.round(b * 0.12) },
-    { id: 3, name: 'Wooden Multi-Tier Open Bookshelf', category: 'Bookshelf', location: 'Center back wall shelf', x: 47, y: 58, estimated_price: Math.round(b * 0.16) },
-    { id: 4, name: 'Textured Green Fabric Ottoman', category: 'Ottoman', location: 'Foreground left ottoman', x: 13.5, y: 83, estimated_price: Math.round(b * 0.08) },
-    { id: 5, name: 'Handcrafted Natural Woven Area Rug', category: 'Rug', location: 'Floor rug weave', x: 35, y: 92, estimated_price: Math.round(b * 0.09) },
-    { id: 6, name: 'Natural Window Linen Drape Curtains', category: 'Curtains', location: 'Far right window drape fold', x: 95.5, y: 47, estimated_price: Math.round(b * 0.05) },
-    { id: 7, name: 'Monstera Plant in Concrete Planter', category: 'Plants', location: 'Window corner planter', x: 88, y: 78, estimated_price: Math.round(b * 0.04) },
-    { id: 8, name: 'Fluted Stone Accent Side Table', category: 'Side Table', location: 'Right doorway side table', x: 70, y: 65, estimated_price: Math.round(b * 0.07) },
-    { id: 9, name: 'Framed Statement Wall Mirror', category: 'Mirror', location: 'Left wall mirror frame', x: 15, y: 35, estimated_price: Math.round(b * 0.07) },
-  ];
+  if (room.includes('kitchen')) {
+    if (cat.includes('island') || cat.includes('counter') || cat.includes('table')) return { x: 50, y: 64, location: 'Kitchen island center' };
+    if (cat.includes('stool') || cat.includes('chair')) return { x: 42, y: 72, location: 'At kitchen island counter' };
+    if (cat.includes('cabinet') || cat.includes('storage') || cat.includes('pantry')) return { x: 82, y: 46, location: 'Right wall cabinetry' };
+    if (cat.includes('pendant') || cat.includes('light') || cat.includes('chandelier')) return { x: 50, y: 22, location: 'Suspended over kitchen island' };
+    if (cat.includes('plant') || cat.includes('herb')) return { x: 88, y: 60, location: 'Kitchen counter corner' };
+  }
+
+  // LIVING ROOM (Default)
+  if (cat.includes('sofa') || cat.includes('couch') || cat.includes('sectional')) return { x: 32, y: 64, location: 'Main seating area' };
+  if (cat.includes('coffee') || cat.includes('center table') || cat.includes('nesting')) return { x: 54, y: 78, location: 'In front of sofa' };
+  if (cat.includes('tv') || cat.includes('console') || cat.includes('media') || cat.includes('bookshelf') || cat.includes('shelf')) return { x: 50, y: 56, location: 'Main media wall' };
+  if (cat.includes('armchair') || cat.includes('chair') || cat.includes('lounge') || cat.includes('ottoman') || cat.includes('pouffe')) return { x: 14, y: 82, location: 'Left accent corner' };
+  if (cat.includes('rug') || cat.includes('carpet')) return { x: 42, y: 88, location: 'Floor under seating area' };
+  if (cat.includes('curtain') || cat.includes('drape')) return { x: 94, y: 46, location: 'Window frame drapes' };
+  if (cat.includes('lamp') || cat.includes('light')) return { x: 74, y: 52, location: 'Room corner / side table' };
+  if (cat.includes('plant') || cat.includes('tree') || cat.includes('planter')) return { x: 88, y: 76, location: 'Corner indoor planter' };
+  if (cat.includes('side table') || cat.includes('end table')) return { x: 70, y: 66, location: 'Beside seating' };
+  if (cat.includes('art') || cat.includes('canvas') || cat.includes('mirror')) return { x: 20, y: 32, location: 'Main wall art frame' };
+
+  const posX = Math.max(12, Math.min(88, 22 + ((index * 24) % 65)));
+  const posY = Math.max(25, Math.min(88, 38 + ((index * 16) % 50)));
+  return { x: posX, y: posY, location: 'Placed in room layout' };
 }
 
-// Fallback category coordinates mapping
-function getCategoryCoordinates(category: string, index: number): { x: number; y: number } {
-  const cat = (category || '').toLowerCase();
-  if (cat.includes('ottoman') || cat.includes('pouffe') || cat.includes('stool')) return { x: 13.5, y: 83 };
-  if (cat.includes('sofa') || cat.includes('couch') || cat.includes('sectional')) return { x: 31, y: 64 };
-  if (cat.includes('coffee') || cat.includes('center table') || cat.includes('nesting')) return { x: 54, y: 78 };
-  if (cat.includes('bookshelf') || cat.includes('shelf') || cat.includes('tv') || cat.includes('console')) return { x: 47, y: 58 };
-  if (cat.includes('rug') || cat.includes('carpet')) return { x: 35, y: 92 };
-  if (cat.includes('curtain') || cat.includes('drape')) return { x: 95.5, y: 47 };
-  if (cat.includes('plant') || cat.includes('tree') || cat.includes('planter')) return { x: 88, y: 78 };
-  if (cat.includes('side table') || cat.includes('end table')) return { x: 70, y: 65 };
-  if (cat.includes('mirror') || cat.includes('art') || cat.includes('canvas')) return { x: 15, y: 35 };
-  if (cat.includes('lamp') || cat.includes('light')) return { x: 28, y: 45 };
-  if (cat.includes('bed') && !cat.includes('side')) return { x: 50, y: 56 };
-  if (cat.includes('nightstand') || cat.includes('bedside')) return { x: 22, y: 60 };
-  if (cat.includes('wardrobe') || cat.includes('closet')) return { x: 88, y: 48 };
-  if (cat.includes('desk')) return { x: 50, y: 62 };
-  if (cat.includes('chair')) return { x: 50, y: 52 };
-  if (cat.includes('dining table')) return { x: 50, y: 62 };
+// Build dynamic room furniture inventory tailored to room type and style
+function buildDynamicSuite(
+  roomType: string,
+  existingFurniture: string[] = [],
+  suggestedFurniture: string[] = [],
+  furnitureStyle: string = 'Modern',
+  budget: number = 200000
+): DetectedItem[] {
+  const normRoom = (roomType || 'Living Room').toLowerCase();
+  const b = Number(budget) || 200000;
+  const items: DetectedItem[] = [];
+  const addedNames = new Set<string>();
 
-  return { x: 25 + ((index * 18) % 55), y: 35 + ((index * 12) % 45) };
+  // 1. Process Existing Furniture (PRESERVE & UPGRADE)
+  if (Array.isArray(existingFurniture) && existingFurniture.length > 0) {
+    existingFurniture.forEach((item, idx) => {
+      const cleanName = item.trim();
+      if (!cleanName || addedNames.has(cleanName.toLowerCase())) return;
+      addedNames.add(cleanName.toLowerCase());
+
+      const coords = getCoordinatesForCategory(cleanName, idx, roomType);
+      items.push({
+        id: items.length + 1,
+        name: `${furnitureStyle} ${cleanName}`,
+        category: cleanName.includes('Sofa') ? 'Sofa' : cleanName.includes('TV') ? 'TV Unit' : cleanName.includes('Bed') ? 'Bed' : cleanName.includes('Desk') ? 'Desk' : cleanName.includes('Table') ? 'Coffee Table' : 'Furniture',
+        style: furnitureStyle,
+        location: coords.location,
+        material: `${furnitureStyle} Premium Finish`,
+        x: coords.x,
+        y: coords.y,
+        estimated_price: Math.round(b * (0.35 / Math.max(1, existingFurniture.length))),
+      });
+    });
+  }
+
+  // 2. Add Complementary Items to complete room
+  const candidatesToAdd = (Array.isArray(suggestedFurniture) && suggestedFurniture.length > 0)
+    ? suggestedFurniture
+    : normRoom.includes('bedroom')
+    ? ['Platform Bed Frame', 'Dual Bedside Nightstands', 'Plush Bedroom Area Rug', 'Ambient Bedside Table Lamps', 'Wardrobe', 'Linen Window Drapes', 'Wall Art', 'Indoor Planter']
+    : normRoom.includes('office')
+    ? ['Executive Computer Desk', 'Ergonomic Mesh Office Chair', 'Modular Bookshelf', 'Low-Pile Floor Rug', 'LED Desk Task Lamp', 'Storage Credenza', 'Potted Plant']
+    : normRoom.includes('dining')
+    ? ['Solid Hardwood Dining Table', 'Upholstered Dining Chairs', 'Linear Pendant Chandelier', 'Dining Sideboard Buffet', 'Flatweave Dining Rug', 'Wall Canvas Art']
+    : normRoom.includes('kitchen')
+    ? ['Kitchen Island Counter', 'Upholstered Bar Stools', 'Linear Pendant Lighting', 'Modular Storage Cabinet', 'Indoor Herb Planter']
+    : ['Sectional Sofa', 'Center Coffee Table', 'TV Media Console', 'Accent Lounge Armchair', 'Handcrafted Wool Area Rug', 'Arched Floor Lamp', 'Linen Window Curtains', 'Wall Art', 'Potted Planter'];
+
+  candidatesToAdd.forEach((item) => {
+    const cleanName = item.trim();
+    const lower = cleanName.toLowerCase();
+    const alreadyExists = Array.from(addedNames).some((n) => lower.includes(n) || n.includes(lower));
+
+    if (!alreadyExists && items.length < 8) {
+      addedNames.add(lower);
+      const coords = getCoordinatesForCategory(cleanName, items.length, roomType);
+      const priceRatio = lower.includes('sofa') || lower.includes('bed') || lower.includes('dining table') || lower.includes('desk') ? 0.28 : lower.includes('coffee') || lower.includes('rug') || lower.includes('tv') || lower.includes('chair') || lower.includes('wardrobe') ? 0.12 : 0.05;
+
+      items.push({
+        id: items.length + 1,
+        name: `${furnitureStyle} ${cleanName}`,
+        category: cleanName.includes('Sofa') ? 'Sofa' : cleanName.includes('Table') ? 'Coffee Table' : cleanName.includes('Rug') ? 'Rug' : cleanName.includes('Chair') ? 'Armchair' : cleanName.includes('Lamp') || cleanName.includes('Chandelier') ? 'Lighting' : cleanName.includes('Curtain') || cleanName.includes('Drape') ? 'Curtains' : cleanName.includes('TV') ? 'TV Unit' : cleanName.includes('Plant') ? 'Plants' : 'Furniture',
+        style: furnitureStyle,
+        location: coords.location,
+        material: `${furnitureStyle} Finish & Tailored Material`,
+        x: coords.x,
+        y: coords.y,
+        estimated_price: Math.round(b * priceRatio),
+      });
+    }
+  });
+
+  return items;
 }
 
 export async function POST(request: NextRequest) {
@@ -116,7 +171,8 @@ export async function POST(request: NextRequest) {
     } catch {}
 
     const body = await request.json().catch(() => ({}));
-    const roomAnalysis = body.roomAnalysis || body.analysis || {};
+    const { imageUrl, imageId, requestId } = body;
+    const roomAnalysis: RoomAnalysis = body.roomAnalysis || body.analysis || {};
     const preferences = body.preferences || {
       style: 'modern',
       furnitureStyle: 'modern',
@@ -130,62 +186,84 @@ export async function POST(request: NextRequest) {
     const style = preferences.style || 'modern';
     const furnitureStyle = preferences.furnitureStyle || style;
     const roomType = roomAnalysis?.roomType || 'Living Room';
+    const wallColor = roomAnalysis?.wallColor || 'neutral tone';
+    const flooring = roomAnalysis?.flooring || 'hardwood flooring';
+    const perspective = roomAnalysis?.perspective || 'eye-level architectural view';
+    const windows = Array.isArray(roomAnalysis?.windows) ? roomAnalysis.windows.join(', ') : (roomAnalysis?.windows || 'windows');
+    const doors = Array.isArray(roomAnalysis?.doors) ? roomAnalysis.doors.join(', ') : (roomAnalysis?.doors || 'doors');
+    const existingFurniture = Array.isArray(roomAnalysis?.furniture) ? roomAnalysis.furniture : [];
+    const suggestedFurniture = Array.isArray(roomAnalysis?.suggestedFurniture) ? roomAnalysis.suggestedFurniture : [];
 
-    const modernImages = getDesignImagesForStyle('modern', roomType);
-    const scandiImages = getDesignImagesForStyle('scandinavian', roomType);
-    const luxuryImages = getDesignImagesForStyle('luxury', roomType);
+    const hasExisting = existingFurniture.length > 0;
+    const baseSeed = Math.abs(
+      (imageId ? imageId.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 0) : Date.now()) % 999999
+    );
 
-    const variantStyles = [
-      { name: `Modern Contemporary ${furnitureStyle.toUpperCase()} Redesign`, image: modernImages[0], fStyle: furnitureStyle },
-      { name: `Scandinavian Japandi ${furnitureStyle.toUpperCase()} Redesign`, image: scandiImages[0], fStyle: 'Scandinavian' },
-      { name: `Luxury Velvet & Travertine ${furnitureStyle.toUpperCase()} Redesign`, image: luxuryImages[0], fStyle: 'Luxury' },
-    ];
+    const curatedImages = getDesignImagesForStyle(furnitureStyle, roomType);
+    const furnitureList = normListForRoom(roomType, existingFurniture, suggestedFurniture, furnitureStyle);
 
-    let designs: AIDesign[] = [];
+    let singleDesign: AIDesign | null = null;
 
+    // 1. Attempt Gemini dynamic spatial furniture layout & coordinate synthesis for the SINGLE design
     if (apiKey) {
       try {
         const genAI = new GoogleGenerativeAI(apiKey);
-        const prompt = `CRITICAL ARCHITECTURAL REDESIGN & DYNAMIC FURNITURE DETECTION:
-You are an expert interior architect analyzing a photorealistic redesigned ${roomType}.
-Preferences: Room Style: ${style}, Furniture Aesthetic: ${furnitureStyle}, Mood: ${preferences.mood}, Color: ${preferences.color}, Budget: ₹${budget.toLocaleString('en-IN')}.
+        const aiPrompt = `You are an expert AI interior designer and architectural 3D layout engine.
+Create ONE photorealistic interior design redesign for this specific newly uploaded room:
+- Room Type: ${roomType}
+- Camera Perspective: ${perspective}
+- Wall Color/Finish: ${wallColor}
+- Flooring Material: ${flooring}
+- Windows: ${windows}
+- Doors: ${doors}
+- Existing Furniture to PRESERVE & UPGRADE: ${hasExisting ? existingFurniture.join(', ') : 'None (Empty Room - must add complete furniture suite)'}
+- Suggested Missing Furniture to COMPLETE ROOM: ${suggestedFurniture.join(', ')}
+- Design Style: ${style}
+- Furniture Aesthetic: ${furnitureStyle}
+- Lighting Atmosphere: ${preferences.mood}
+- Color Palette: ${preferences.color}
+- Total Target Budget: ₹${budget.toLocaleString('en-IN')}
 
-Analyze the room and return ALL visible furniture, lighting, rugs, storage, and decor items with their exact visual center percentage coordinates x (0-100 from left) and y (0-100 from top).
+CRITICAL RULES:
+1. The design MUST be fully furnished. Do NOT return an empty or bare room.
+2. If existing furniture is listed, preserve its location and upgrade its materials and style to ${furnitureStyle}.
+3. Add complementary items (sofa/bed/desk, coffee table, rug, lighting, curtains, plants, art) to fill the empty layout areas.
+4. Provide exact visual percentage coordinates x (10-90) and y (10-90) on the room image where each furniture piece is situated.
 
-Return ONLY a JSON array with 3 variant objects structured as:
-[
-  {
-    "style": "Specific Style Name",
-    "mood": "Detailed mood and spatial layout description",
-    "color": "Color palette",
-    "budget": ${budget},
-    "description": "Complete furniture specification for this room layout",
-    "furniture": [
-      {
-        "name": "Specific item name",
-        "category": "Sofa / Ottoman / Bookshelf / Coffee Table / Rug / Curtains / Plants / Side Table / Mirror",
-        "style": "${furnitureStyle}",
-        "location": "Placement in room",
-        "material": "Material and finish",
-        "x": 31,
-        "y": 64,
-        "estimated_price": ${Math.round(budget * 0.3)}
-      }
-    ]
-  }
-]`;
+Return ONLY a single JSON object structured as:
+{
+  "style": "${style.charAt(0).toUpperCase() + style.slice(1)} ${furnitureStyle.toUpperCase()} Redesign",
+  "mood": "Detailed mood and spatial layout description for this room",
+  "color": "${preferences.color} Palette",
+  "budget": ${budget},
+  "description": "Comprehensive description of the furnished room layout and preserved/added furniture pieces",
+  "furniture": [
+    {
+      "name": "Specific item name",
+      "category": "Sofa | Bed | Desk | Coffee Table | TV Unit | Armchair | Rug | Curtains | Lighting | Plants | Wall Art",
+      "style": "${furnitureStyle}",
+      "location": "Placement in room",
+      "material": "Material and finish",
+      "x": 32,
+      "y": 64,
+      "estimated_price": ${Math.round(budget * 0.25)}
+    }
+  ]
+}`;
 
         let responseText = '';
-        for (const modelName of ['gemini-3.5-flash', 'gemini-2.5-flash']) {
+        for (const modelName of GEMINI_MODELS) {
           try {
             const model = genAI.getGenerativeModel({ model: modelName });
             const timeoutPromise = new Promise<never>((_, reject) =>
-              setTimeout(() => reject(new Error('AI timeout')), 3500)
+              setTimeout(() => reject(new Error('AI timeout')), 4000)
             );
-            const res = await Promise.race([model.generateContent(prompt), timeoutPromise]);
+            const res = await Promise.race([model.generateContent(aiPrompt), timeoutPromise]);
             responseText = (res as any)?.response?.text?.() || '';
             if (responseText) break;
-          } catch {}
+          } catch (e) {
+            console.warn(`[Design Generate] Gemini attempt with ${modelName} skipped:`, e instanceof Error ? e.message : e);
+          }
         }
 
         if (responseText) {
@@ -194,112 +272,234 @@ Return ONLY a JSON array with 3 variant objects structured as:
             .replace(/```/g, '')
             .trim();
 
-          const jsonMatch = cleanedText.match(/\[[\s\S]*\]/);
+          const jsonMatch = cleanedText.match(/\{[\s\S]*\}/);
           if (jsonMatch) {
-            const parsedVariants: RawFurnitureDetection[] = JSON.parse(jsonMatch[0]);
+            const parsedDesign: RawFurnitureDetection = JSON.parse(jsonMatch[0]);
 
-            designs = await Promise.all(
-              parsedVariants.slice(0, 3).map(async (v, i) => {
-                let detectedItems: DetectedItem[] = [];
+            let detectedItems: DetectedItem[] = [];
 
-                if (Array.isArray(v.furniture) && v.furniture.length > 0) {
-                  detectedItems = v.furniture.map((item, idx) => {
-                    const fallbackCoords = getCategoryCoordinates(item.category || item.name, idx);
-                    const validX = typeof item.x === 'number' && item.x >= 5 && item.x <= 98 ? item.x : fallbackCoords.x;
-                    const validY = typeof item.y === 'number' && item.y >= 5 && item.y <= 98 ? item.y : fallbackCoords.y;
-
-                    return {
-                      id: idx + 1,
-                      name: item.name,
-                      category: item.category || 'Furniture',
-                      style: item.style || variantStyles[i]?.fStyle || furnitureStyle,
-                      location: item.location,
-                      material: item.material,
-                      x: validX,
-                      y: validY,
-                      estimated_price: item.estimated_price,
-                    };
-                  });
-                } else {
-                  detectedItems = getDynamicRoomInventory(roomType, style, variantStyles[i]?.fStyle || furnitureStyle, budget);
-                }
-
-                const matchedHotspots = await matchFurnitureWithCatalog(
-                  detectedItems,
-                  budget,
-                  variantStyles[i]?.fStyle || furnitureStyle
-                );
+            if (Array.isArray(parsedDesign.furniture) && parsedDesign.furniture.length > 0) {
+              detectedItems = parsedDesign.furniture.map((item, idx) => {
+                const fallbackCoords = getCoordinatesForCategory(item.category || item.name, idx, roomType);
+                const validX = typeof item.x === 'number' && item.x >= 5 && item.x <= 95 ? item.x : fallbackCoords.x;
+                const validY = typeof item.y === 'number' && item.y >= 5 && item.y <= 95 ? item.y : fallbackCoords.y;
 
                 return {
-                  _id: `design-${i + 1}`,
-                  projectId: 'current',
-                  style: v.style || variantStyles[i].name,
-                  furnitureStyle: variantStyles[i]?.fStyle || furnitureStyle,
-                  mood: v.mood || `Photorealistic ${variantStyles[i].name} with complete verified furniture suite`,
-                  color: v.color || `${preferences.color || 'Neutral'} Palette`,
-                  budget,
-                  description: v.description || `Complete ${roomType} interior redesign featuring ${matchedHotspots.length} detected products matched with retail catalog.`,
-                  generatedImages: [variantStyles[i].image],
-                  hotspots: matchedHotspots,
+                  id: idx + 1,
+                  name: item.name,
+                  category: item.category || 'Furniture',
+                  style: item.style || furnitureStyle,
+                  location: item.location || fallbackCoords.location,
+                  material: item.material,
+                  x: validX,
+                  y: validY,
+                  estimated_price: item.estimated_price,
                 };
-              })
+              });
+            } else {
+              detectedItems = buildDynamicSuite(
+                roomType,
+                existingFurniture,
+                suggestedFurniture,
+                furnitureStyle,
+                budget
+              );
+            }
+
+            const matchedHotspots = await matchFurnitureWithCatalog(
+              detectedItems,
+              budget,
+              furnitureStyle
             );
+
+            const visualPrompt = buildVisualPrompt(roomType, perspective, wallColor, flooring, windows, furnitureStyle, furnitureList, preferences.mood, preferences.color);
+
+            const isWebUrl = imageUrl && typeof imageUrl === 'string' && imageUrl.startsWith('http');
+            const imageParam = isWebUrl ? `&image=${encodeURIComponent(imageUrl)}` : '';
+            const fluxAiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1280&height=853&model=flux&seed=${baseSeed}&nologo=true${imageParam}`;
+            const visualImage = fluxAiUrl || curatedImages[0];
+
+            const preservedText = hasExisting
+              ? `Preserving existing ${existingFurniture.join(', ')} (upgraded to ${furnitureStyle} style) + ${matchedHotspots.length - existingFurniture.length} added designer furniture pieces.`
+              : `Fully furnished ${roomType} suite with ${matchedHotspots.length} verified products.`;
+
+            singleDesign = {
+              _id: `${imageId || 'design'}-${Date.now()}`,
+              projectId: 'current',
+              style: parsedDesign.style || `${style.charAt(0).toUpperCase() + style.slice(1)} ${furnitureStyle.toUpperCase()} Redesign`,
+              furnitureStyle,
+              mood: parsedDesign.mood || `Photorealistic ${furnitureStyle} redesign with complete furniture suite`,
+              color: parsedDesign.color || `${preferences.color || 'Neutral'} Palette`,
+              budget,
+              description: parsedDesign.description || `Complete ${roomType} interior redesign. ${preservedText}`,
+              generatedImages: [visualImage],
+              hotspots: matchedHotspots,
+            };
           }
         }
-      } catch {}
+      } catch (err) {
+        console.warn('[Design Generate] Gemini synthesis error, using dynamic fallback:', err);
+      }
     }
 
-    // Dynamic Fallback Engine if AI yielded empty result
-    if (!designs || designs.length === 0) {
-      designs = await Promise.all(
-        variantStyles.map(async (vStyle, i) => {
-          const detectedItems = getDynamicRoomInventory(roomType, style, vStyle.fStyle, budget);
-          const matchedHotspots = await matchFurnitureWithCatalog(detectedItems, budget, vStyle.fStyle);
-
-          return {
-            _id: `variant-${i + 1}`,
-            projectId: 'current',
-            style: vStyle.name,
-            furnitureStyle: vStyle.fStyle,
-            mood: `Photorealistic ${vStyle.name} with complete verified furniture suite`,
-            color: `${preferences.color || 'Neutral'} Palette`,
-            budget,
-            description: `Complete ${roomType} interior redesign featuring ${matchedHotspots.length} detected products matched with retail catalog.`,
-            generatedImages: [vStyle.image],
-            hotspots: matchedHotspots,
-          };
-        })
+    // 2. High-fidelity dynamic fallback engine if AI generation didn't produce object
+    if (!singleDesign) {
+      const detectedItems = buildDynamicSuite(
+        roomType,
+        existingFurniture,
+        suggestedFurniture,
+        furnitureStyle,
+        budget
       );
+      const matchedHotspots = await matchFurnitureWithCatalog(detectedItems, budget, furnitureStyle);
+      const visualPrompt = buildVisualPrompt(roomType, perspective, wallColor, flooring, windows, furnitureStyle, furnitureList, preferences.mood, preferences.color);
+
+      const isWebUrl = imageUrl && typeof imageUrl === 'string' && imageUrl.startsWith('http');
+      const imageParam = isWebUrl ? `&image=${encodeURIComponent(imageUrl)}` : '';
+      const fluxAiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1280&height=853&model=flux&seed=${baseSeed}&nologo=true${imageParam}`;
+      const visualImage = fluxAiUrl || curatedImages[0];
+
+      const preservedText = hasExisting
+        ? `Preserving existing ${existingFurniture.join(', ')} (upgraded to ${furnitureStyle} aesthetic) with ${matchedHotspots.length - existingFurniture.length} added designer pieces.`
+        : `Complete ${furnitureStyle} furniture suite with ${matchedHotspots.length} catalog items.`;
+
+      singleDesign = {
+        _id: `${imageId || 'design'}-${Date.now()}`,
+        projectId: 'current',
+        style: `${style.charAt(0).toUpperCase() + style.slice(1)} ${furnitureStyle.toUpperCase()} Redesign`,
+        furnitureStyle,
+        mood: `Photorealistic ${furnitureStyle} redesign with complete furniture suite`,
+        color: `${preferences.color || 'Neutral'} Palette`,
+        budget,
+        description: `Complete ${roomType} interior redesign. ${preservedText}`,
+        generatedImages: [visualImage],
+        hotspots: matchedHotspots,
+      };
     }
 
-    return NextResponse.json({
-      success: true,
-      data: designs,
-      designs: designs,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        design: singleDesign,
+        data: [singleDesign],
+        designs: [singleDesign],
+        imageId: imageId || null,
+        requestId: requestId || null,
+      },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      }
+    );
   } catch (error) {
     console.error('Design generate general error:', error);
-    const fallbackItems = getDynamicRoomInventory('Living Room', 'modern', 'modern', 200000);
+    const fallbackItems = buildDynamicSuite('Living Room', ['Sofa', 'TV Console'], ['Coffee Table', 'Rug', 'Floor Lamp'], 'modern', 200000);
     const hotspots = await matchFurnitureWithCatalog(fallbackItems, 200000, 'modern');
-    const fallback = [
-      {
-        _id: 'variant-1',
-        projectId: 'current',
-        style: 'Modern Contemporary Redesign',
-        furnitureStyle: 'modern',
-        mood: 'Photorealistic Modern Redesign with complete furniture suite',
-        color: 'Neutral Palette',
-        budget: 200000,
-        description: 'Complete interior redesign featuring detected products.',
-        generatedImages: [getDesignImagesForStyle('modern', 'Living Room')[0]],
-        hotspots,
-      },
-    ];
+    const fallback = {
+      _id: `fallback-1-${Date.now()}`,
+      projectId: 'current',
+      style: 'Modern Contemporary Redesign',
+      furnitureStyle: 'modern',
+      mood: 'Photorealistic Modern Redesign with complete furniture suite',
+      color: 'Neutral Palette',
+      budget: 200000,
+      description: 'Complete interior redesign featuring preserved and matched furniture products.',
+      generatedImages: [getDesignImagesForStyle('modern', 'Living Room')[0]],
+      hotspots,
+    };
 
-    return NextResponse.json({
-      success: true,
-      data: fallback,
-      designs: fallback,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        design: fallback,
+        data: [fallback],
+        designs: [fallback],
+      },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        },
+      }
+    );
   }
+}
+
+function normListForRoom(roomType: string, existing: string[], suggested: string[], fStyle: string): string[] {
+  const norm = (roomType || 'Living Room').toLowerCase();
+  if (existing.length > 0) {
+    return [...existing.map(e => `${fStyle} ${e}`), ...suggested.slice(0, 5).map(s => `${fStyle} ${s}`)];
+  }
+  if (norm.includes('bedroom')) {
+    return [
+      `${fStyle} King Platform Bed Frame with tufted headboard`,
+      'Dual matching bedside nightstands on left and right',
+      'Warm ambient bedside table lamps with soft linen shades',
+      'Plush high-pile bedroom area rug under bed footprint',
+      'Sliding wardrobe with dark wood finish',
+      'Floor-to-ceiling linen window drapes',
+      'Framed canvas wall art above headboard',
+      'Potted indoor plant in ceramic planter'
+    ];
+  }
+  if (norm.includes('office') || norm.includes('study') || norm.includes('work')) {
+    return [
+      `Executive ${fStyle} computer desk with walnut top and cable grommets`,
+      'Ergonomic high-back mesh office chair with lumbar support',
+      'Modular open display bookshelf with curated books',
+      'Low-pile acoustic floor rug under desk',
+      'Architectural LED desk task lamp',
+      'Storage credenza file cabinet',
+      'Potted snake plant in ceramic pot',
+      'Framed architectural wall art'
+    ];
+  }
+  if (norm.includes('dining')) {
+    return [
+      `Solid hardwood 6-seater ${fStyle} dining table`,
+      'Set of 6 upholstered ergonomic dining chairs',
+      'Contemporary linear pendant chandelier suspended above table',
+      'Modern dining sideboard credenza',
+      'Flatweave stain-resistant dining area rug under dining suite',
+      'Gallery framed canvas wall art'
+    ];
+  }
+  if (norm.includes('kitchen')) {
+    return [
+      `Modern ${fStyle} kitchen island counter with quartz top`,
+      'Set of 3 upholstered counter bar stools',
+      'Linear pendant lighting fixture over island',
+      'Modular pantry cabinetry with brass hardware',
+      'Indoor herb planter on counter'
+    ];
+  }
+  // Living Room Default
+  return [
+    `3-seater tailored ${fStyle} sofa with textured throw cushions`,
+    'Round wooden coffee table in front of sofa',
+    'Low-profile oak TV console unit with 65-inch TV on accent wall',
+    'Plush geometric area rug on floor under seating',
+    'Warm arched brass floor lamp in corner',
+    'Cream bouclé lounge accent armchair',
+    'Tailored linen curtains on sliding glass windows',
+    'Potted monstera plant in ceramic planter',
+    'Framed canvas wall art'
+  ];
+}
+
+function buildVisualPrompt(
+  roomType: string,
+  perspective: string,
+  wallColor: string,
+  flooring: string,
+  windows: string,
+  fStyle: string,
+  furnitureList: string[],
+  mood: string,
+  color: string
+): string {
+  const itemsText = furnitureList.join(', ');
+  return `Fully furnished ${fStyle} ${roomType} interior redesign, wide-angle ${perspective} architectural photo of THIS EXACT ROOM with ${wallColor} walls, ${flooring} flooring, ${windows}. Visibly containing complete furniture suite: ${itemsText}. ${mood} lighting atmosphere, ${color} color harmony, photorealistic 8k architectural digest photography, realistic daylight, realistic furniture scale and placement, beautifully furnished room, no empty room, no bare floor.`;
 }

@@ -1,13 +1,13 @@
 import { GoogleGenerativeAI, type GenerativeModel } from "@google/generative-ai";
 
 export const GEMINI_MODELS = [
+  "gemini-3.1-flash-lite",
   "gemini-flash-latest",
   "gemini-3.6-flash",
   "gemini-3.5-flash",
-  "gemini-3.1-flash-lite",
 ] as const;
 
-export const DEFAULT_GEMINI_MODEL = "gemini-flash-latest";
+export const DEFAULT_GEMINI_MODEL = "gemini-3.1-flash-lite";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY?.trim();
 
@@ -33,7 +33,10 @@ export async function generateWithFallback(
   for (const modelName of GEMINI_MODELS) {
     try {
       const model = genAI.getGenerativeModel({ model: modelName });
-      const text = await generateFn(model, modelName);
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error(`Timeout on model ${modelName}`)), 4000)
+      );
+      const text = await Promise.race([generateFn(model, modelName), timeoutPromise]);
       if (text) {
         return { text, modelName };
       }

@@ -20,7 +20,7 @@ const steps = [
 export default function DesignerUploadPage() {
   const router = useRouter();
   const { getToken } = useAuth();
-  const { setUploadedImage, setCurrentStep } = useDesignerStore();
+  const { setUploadedImage, clearPreviousUpload, setCurrentStep } = useDesignerStore();
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -30,11 +30,13 @@ export default function DesignerUploadPage() {
     const selected = acceptedFiles[0];
     if (!selected) return;
 
+    // Reset previous upload state on selecting a new image
+    clearPreviousUpload();
     setFile(selected);
     const reader = new FileReader();
     reader.onload = () => setPreview(reader.result as string);
     reader.readAsDataURL(selected);
-  }, []);
+  }, [clearPreviousUpload]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -50,6 +52,7 @@ export default function DesignerUploadPage() {
     setPreview(null);
     setFile(null);
     setUploadProgress(0);
+    clearPreviousUpload();
   };
 
   const handleContinue = async () => {
@@ -79,6 +82,8 @@ export default function DesignerUploadPage() {
       const response = await fetch('/api/room/upload', {
         method: 'POST',
         headers: {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: formData,
@@ -87,17 +92,20 @@ export default function DesignerUploadPage() {
       clearInterval(progressInterval);
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Upload failed');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || errorData.error || 'Upload failed');
       }
 
       const data = await response.json();
       setUploadProgress(100);
       const imageUrl = data.data?.imageUrl || data.imageUrl || preview;
-      setUploadedImage(imageUrl);
+      const imageId = data.data?.imageId || `img_${Date.now()}`;
+
+      // This atomically updates uploadedImage, imageId, and completely wipes previous roomAnalysis and generatedDesigns
+      setUploadedImage(imageUrl, imageId);
       setCurrentStep('analysis');
 
-      toast.success('Image uploaded successfully!');
+      toast.success('New image uploaded successfully!');
       router.push('/designer/analysis');
     } catch (error: any) {
       toast.error(error.message || 'Upload failed. Please try again.');
