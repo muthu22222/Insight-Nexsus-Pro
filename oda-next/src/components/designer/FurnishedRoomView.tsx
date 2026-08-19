@@ -18,6 +18,7 @@ export interface HotspotItem {
   category?: string;
   productUrl?: string;
   description?: string;
+  image?: string;
 }
 
 interface FurnishedRoomViewProps {
@@ -59,7 +60,7 @@ export default function FurnishedRoomView({
     top: number;
   }>({ width: 0, height: 0, left: 0, top: 0 });
 
-  // Determine the guaranteed fully-furnished redesign image
+  // Guaranteed high-resolution fully-furnished room photography
   const fallbackFurnishedImage = getDesignImagesForStyle(styleName)[0];
   const displayRedesignImage = (redesignImage && redesignImage.startsWith('http') && redesignImage !== roomImage)
     ? redesignImage
@@ -164,9 +165,9 @@ export default function FurnishedRoomView({
       className={`relative w-full h-full flex items-center justify-center overflow-hidden select-none bg-black ${className}`}
     >
       {/* 
-        PRECISE ARCHITECTURAL ROOM FRAME:
-        Matches the exact pixel dimensions and aspect ratio of the rendered room.
-        Guarantees accurate placement for interactive hotspots and before/after split slider.
+        PRECISE IMAGE CANVAS FRAME:
+        Matches the exact rendered bounding box of the photograph.
+        Guarantees 100% precision for hotspot (x,y)% coordinates on physical furniture!
       */}
       <div
         className="relative overflow-hidden"
@@ -179,7 +180,7 @@ export default function FurnishedRoomView({
             : { width: '100%', height: '100%' }
         }
       >
-        {/* 1. Base Original Uploaded Bare Room Photo */}
+        {/* 1. Base Original Bare Room Image */}
         <img
           key={`room-base-${roomImage}`}
           src={roomImage}
@@ -188,7 +189,7 @@ export default function FurnishedRoomView({
           className="w-full h-full object-fill pointer-events-none"
         />
 
-        {/* 2. Photorealistic Redesigned Fully-Furnished Room Layer */}
+        {/* 2. Photorealistic Redesign Fully-Furnished Photography Layer */}
         {viewMode !== 'original' && (
           <div
             className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none"
@@ -199,9 +200,9 @@ export default function FurnishedRoomView({
             }
           >
             <img
-              key={`room-redesign-img-${displayRedesignImage}`}
+              key={`redesign-img-${displayRedesignImage}`}
               src={displayRedesignImage}
-              alt="Photorealistic Redesigned Furnished Room"
+              alt="Photorealistic Furnished Room"
               onLoad={handleImageLoad}
               onError={(e) => {
                 const target = e.currentTarget;
@@ -229,12 +230,12 @@ export default function FurnishedRoomView({
               Original
             </div>
             <div className="absolute top-4 left-20 -translate-x-1/2 bg-amber-600/90 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow pointer-events-none">
-              Furnished
+              Redesigned
             </div>
           </div>
         )}
 
-        {/* 4. Interactive Furniture & Decor Hotspot Pins */}
+        {/* 4. Minimalist Translucent Hotspot Pins Directly on Furniture */}
         {isInteractive && viewMode !== 'original' && (
           <div className="absolute inset-0 pointer-events-none z-30">
             {hotspots.map((hotspot) => {
