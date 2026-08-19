@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, ShoppingBag, Sparkles, Check, Armchair, Loader2 } from 'lucide-react';
+import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
 
 export interface HotspotItem {
@@ -346,39 +347,25 @@ export default function FurnishedRoomView({
 
                         {/* Store Links */}
                         <div className="flex flex-col gap-1 mt-2">
-                          {hotspot.amazonUrl && (
-                            <a
-                              href={hotspot.amazonUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-full py-1 px-2 bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-[10px] rounded-md transition-colors flex items-center justify-between shadow"
-                            >
-                              <span>Buy on Amazon</span>
-                              <ExternalLink className="w-2.5 h-2.5" />
-                            </a>
-                          )}
-                          {hotspot.flipkartUrl && (
-                            <a
-                              href={hotspot.flipkartUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-full py-1 px-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] rounded-md transition-colors flex items-center justify-between shadow"
-                            >
-                              <span>Buy on Flipkart</span>
-                              <ExternalLink className="w-2.5 h-2.5" />
-                            </a>
-                          )}
-                          {hotspot.productUrl && !hotspot.amazonUrl && !hotspot.flipkartUrl && (
-                            <a
-                              href={hotspot.productUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-full py-1 px-2 bg-white/20 hover:bg-white/30 text-white font-bold text-[10px] rounded-md transition-colors flex items-center justify-between"
-                            >
-                              <span>Buy on {hotspot.store || 'Store'}</span>
-                              <ExternalLink className="w-2.5 h-2.5" />
-                            </a>
-                          )}
+                          <a
+                            href={getAmazonProductUrl(hotspot.label || 'Furniture', hotspot.amazonUrl)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full py-1 px-2 bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-[10px] rounded-md transition-colors flex items-center justify-between shadow"
+                          >
+                            <span>Buy on Amazon</span>
+                            <ExternalLink className="w-2.5 h-2.5" />
+                          </a>
+
+                          <a
+                            href={getFlipkartProductUrl(hotspot.label || 'Furniture', hotspot.flipkartUrl)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full py-1 px-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] rounded-md transition-colors flex items-center justify-between shadow"
+                          >
+                            <span>Buy on Flipkart</span>
+                            <ExternalLink className="w-2.5 h-2.5" />
+                          </a>
                         </div>
                       </motion.div>
                     )}

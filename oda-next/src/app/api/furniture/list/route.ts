@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import FurnitureItem from '@/models/FurnitureItem';
 import { connectToDatabase } from '@/lib/mongodb';
 import { COMPREHENSIVE_CATALOG } from '@/lib/furniture-matcher';
+import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -20,7 +21,15 @@ export async function GET(request: NextRequest) {
     if (id) {
       const item = await FurnitureItem.findById(id);
       if (item) {
-        return NextResponse.json({ success: true, data: item });
+        const obj = item.toObject ? item.toObject() : item;
+        return NextResponse.json({
+          success: true,
+          data: {
+            ...obj,
+            amazonUrl: getAmazonProductUrl(obj.productName, obj.amazonUrl),
+            flipkartUrl: getFlipkartProductUrl(obj.productName, obj.flipkartUrl),
+          },
+        });
       }
     }
 
@@ -48,10 +57,19 @@ export async function GET(request: NextRequest) {
     ]);
 
     if (items && (items.length > 0 || total > 0)) {
+      const mappedItems = items.map((doc: any) => {
+        const obj = doc.toObject ? doc.toObject() : doc;
+        return {
+          ...obj,
+          amazonUrl: getAmazonProductUrl(obj.productName, obj.amazonUrl),
+          flipkartUrl: getFlipkartProductUrl(obj.productName, obj.flipkartUrl),
+        };
+      });
+
       return NextResponse.json({
         success: true,
         data: {
-          items,
+          items: mappedItems,
           pagination: {
             page,
             limit,
@@ -65,10 +83,12 @@ export async function GET(request: NextRequest) {
     console.warn('Furniture MongoDB query fallback to catalog:', error instanceof Error ? error.message : error);
   }
 
-  // Graceful fallback to rich local catalog
+  // Graceful fallback to rich local catalog with live URLs
   let fallbackItems = COMPREHENSIVE_CATALOG.map((item, idx) => ({
     _id: `cat_${idx + 1}`,
     ...item,
+    amazonUrl: getAmazonProductUrl(item.productName, item.amazonUrl),
+    flipkartUrl: getFlipkartProductUrl(item.productName, item.flipkartUrl),
     inStock: true,
   }));
 

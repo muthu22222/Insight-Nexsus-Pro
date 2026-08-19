@@ -32,6 +32,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import FurnishedRoomView, { HotspotItem } from '@/components/designer/FurnishedRoomView';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
 import BackButton from '@/components/common/BackButton';
+import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
 
 export default function ViewerPage() {
   const router = useRouter();
@@ -365,29 +366,25 @@ export default function ViewerPage() {
 
                     {/* Purchase & Store Buttons */}
                     <div className="space-y-2 pt-1">
-                      {currentItem.amazonUrl && (
-                        <a
-                          href={currentItem.amazonUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
-                        >
-                          <span>Buy on Amazon</span>
-                          <span className="text-xs">→</span>
-                        </a>
-                      )}
+                      <a
+                        href={getAmazonProductUrl(currentItem.label || 'Furniture', currentItem.amazonUrl)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+                      >
+                        <span>Buy on Amazon</span>
+                        <span className="text-xs">→</span>
+                      </a>
 
-                      {currentItem.flipkartUrl && (
-                        <a
-                          href={currentItem.flipkartUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
-                        >
-                          <span>Buy on Flipkart</span>
-                          <span className="text-xs">→</span>
-                        </a>
-                      )}
+                      <a
+                        href={getFlipkartProductUrl(currentItem.label || 'Furniture', currentItem.flipkartUrl)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+                      >
+                        <span>Buy on Flipkart</span>
+                        <span className="text-xs">→</span>
+                      </a>
 
                       {currentItem.productUrl && currentItem.productUrl.startsWith('http') && (
                         <a

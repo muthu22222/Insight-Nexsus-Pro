@@ -25,6 +25,7 @@ import AIAssistant from "@/components/shared/AIAssistant";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import BackButton from "@/components/common/BackButton";
 import { useAuth } from "@/contexts/AuthContext";
+import { getAmazonProductUrl, getFlipkartProductUrl } from "@/lib/store-links";
 import type { Project, AIDesign, ShoppingListItem } from "@/types";
 import { formatCurrency, formatDate } from "@/utils/helpers";
 import jsPDF from "jspdf";
@@ -615,42 +616,26 @@ export default function ProjectDetailPage() {
                             {formatCurrency(item.price)}
                           </p>
 
-                          {(item.amazonUrl || item.flipkartUrl) ? (
-                            <div className="mt-3 flex flex-col gap-1.5 pt-2 border-t border-gray-100">
-                              {item.amazonUrl && (
-                                <a
-                                  href={item.amazonUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center justify-center gap-1.5 w-full py-1.5 px-3 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-bold rounded-lg shadow-2xs transition-colors"
-                                >
-                                  <span>Buy on Amazon</span>
-                                  <span className="text-xs">→</span>
-                                </a>
-                              )}
-                              {item.flipkartUrl && (
-                                <a
-                                  href={item.flipkartUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center justify-center gap-1.5 w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold rounded-lg shadow-2xs transition-colors"
-                                >
-                                  <span>Buy on Flipkart</span>
-                                  <span className="text-xs">→</span>
-                                </a>
-                              )}
-                            </div>
-                          ) : (
+                          <div className="mt-3 flex flex-col gap-1.5 pt-2 border-t border-gray-100">
                             <a
-                              href={item.productUrl}
+                              href={getAmazonProductUrl(item.productName, item.amazonUrl)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="mt-3 flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-700"
+                              className="flex items-center justify-center gap-1.5 w-full py-1.5 px-3 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-bold rounded-lg shadow-2xs transition-colors"
                             >
-                              View Product
-                              <ExternalLink className="h-3 w-3" />
+                              <span>Buy on Amazon</span>
+                              <span className="text-xs">→</span>
                             </a>
-                          )}
+                            <a
+                              href={getFlipkartProductUrl(item.productName, item.flipkartUrl)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center gap-1.5 w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold rounded-lg shadow-2xs transition-colors"
+                            >
+                              <span>Buy on Flipkart</span>
+                              <span className="text-xs">→</span>
+                            </a>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -802,27 +787,23 @@ export default function ProjectDetailPage() {
                           </p>
 
                           <div className="flex items-center gap-2">
-                            {item.amazonUrl && (
-                              <a
-                                href={item.amazonUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 shadow-2xs"
-                              >
-                                <span>Amazon → Buy Now</span>
-                              </a>
-                            )}
-                            {item.flipkartUrl && (
-                              <a
-                                href={item.flipkartUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 shadow-2xs"
-                              >
-                                <span>Flipkart → Buy Now</span>
-                              </a>
-                            )}
-                            {item.productLink && !item.amazonUrl && !item.flipkartUrl && (
+                            <a
+                              href={getAmazonProductUrl(item.productName || item.category || item.store, item.amazonUrl)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 shadow-2xs"
+                            >
+                              <span>Amazon → Buy Now</span>
+                            </a>
+                            <a
+                              href={getFlipkartProductUrl(item.productName || item.category || item.store, item.flipkartUrl)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 shadow-2xs"
+                            >
+                              <span>Flipkart → Buy Now</span>
+                            </a>
+                            {item.productLink && (
                               <a
                                 href={item.productLink}
                                 target="_blank"

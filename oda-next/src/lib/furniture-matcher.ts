@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import FurnitureItem from '@/models/FurnitureItem';
 import { connectToDatabase } from '@/lib/mongodb';
+import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
 import type { Hotspot } from '@/types';
 
 export interface DetectedItem {
@@ -40,8 +41,8 @@ export const COMPREHENSIVE_CATALOG: Array<{
     image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600",
     storeName: "IKEA India",
     productUrl: "https://www.ikea.com/in/en/p/harmony-sectional-sofa",
-    amazonUrl: "https://www.amazon.in/dp/B08XYZSOFA",
-    flipkartUrl: "https://www.flipkart.com/harmony-sectional-sofa/p/itm123sofa",
+    amazonUrl: "https://www.amazon.in/s?k=Harmony+L-Shape+Sectional+Sofa",
+    flipkartUrl: "https://www.flipkart.com/search?q=Harmony+L-Shape+Sectional+Sofa",
     style: "Modern",
     rating: 4.5,
     material: "High-Resilience Foam & Bouclé",
@@ -55,8 +56,8 @@ export const COMPREHENSIVE_CATALOG: Array<{
     image: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600",
     storeName: "Pepperfry",
     productUrl: "https://www.pepperfry.com/velvet-chesterfield-3-seater.html",
-    amazonUrl: "https://www.amazon.in/dp/B09ABCVELVET",
-    flipkartUrl: "https://www.flipkart.com/velvet-chesterfield-sofa/p/itm456sofa",
+    amazonUrl: "https://www.amazon.in/s?k=Velvet+Chesterfield+3-Seater+Sofa",
+    flipkartUrl: "https://www.flipkart.com/search?q=Velvet+Chesterfield+3-Seater+Sofa",
     style: "Luxury",
     rating: 4.6,
     material: "Royal Velvet & Solid Wood",
@@ -70,8 +71,8 @@ export const COMPREHENSIVE_CATALOG: Array<{
     image: "https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=600",
     storeName: "IKEA India",
     productUrl: "https://www.ikea.com/in/en/p/nordic-fabric-sofa",
-    amazonUrl: "https://www.amazon.in/dp/B07NORDIC3S",
-    flipkartUrl: "https://www.flipkart.com/nordic-japandi-cream-sofa/p/itm789sofa",
+    amazonUrl: "https://www.amazon.in/s?k=Nordic+Japandi+Cream+3-Seater+Sofa",
+    flipkartUrl: "https://www.flipkart.com/search?q=Nordic+Japandi+Cream+3-Seater+Sofa",
     style: "Scandinavian",
     rating: 4.7,
     material: "Natural Linen & Ash Wood",
@@ -401,8 +402,8 @@ export async function matchFurnitureWithCatalog(
       store: matchedDoc?.storeName || 'Urban Ladder',
       brand: matchedDoc?.brand || 'Designer Brand',
       productUrl: matchedDoc?.productUrl || 'https://www.urbanladder.com',
-      amazonUrl: matchedDoc?.amazonUrl || null,
-      flipkartUrl: matchedDoc?.flipkartUrl || null,
+      amazonUrl: getAmazonProductUrl(item.name || matchedDoc?.productName || item.category, matchedDoc?.amazonUrl),
+      flipkartUrl: getFlipkartProductUrl(item.name || matchedDoc?.productName || item.category, matchedDoc?.flipkartUrl),
       image: matchedDoc?.image || '',
       material: item.material || matchedDoc?.material || 'Premium Finish',
       match: Math.floor(93 + (Math.random() * 5)),

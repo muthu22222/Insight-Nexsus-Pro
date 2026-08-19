@@ -18,6 +18,7 @@ import {
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import BackButton from "@/components/common/BackButton";
+import { getAmazonProductUrl, getFlipkartProductUrl } from "@/lib/store-links";
 import type { FurnitureItem, Project } from "@/types";
 import { formatCurrency } from "@/utils/helpers";
 
@@ -243,36 +244,34 @@ export default function ProductDetailPage() {
               <div className="space-y-3 pt-2">
                 <p className="text-xs font-bold uppercase tracking-wider text-gray-500">Purchase Options</p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  {product.amazonUrl && (
-                    <a
-                      href={product.amazonUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm rounded-xl shadow-sm hover:shadow-md transition-all"
-                    >
-                      <span>Buy on Amazon</span>
-                      <span>→</span>
-                    </a>
-                  )}
-                  {product.flipkartUrl && (
-                    <a
-                      href={product.flipkartUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-sm hover:shadow-md transition-all"
-                    >
-                      <span>Buy on Flipkart</span>
-                      <span>→</span>
-                    </a>
-                  )}
+                  <a
+                    href={getAmazonProductUrl(product.productName, product.amazonUrl)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm rounded-xl shadow-sm hover:shadow-md transition-all"
+                  >
+                    <span>Buy on Amazon</span>
+                    <span>→</span>
+                  </a>
+
+                  <a
+                    href={getFlipkartProductUrl(product.productName, product.flipkartUrl)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-sm hover:shadow-md transition-all"
+                  >
+                    <span>Buy on Flipkart</span>
+                    <span>→</span>
+                  </a>
+
                   {product.productUrl && (
                     <a
                       href={product.productUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`${(product.amazonUrl || product.flipkartUrl) ? 'sm:w-auto px-5' : 'flex-1'} flex items-center justify-center gap-2 py-3.5 bg-gray-900 hover:bg-black text-white font-bold text-sm rounded-xl shadow-sm hover:shadow-md transition-all`}
+                      className="sm:w-auto px-5 flex items-center justify-center gap-2 py-3.5 bg-gray-900 hover:bg-black text-white font-bold text-sm rounded-xl shadow-sm hover:shadow-md transition-all"
                     >
-                      <span>Store Link ({product.storeName || 'Store'})</span>
+                      <span>Store ({product.storeName || 'Retailer'})</span>
                       <ExternalLink className="h-4 w-4" />
                     </a>
                   )}
