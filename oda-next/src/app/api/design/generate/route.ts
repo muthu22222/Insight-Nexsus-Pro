@@ -314,10 +314,7 @@ Return ONLY a single JSON object structured as:
 
             const visualPrompt = buildVisualPrompt(roomType, perspective, wallColor, flooring, windows, furnitureStyle, furnitureList, preferences.mood, preferences.color);
 
-            const isWebUrl = imageUrl && typeof imageUrl === 'string' && imageUrl.startsWith('http');
-            const imageParam = isWebUrl ? `&image=${encodeURIComponent(imageUrl)}` : '';
-            const fluxAiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1280&height=853&model=flux&seed=${baseSeed}&nologo=true${imageParam}`;
-            const visualImage = fluxAiUrl || curatedImages[0];
+            const visualImage = curatedImages[0];
 
             const preservedText = hasExisting
               ? `Preserving existing ${existingFurniture.join(', ')} (upgraded to ${furnitureStyle} style) + ${matchedHotspots.length - existingFurniture.length} added designer furniture pieces.`
@@ -352,12 +349,7 @@ Return ONLY a single JSON object structured as:
         budget
       );
       const matchedHotspots = await matchFurnitureWithCatalog(detectedItems, budget, furnitureStyle);
-      const visualPrompt = buildVisualPrompt(roomType, perspective, wallColor, flooring, windows, furnitureStyle, furnitureList, preferences.mood, preferences.color);
-
-      const isWebUrl = imageUrl && typeof imageUrl === 'string' && imageUrl.startsWith('http');
-      const imageParam = isWebUrl ? `&image=${encodeURIComponent(imageUrl)}` : '';
-      const fluxAiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1280&height=853&model=flux&seed=${baseSeed}&nologo=true${imageParam}`;
-      const visualImage = fluxAiUrl || curatedImages[0];
+      const visualImage = curatedImages[0];
 
       const preservedText = hasExisting
         ? `Preserving existing ${existingFurniture.join(', ')} (upgraded to ${furnitureStyle} aesthetic) with ${matchedHotspots.length - existingFurniture.length} added designer pieces.`
