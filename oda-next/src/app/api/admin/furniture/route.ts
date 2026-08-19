@@ -196,6 +196,8 @@ export async function PUT(request: NextRequest) {
       "image",
       "storeName",
       "productUrl",
+      "amazonUrl",
+      "flipkartUrl",
       "style",
       "rating",
       "description",
@@ -215,6 +217,12 @@ export async function PUT(request: NextRequest) {
     if (sanitizedData.brand) sanitizedData.brand = String(sanitizedData.brand).trim();
     if (sanitizedData.storeName) sanitizedData.storeName = String(sanitizedData.storeName).trim();
     if (sanitizedData.productUrl) sanitizedData.productUrl = String(sanitizedData.productUrl).trim();
+    if (sanitizedData.amazonUrl !== undefined) {
+      sanitizedData.amazonUrl = sanitizedData.amazonUrl ? String(sanitizedData.amazonUrl).trim() : null;
+    }
+    if (sanitizedData.flipkartUrl !== undefined) {
+      sanitizedData.flipkartUrl = sanitizedData.flipkartUrl ? String(sanitizedData.flipkartUrl).trim() : null;
+    }
     if (sanitizedData.style) sanitizedData.style = String(sanitizedData.style).trim();
 
     const item = await FurnitureItem.findByIdAndUpdate(
