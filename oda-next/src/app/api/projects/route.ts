@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import mongoose from 'mongoose';
 import Project from '@/models/Project';
 import { connectToDatabase } from '@/lib/mongodb';
 import { authenticate } from '@/lib/auth';
@@ -196,7 +197,7 @@ export async function POST(request: NextRequest) {
     };
 
     // If projectId provided, check ownership and update
-    if (projectId) {
+    if (projectId && mongoose.Types.ObjectId.isValid(projectId)) {
       const userIds: string[] = Array.from(
         new Set([payload.userId, payload.firebaseUid].filter((x): x is string => Boolean(x)))
       );

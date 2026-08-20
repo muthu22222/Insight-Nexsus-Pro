@@ -13,11 +13,20 @@ function getFirebaseAdmin(): { app: App; auth: Auth } | null {
         process.env.FIREBASE_PRIVATE_KEY &&
         process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
       ) {
+        let privateKey = process.env.FIREBASE_PRIVATE_KEY;
+        if (privateKey) {
+          privateKey = privateKey.trim();
+          if ((privateKey.startsWith('"') && privateKey.endsWith('"')) || (privateKey.startsWith("'") && privateKey.endsWith("'"))) {
+            privateKey = privateKey.slice(1, -1);
+          }
+          privateKey = privateKey.replace(/\\n/g, '\n').replace(/\\r/g, '');
+        }
+
         app = initializeApp({
           credential: cert({
             projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
             clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-            privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+            privateKey,
           }),
         });
       } else if (process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) {

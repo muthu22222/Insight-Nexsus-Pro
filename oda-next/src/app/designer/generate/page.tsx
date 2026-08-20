@@ -277,19 +277,27 @@ export default function GeneratePage() {
         inStock: true,
       }));
 
+      const cleanDesign = {
+        ...design,
+        hotspots: (design.hotspots || []).map((h: any) => ({
+          ...h,
+          image: h.image && !h.image.startsWith('data:') ? h.image : '',
+        })),
+      };
+
       const payload = {
         name: projectNameInput.trim() || 'My Interior Project',
         roomType: roomAnalysis?.roomType || 'Living Room',
-        originalImage: uploadedImage,
-        roomImage: uploadedImage,
-        generatedImage: design.generatedImages?.[0] || uploadedImage,
-        style: design.style,
-        selectedStyle: design.style,
-        mood: design.mood || preferences.mood,
+        originalImage: uploadedImage || '',
+        roomImage: uploadedImage || '',
+        generatedImage: design.generatedImages?.[0] || uploadedImage || '',
+        style: design.style || 'Modern',
+        selectedStyle: design.style || 'Modern',
+        mood: design.mood || preferences.mood || 'Warm',
         budget: preferences.budget || 200000,
         roomAnalysis,
-        selectedDesign: design,
-        designs: [design],
+        selectedDesign: cleanDesign,
+        designs: [cleanDesign],
         furniture: formattedFurniture,
         shoppingList: formattedFurniture.map((f: any, i: number) => ({
           _id: String(f._id || `s_${i + 1}`),

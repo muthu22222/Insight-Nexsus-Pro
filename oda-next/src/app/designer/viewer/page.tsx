@@ -154,32 +154,51 @@ export default function ViewerPage() {
         return;
       }
 
-      const formattedFurniture = activeHotspots.map((item, i) => ({
-        _id: String(item.id || `f_${i + 1}`),
-        productName: item.label,
-        category: 'Furniture',
-        price: parseInt(item.price.replace(/[^\d]/g, ''), 10) || 15000,
-        storeName: item.store || 'Amazon / Flipkart',
-        amazonUrl: item.amazonUrl || getAmazonProductUrl(item.label),
-        flipkartUrl: item.flipkartUrl || getFlipkartProductUrl(item.label),
-        image: redesignImage,
-        rating: 4.8,
-        inStock: true,
-      }));
+      const formattedFurniture = activeHotspots.map((item, i) => {
+        const numPrice = typeof item.price === 'number'
+          ? item.price
+          : parseInt(String(item.price || '0').replace(/[^\d]/g, ''), 10) || 15000;
+
+        return {
+          _id: String(item.id || `f_${i + 1}`),
+          name: item.label || `Furniture Item ${i + 1}`,
+          productName: item.label,
+          category: item.category || 'Furniture',
+          price: numPrice,
+          storeName: item.store || 'Amazon / Flipkart',
+          amazonUrl: item.amazonUrl || getAmazonProductUrl(item.label),
+          flipkartUrl: item.flipkartUrl || getFlipkartProductUrl(item.label),
+          image: item.image && !item.image.startsWith('data:') ? item.image : '',
+          rating: 4.8,
+          inStock: true,
+        };
+      });
+
+      // Clean design hotspots to prevent huge duplicated base64 payload
+      const cleanSelectedDesign = {
+        ...selectedDesign,
+        hotspots: (selectedDesign.hotspots || []).map((h: any) => ({
+          ...h,
+          image: h.image && !h.image.startsWith('data:') ? h.image : '',
+        })),
+      };
+
+      const targetBudget = Number(preferences?.budget || selectedDesign.budget || 200000);
+      const spentTotal = formattedFurniture.reduce((acc, cur) => acc + (cur.price || 0), 0);
 
       const payload = {
         name: activeProjectName || `${selectedDesign.style || 'Modern'} Room Redesign`,
         roomType: roomAnalysis?.roomType || 'Living Room',
-        originalImage: uploadedImage,
-        roomImage: uploadedImage,
-        generatedImage: redesignImage,
-        style: selectedDesign.style,
-        selectedStyle: selectedDesign.style,
-        mood: selectedDesign.mood || preferences.mood,
-        budget: preferences.budget || 200000,
+        originalImage: uploadedImage || '',
+        roomImage: uploadedImage || '',
+        generatedImage: redesignImage || '',
+        style: selectedDesign.style || 'Modern',
+        selectedStyle: selectedDesign.style || 'Modern',
+        mood: selectedDesign.mood || preferences.mood || 'Warm',
+        budget: targetBudget,
         roomAnalysis,
-        selectedDesign,
-        designs: [selectedDesign],
+        selectedDesign: cleanSelectedDesign,
+        designs: [cleanSelectedDesign],
         furniture: formattedFurniture,
         shoppingList: formattedFurniture.map((f, i) => ({
           _id: String(`s_${i + 1}`),
@@ -193,6 +212,16 @@ export default function ViewerPage() {
           quantity: 1,
           checked: false,
         })),
+        budgetPlan: {
+          totalBudget: targetBudget,
+          spent: spentTotal,
+          remaining: Math.max(0, targetBudget - spentTotal),
+          allocations: [
+            { category: 'Main Furniture', percentage: 55, amount: Math.round(targetBudget * 0.55) },
+            { category: 'Lighting & Decor', percentage: 25, amount: Math.round(targetBudget * 0.25) },
+            { category: 'Textiles & Rugs', percentage: 20, amount: Math.round(targetBudget * 0.20) },
+          ],
+        },
       };
 
       const url = activeProjectId ? `/api/projects/${activeProjectId}` : '/api/projects';
@@ -227,7 +256,9 @@ export default function ViewerPage() {
   };
 
   const totalCalculatedBudget = activeHotspots.reduce((acc, h) => {
-    const p = parseInt(h.price.replace(/[^\d]/g, ''), 10) || 0;
+    const p = typeof h.price === 'number'
+      ? h.price
+      : parseInt(String(h.price || '0').replace(/[^\d]/g, ''), 10) || 0;
     return acc + p;
   }, 0);
 
