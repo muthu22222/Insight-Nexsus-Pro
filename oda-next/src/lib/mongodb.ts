@@ -34,8 +34,16 @@ export function normalizeMongoUri(uri: string): string {
     const colonIndex = userPass.indexOf(":");
     if (colonIndex === -1) return uri;
 
-    const rawUser = userPass.substring(0, colonIndex);
-    const rawPass = userPass.substring(colonIndex + 1);
+    let rawUser = userPass.substring(0, colonIndex);
+    let rawPass = userPass.substring(colonIndex + 1);
+
+    // Strip accidental angle brackets if user enclosed username or password in <...>
+    if (rawUser.startsWith("<") && rawUser.endsWith(">")) {
+      rawUser = rawUser.slice(1, -1);
+    }
+    if (rawPass.startsWith("<") && rawPass.endsWith(">")) {
+      rawPass = rawPass.slice(1, -1);
+    }
 
     // If user or pass already contains % (partially encoded), avoid double encoding
     const safeUser = encodeURIComponent(decodeURIComponent(rawUser));
@@ -81,8 +89,13 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
 
   try {
     cached.conn = await cached.promise;
-  } catch (e) {
+  } catch (e: any) {
     cached.promise = null;
+    if (e?.message?.includes("bad auth") || e?.message?.includes("authentication failed")) {
+      throw new Error(
+        "MongoDB Atlas authentication failed: Please verify that your database username and password in .env.local (MONGODB_URI) match your MongoDB Atlas Database User and that any `<` and `>` characters around the password have been removed."
+      );
+    }
     throw e;
   }
 

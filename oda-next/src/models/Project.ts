@@ -1,12 +1,12 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { AIDesignSchema, IAIDesign, HotspotSchema, IHotspot } from './AIDesign';
-import { RoomAnalysisSchema, IRoomAnalysis } from './RoomAnalysis';
-import { BudgetPlanSchema, IBudgetPlan, BudgetAllocationSchema, IBudgetAllocation } from './BudgetPlan';
+import { AIDesignSchema, IAIDesign, HotspotSchema } from './AIDesign';
+import { RoomAnalysisSchema } from './RoomAnalysis';
+import { BudgetPlanSchema, BudgetAllocationSchema } from './BudgetPlan';
 import { ShoppingListItemSchema, IShoppingListItem } from './ShoppingList';
-import { FurnitureSchema, IFurniture } from './Furniture';
+import { FurnitureSchema } from './Furniture';
 
 export interface IProjectFurniture {
-  _id?: string;
+  _id?: any;
   name: string;
   productName?: string;
   category: string;
@@ -51,65 +51,72 @@ export interface IProject extends Document {
   updatedAt: Date;
 }
 
-const ProjectFurnitureSchema = new Schema<IProjectFurniture>({
-  name: {
-    type: String,
-    required: true,
+const ProjectFurnitureSchema = new Schema<IProjectFurniture>(
+  {
+    _id: {
+      type: Schema.Types.Mixed,
+      default: () => new mongoose.Types.ObjectId().toString(),
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    productName: {
+      type: String,
+      default: '',
+    },
+    category: {
+      type: String,
+      default: 'Furniture',
+    },
+    brand: {
+      type: String,
+      default: '',
+    },
+    price: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    image: {
+      type: String,
+      default: '',
+    },
+    description: {
+      type: String,
+      default: '',
+    },
+    style: {
+      type: String,
+      default: 'Modern',
+    },
+    rating: {
+      type: Number,
+      default: 4.5,
+    },
+    amazonUrl: {
+      type: String,
+      default: null,
+    },
+    flipkartUrl: {
+      type: String,
+      default: null,
+    },
+    productUrl: {
+      type: String,
+      default: '',
+    },
+    storeName: {
+      type: String,
+      default: 'Store',
+    },
+    inStock: {
+      type: Boolean,
+      default: true,
+    },
   },
-  productName: {
-    type: String,
-    default: '',
-  },
-  category: {
-    type: String,
-    default: 'Furniture',
-  },
-  brand: {
-    type: String,
-    default: '',
-  },
-  price: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
-  image: {
-    type: String,
-    default: '',
-  },
-  description: {
-    type: String,
-    default: '',
-  },
-  style: {
-    type: String,
-    default: 'Modern',
-  },
-  rating: {
-    type: Number,
-    default: 4.5,
-  },
-  amazonUrl: {
-    type: String,
-    default: null,
-  },
-  flipkartUrl: {
-    type: String,
-    default: null,
-  },
-  productUrl: {
-    type: String,
-    default: '',
-  },
-  storeName: {
-    type: String,
-    default: 'Store',
-  },
-  inStock: {
-    type: Boolean,
-    default: true,
-  },
-});
+  { _id: false }
+);
 
 const ProjectSchema = new Schema<IProject>(
   {
@@ -235,8 +242,11 @@ const ProjectSchema = new Schema<IProject>(
 
 ProjectSchema.index({ userId: 1, createdAt: -1 });
 
-const Project =
-  mongoose.models.Project || mongoose.model<IProject>('Project', ProjectSchema);
+if (mongoose.models.Project) {
+  delete mongoose.models.Project;
+}
+
+const Project = mongoose.model<IProject>('Project', ProjectSchema);
 
 export default Project;
 export {

@@ -19,7 +19,8 @@ export interface IHotspot {
   furnitureId?: string;
 }
 
-export interface IAIDesign extends Document {
+export interface IAIDesign {
+  _id?: any;
   projectId?: string;
   style: string;
   furnitureStyle?: string;
@@ -30,79 +31,86 @@ export interface IAIDesign extends Document {
   generatedImages: string[];
   generatedImage?: string;
   hotspots: IHotspot[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-export const HotspotSchema = new Schema<IHotspot>({
-  id: {
-    type: Schema.Types.Mixed,
-    default: 1,
-  },
-  x: {
-    type: Number,
-    required: true,
-  },
-  y: {
-    type: Number,
-    required: true,
-  },
-  label: {
-    type: String,
-    required: true,
-  },
-  category: {
-    type: String,
-    default: '',
-  },
-  description: {
-    type: String,
-    default: '',
-  },
-  price: {
-    type: Schema.Types.Mixed,
-    default: '',
-  },
-  store: {
-    type: String,
-    default: '',
-  },
-  brand: {
-    type: String,
-    default: '',
-  },
-  material: {
-    type: String,
-    default: '',
-  },
-  productUrl: {
-    type: String,
-    default: '',
-  },
-  amazonUrl: {
-    type: String,
-    default: null,
-  },
-  flipkartUrl: {
-    type: String,
-    default: null,
-  },
-  image: {
-    type: String,
-    default: '',
-  },
-  match: {
-    type: Number,
-    default: 95,
-  },
-  furnitureId: {
-    type: String,
-    default: '',
-  },
-});
-
-export const AIDesignSchema = new Schema<IAIDesign>(
+export const HotspotSchema = new Schema<IHotspot>(
   {
+    id: {
+      type: Schema.Types.Mixed,
+      default: 1,
+    },
+    x: {
+      type: Number,
+      required: true,
+    },
+    y: {
+      type: Number,
+      required: true,
+    },
+    label: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      default: '',
+    },
+    description: {
+      type: String,
+      default: '',
+    },
+    price: {
+      type: Schema.Types.Mixed,
+      default: '',
+    },
+    store: {
+      type: String,
+      default: '',
+    },
+    brand: {
+      type: String,
+      default: '',
+    },
+    material: {
+      type: String,
+      default: '',
+    },
+    productUrl: {
+      type: String,
+      default: '',
+    },
+    amazonUrl: {
+      type: String,
+      default: null,
+    },
+    flipkartUrl: {
+      type: String,
+      default: null,
+    },
+    image: {
+      type: String,
+      default: '',
+    },
+    match: {
+      type: Number,
+      default: 95,
+    },
+    furnitureId: {
+      type: String,
+      default: '',
+    },
+  },
+  { _id: false }
+);
+
+export const AIDesignSchema = new Schema(
+  {
+    _id: {
+      type: Schema.Types.Mixed,
+      default: () => new mongoose.Types.ObjectId().toString(),
+    },
     projectId: {
       type: String,
       default: '',
@@ -153,7 +161,10 @@ export const AIDesignSchema = new Schema<IAIDesign>(
   }
 );
 
-const AIDesign =
-  mongoose.models.AIDesign || mongoose.model<IAIDesign>('AIDesign', AIDesignSchema);
+if (mongoose.models.AIDesign) {
+  delete mongoose.models.AIDesign;
+}
+
+const AIDesign = mongoose.model('AIDesign', AIDesignSchema);
 
 export default AIDesign;

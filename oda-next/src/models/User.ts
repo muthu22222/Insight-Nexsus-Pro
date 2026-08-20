@@ -40,7 +40,7 @@ const UserSchema = new Schema<IUser>(
     firebaseUid: {
       type: String,
       default: '',
-      sparse: true,
+      index: true,
     },
     avatar: {
       type: String,
@@ -71,9 +71,6 @@ const UserSchema = new Schema<IUser>(
   }
 );
 
-UserSchema.index({ email: 1 });
-UserSchema.index({ firebaseUid: 1 });
-
 UserSchema.pre('save', async function () {
   if (!this.isModified('password')) return;
 
@@ -87,6 +84,10 @@ UserSchema.methods.comparePassword = async function (
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-const User = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
+if (mongoose.models.User) {
+  delete mongoose.models.User;
+}
+
+const User = mongoose.model<IUser>('User', UserSchema);
 
 export default User;

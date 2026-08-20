@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IShoppingListItem {
-  furnitureId?: string;
+  furnitureId?: any;
   productName?: string;
   name?: string;
   category?: string;
@@ -22,54 +22,57 @@ export interface IShoppingList extends Document {
   updatedAt: Date;
 }
 
-export const ShoppingListItemSchema = new Schema<IShoppingListItem>({
-  furnitureId: {
-    type: String,
-    default: '',
+export const ShoppingListItemSchema = new Schema<IShoppingListItem>(
+  {
+    furnitureId: {
+      type: Schema.Types.Mixed,
+      default: '',
+    },
+    productName: {
+      type: String,
+      default: '',
+    },
+    name: {
+      type: String,
+      default: '',
+    },
+    category: {
+      type: String,
+      default: '',
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
+    price: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    store: {
+      type: String,
+      default: 'Store',
+    },
+    productLink: {
+      type: String,
+      default: '',
+    },
+    amazonUrl: {
+      type: String,
+      default: null,
+    },
+    flipkartUrl: {
+      type: String,
+      default: null,
+    },
+    checked: {
+      type: Boolean,
+      default: false,
+    },
   },
-  productName: {
-    type: String,
-    default: '',
-  },
-  name: {
-    type: String,
-    default: '',
-  },
-  category: {
-    type: String,
-    default: '',
-  },
-  quantity: {
-    type: Number,
-    required: true,
-    default: 1,
-  },
-  price: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
-  store: {
-    type: String,
-    default: 'Store',
-  },
-  productLink: {
-    type: String,
-    default: '',
-  },
-  amazonUrl: {
-    type: String,
-    default: null,
-  },
-  flipkartUrl: {
-    type: String,
-    default: null,
-  },
-  checked: {
-    type: Boolean,
-    default: false,
-  },
-});
+  { _id: false }
+);
 
 export const ShoppingListSchema = new Schema<IShoppingList>(
   {
@@ -91,8 +94,10 @@ export const ShoppingListSchema = new Schema<IShoppingList>(
   }
 );
 
-const ShoppingList =
-  mongoose.models.ShoppingList ||
-  mongoose.model<IShoppingList>('ShoppingList', ShoppingListSchema);
+if (mongoose.models.ShoppingList) {
+  delete mongoose.models.ShoppingList;
+}
+
+const ShoppingList = mongoose.model<IShoppingList>('ShoppingList', ShoppingListSchema);
 
 export default ShoppingList;
