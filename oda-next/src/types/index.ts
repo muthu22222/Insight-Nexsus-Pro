@@ -141,6 +141,7 @@ export interface Store {
   lng: number;
   rating: number;
   city: string;
+  category?: string;
   phone?: string;
   website?: string;
   timings?: string;
