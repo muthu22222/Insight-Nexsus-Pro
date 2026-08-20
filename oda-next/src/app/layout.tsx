@@ -56,14 +56,16 @@ export default function RootLayout({
             },
           }}
         />
-        {/* External Chat Widget */}
-        <Script
-          src="http://127.0.0.1:8000/api/widget/embed.js"
-          data-org-id="7350e330-bff9-4497-a536-8d8254371eef"
-          data-position="bottom-right"
-          data-color="#2563eb"
-          strategy="afterInteractive"
-        />
+        {/* External Chat Widget (Only if configured) */}
+        {process.env.NEXT_PUBLIC_WIDGET_URL && (
+          <Script
+            src={process.env.NEXT_PUBLIC_WIDGET_URL}
+            data-org-id="7350e330-bff9-4497-a536-8d8254371eef"
+            data-position="bottom-right"
+            data-color="#2563eb"
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   );

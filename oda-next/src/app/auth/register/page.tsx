@@ -129,8 +129,10 @@ export default function RegisterPage() {
       toast.success('Account created successfully!');
       router.push('/dashboard');
     } catch (error: any) {
-      if (error.code !== 'auth/popup-closed-by-user') {
-        toast.error('Google sign-up failed');
+      if (error.code === 'auth/unauthorized-domain') {
+        toast.error('Domain not authorized in Firebase. Add your Vercel URL to Firebase Console > Auth > Settings > Authorized domains.', { duration: 6000 });
+      } else if (error.code !== 'auth/popup-closed-by-user') {
+        toast.error(error.message || 'Google sign-up failed');
       }
     } finally {
       setIsLoading(false);

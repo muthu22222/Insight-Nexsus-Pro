@@ -74,12 +74,33 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     setIsGoogleLoading(true);
     try {
-      await firebaseGoogleLogin();
+      const firebaseUser = await firebaseGoogleLogin();
+
+      // Sync user to MongoDB
+      try {
+        const token = await firebaseUser.getIdToken();
+        await fetch('/api/auth/sync-user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: firebaseUser.displayName || 'User',
+            email: firebaseUser.email,
+          }),
+        });
+      } catch {
+        // Continue if sync fails
+      }
+
       toast.success('Login successful!');
       router.push('/dashboard');
     } catch (error: any) {
-      if (error.code !== 'auth/popup-closed-by-user') {
-        toast.error('Google login failed');
+      if (error.code === 'auth/unauthorized-domain') {
+        toast.error('Domain not authorized in Firebase. Add your Vercel URL to Firebase Console > Auth > Settings > Authorized domains.', { duration: 6000 });
+      } else if (error.code !== 'auth/popup-closed-by-user') {
+        toast.error(error.message || 'Google login failed');
       }
     } finally {
       setIsGoogleLoading(false);

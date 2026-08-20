@@ -57,3 +57,69 @@ export function getImageFromBase64(base64: string): string {
   if (base64.startsWith("data:")) return base64;
   return `data:image/jpeg;base64,${base64}`;
 }
+
+export async function compressImageFile(
+  file: File,
+  maxWidth = 1280,
+  maxHeight = 1280,
+  quality = 0.82
+): Promise<{ file: File; dataUrl: string }> {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined") {
+      resolve({ file, dataUrl: "" });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth || height > maxHeight) {
+          if (width > height) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          } else {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL("image/jpeg", quality);
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const compressedFile = new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), {
+                  type: "image/jpeg",
+                  lastModified: Date.now(),
+                });
+                resolve({ file: compressedFile, dataUrl });
+              } else {
+                resolve({ file, dataUrl: (e.target?.result as string) || "" });
+              }
+            },
+            "image/jpeg",
+            quality
+          );
+        } else {
+          resolve({ file, dataUrl: (e.target?.result as string) || "" });
+        }
+      };
+      img.onerror = () => {
+        resolve({ file, dataUrl: (e.target?.result as string) || "" });
+      };
+      img.src = (e.target?.result as string) || "";
+    };
+    reader.onerror = () => {
+      resolve({ file, dataUrl: "" });
+    };
+    reader.readAsDataURL(file);
+  });
+}

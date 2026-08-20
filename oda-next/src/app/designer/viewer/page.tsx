@@ -216,10 +216,11 @@ export default function ViewerPage() {
         setIsSaved(true);
         toast.success('Project saved to MongoDB successfully!');
       } else {
-        toast.error('Failed to save project');
+        const errorData = await res.json().catch(() => ({}));
+        toast.error(errorData.error || `Failed to save project (${res.status})`);
       }
-    } catch {
-      toast.error('Network error saving project');
+    } catch (e: any) {
+      toast.error(e?.message || 'Network error saving project');
     } finally {
       setIsSaving(false);
     }

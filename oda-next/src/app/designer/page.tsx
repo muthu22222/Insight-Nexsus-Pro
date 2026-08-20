@@ -10,6 +10,8 @@ import { useDesignerStore } from '@/store/useDesignerStore';
 import { useAuth } from '@/contexts/AuthContext';
 import BackButton from '@/components/common/BackButton';
 
+import { compressImageFile } from '@/utils/helpers';
+
 const steps = [
   { id: 'upload', label: 'Upload' },
   { id: 'analysis', label: 'Analyze' },
@@ -62,16 +64,22 @@ function DesignerUploadContent() {
     loadProject();
   }, [projectIdParam, getToken, loadProjectState, router]);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const selected = acceptedFiles[0];
     if (!selected) return;
 
     // Reset previous upload state on selecting a new image
     clearPreviousUpload();
-    setFile(selected);
-    const reader = new FileReader();
-    reader.onload = () => setPreview(reader.result as string);
-    reader.readAsDataURL(selected);
+    try {
+      const { file: compressedFile, dataUrl } = await compressImageFile(selected);
+      setFile(compressedFile);
+      setPreview(dataUrl);
+    } catch {
+      setFile(selected);
+      const reader = new FileReader();
+      reader.onload = () => setPreview(reader.result as string);
+      reader.readAsDataURL(selected);
+    }
   }, [clearPreviousUpload]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

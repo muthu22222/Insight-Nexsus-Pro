@@ -272,7 +272,7 @@ export default function GeneratePage() {
         storeName: item.storeName || item.store || 'Amazon / Flipkart',
         amazonUrl: item.amazonUrl || getAmazonProductUrl(item.label || item.productName || 'Furniture'),
         flipkartUrl: item.flipkartUrl || getFlipkartProductUrl(item.label || item.productName || 'Furniture'),
-        image: item.image || (design.generatedImages && design.generatedImages[0]) || uploadedImage,
+        image: item.image && !item.image.startsWith('data:') ? item.image : '',
         rating: item.rating || 4.8,
         inStock: true,
       }));
@@ -337,11 +337,12 @@ export default function GeneratePage() {
         setIsSaveModalOpen(false);
         toast.success('Project saved to MongoDB successfully!');
       } else {
-        toast.error('Failed to save project. Please try again.');
+        const errorData = await res.json().catch(() => ({}));
+        toast.error(errorData.error || `Failed to save project (${res.status})`);
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      toast.error('Network error saving project');
+      toast.error(e?.message || 'Network error saving project');
     } finally {
       setIsSaving(false);
     }
