@@ -25,7 +25,7 @@ import BackButton from '@/components/common/BackButton';
 import FurnishedRoomView from '@/components/designer/FurnishedRoomView';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
 import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
-import type { AIDesign } from '@/types';
+import type { AIDesign, Hotspot } from '@/types';
 
 const steps = [
   { id: 'upload', label: 'Upload' },
@@ -142,31 +142,75 @@ export default function GeneratePage() {
       setGenerationProgress(100);
 
       const targetStyle = preferences.furnitureStyle || preferences.style || 'Modern';
-      const styleAsset = getDesignImagesForStyle(targetStyle);
+      const fallbackImages = getDesignImagesForStyle(targetStyle);
+      const heroImage = fallbackImages[0] || fallbackRoomImage;
+
+      const fallbackHotspots: Hotspot[] = [
+        {
+          id: 1,
+          x: 45,
+          y: 65,
+          label: `${targetStyle} Designer Sofa Suite`,
+          category: 'Living Room Seating',
+          description: `Custom ${targetStyle} low-profile seating tailored to the room perimeter.`,
+          price: '₹58,000',
+          store: 'Urban Ladder / Amazon',
+          brand: 'Designer Series',
+          material: 'Premium Textured Fabric',
+          match: 98,
+        },
+        {
+          id: 2,
+          x: 48,
+          y: 78,
+          label: 'Solid Teak & Marble Accent Coffee Table',
+          category: 'Tables',
+          description: 'Center focal table coordinating with room floor tones.',
+          price: '₹22,500',
+          store: 'Pepperfry / Amazon',
+          brand: 'Artisan Crafted',
+          material: 'Solid Wood & Stone',
+          match: 95,
+        },
+        {
+          id: 3,
+          x: 75,
+          y: 55,
+          label: 'Sculptural Arc Ambient Floor Lamp',
+          category: 'Lighting',
+          description: 'Warm ambient lighting supplementing natural window illumination.',
+          price: '₹12,800',
+          store: 'Amazon Home',
+          brand: 'Lumina',
+          material: 'Brushed Brass & Steel',
+          match: 94,
+        },
+        {
+          id: 4,
+          x: 48,
+          y: 85,
+          label: 'Hand-Tufted Wool Area Rug (8x10)',
+          category: 'Textiles & Rugs',
+          description: 'Plush acoustic softening rug framing the seating zone.',
+          price: '₹26,000',
+          store: 'Amazon / Flipkart',
+          brand: 'Jaipur Rugs',
+          material: '100% Pure Wool',
+          match: 96,
+        },
+      ];
 
       const clientDesign: AIDesign = {
         _id: `design_${Date.now()}`,
-        name: `${targetStyle} Room Redesign`,
+        projectId: activeProjectId || 'proj_temp',
         style: targetStyle,
         furnitureStyle: targetStyle,
         mood: preferences.mood || 'Warm',
         color: preferences.color || 'Neutral',
         budget: preferences.budget || 200000,
         description: `Complete ${targetStyle} redesign preserving room geometry, window lines, and spatial layout with matching showroom furniture pieces.`,
-        generatedImages: [styleAsset.heroImage],
-        furniture: styleAsset.hotspots.map((h, i) => ({
-          _id: `furn_${i + 1}`,
-          name: h.label,
-          productName: h.label,
-          category: h.category || 'Furniture',
-          price: parseInt(h.price.replace(/[^0-9]/g, '')) || 15000,
-          storeName: h.store || 'Amazon / Flipkart',
-          amazonUrl: h.amazonUrl,
-          flipkartUrl: h.flipkartUrl,
-          rating: 4.8,
-        })),
-        hotspots: styleAsset.hotspots,
-        roomAnalysis,
+        generatedImages: [heroImage],
+        hotspots: fallbackHotspots,
       };
 
       setDesign(clientDesign);
@@ -219,7 +263,7 @@ export default function GeneratePage() {
         return;
       }
 
-      const rawFurniture = design.furniture || design.hotspots || [];
+      const rawFurniture = (design.hotspots || []) as any[];
       const formattedFurniture = rawFurniture.map((item: any, i: number) => ({
         _id: String(item._id || item.id || `f_${i + 1}`),
         productName: item.productName || item.name || item.label || `Furniture Item ${i + 1}`,
@@ -316,7 +360,7 @@ export default function GeneratePage() {
 
   const redesignImage = design?.generatedImages?.[0] || fallbackRoomImage;
   const hotspots = design?.hotspots || [];
-  const itemCount = hotspots.length || (design?.furniture ? design.furniture.length : 0);
+  const itemCount = hotspots.length;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">

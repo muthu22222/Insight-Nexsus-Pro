@@ -45,7 +45,7 @@ function formatCurrency(amount: number) {
 }
 
 export default function DashboardPage() {
-  const { userData, loading: authLoading } = useAuth();
+  const { userData, loading: authLoading, getToken } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,7 +53,14 @@ export default function DashboardPage() {
   useEffect(() => {
     async function fetchProjects() {
       try {
-        const res = await fetch("/api/projects");
+        const token = await getToken();
+        if (!token) {
+          setLoading(false);
+          return;
+        }
+        const res = await fetch("/api/projects", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         if (res.ok) {
           const data = await res.json();
           if (data.success && data.data) {
@@ -72,7 +79,7 @@ export default function DashboardPage() {
     } else if (!authLoading) {
       setLoading(false);
     }
-  }, [userData, authLoading]);
+  }, [userData, authLoading, getToken]);
 
   const totalSavedDesigns = projects.reduce(
     (acc, p) => acc + (p.designs?.length || 0),

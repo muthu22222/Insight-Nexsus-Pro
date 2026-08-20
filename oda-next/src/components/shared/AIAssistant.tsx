@@ -27,7 +27,7 @@ export default function AIAssistant() {
       id: "1",
       role: "assistant",
       content:
-        "Hi! I'm your AI interior design assistant. I can help you with design ideas, furniture suggestions, budget planning, and more. How can I help you today?",
+        "Hi! I'm your Insight Nexsus AI design assistant. I can help you with interior styling ideas, furniture recommendations, budget optimization, and store matches. How can I help you today?",
       timestamp: new Date().toISOString(),
     },
   ]);
@@ -107,37 +107,39 @@ export default function AIAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-96 h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden"
+            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-96 h-[500px] bg-[#0c0c0e] rounded-2xl shadow-2xl border border-white/15 flex flex-col overflow-hidden text-white"
           >
-            <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-blue-600 to-violet-600">
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 text-black">
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-full bg-white/20 flex items-center justify-center">
-                  <Sparkles className="h-5 w-5 text-white" />
+                <div className="h-9 w-9 rounded-full bg-black/20 flex items-center justify-center">
+                  <Sparkles className="h-5 w-5 text-black" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-white">AI Assistant</h3>
-                  <p className="text-xs text-white/70">Ask me anything about design</p>
+                  <h3 className="text-sm font-black tracking-tight text-black">Insight Nexsus AI</h3>
+                  <p className="text-[11px] font-semibold text-black/80">Interior Design & Styling Expert</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-black/10 transition-colors text-black"
               >
-                <X className="h-4 w-4 text-white" />
+                <X className="h-4 w-4 stroke-[3]" />
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {/* Chat message list */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-black/40">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                    className={`max-w-[82%] rounded-2xl px-4 py-2.5 text-xs sm:text-sm leading-relaxed ${
                       msg.role === "user"
-                        ? "bg-blue-600 text-white rounded-br-md"
-                        : "bg-gray-100 text-gray-800 rounded-bl-md"
+                        ? "bg-gradient-to-r from-amber-500 to-orange-500 text-black font-semibold rounded-br-xs shadow-md"
+                        : "bg-[#18181b] text-gray-200 border border-white/10 rounded-bl-xs shadow-xs"
                     }`}
                   >
                     {msg.content}
@@ -146,11 +148,11 @@ export default function AIAssistant() {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-gray-100 rounded-2xl rounded-bl-md px-4 py-3">
-                    <div className="flex gap-1">
-                      <span className="h-2 w-2 bg-gray-400 rounded-full animate-bounce" />
-                      <span className="h-2 w-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.15s]" />
-                      <span className="h-2 w-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.3s]" />
+                  <div className="bg-[#18181b] border border-white/10 rounded-2xl rounded-bl-xs px-4 py-3">
+                    <div className="flex gap-1.5">
+                      <span className="h-2 w-2 bg-amber-400 rounded-full animate-bounce" />
+                      <span className="h-2 w-2 bg-amber-400 rounded-full animate-bounce [animation-delay:0.15s]" />
+                      <span className="h-2 w-2 bg-amber-400 rounded-full animate-bounce [animation-delay:0.3s]" />
                     </div>
                   </div>
                 </div>
@@ -159,12 +161,12 @@ export default function AIAssistant() {
             </div>
 
             {messages.length <= 2 && (
-              <div className="px-4 pb-2 flex flex-wrap gap-2">
+              <div className="px-4 py-2 bg-black/60 border-t border-white/5 flex flex-wrap gap-1.5">
                 {quickActions.map((action) => (
                   <button
                     key={action}
                     onClick={() => sendMessage(action)}
-                    className="px-3 py-1.5 text-xs font-medium bg-blue-50 text-blue-700 rounded-full hover:bg-blue-100 transition-colors"
+                    className="px-2.5 py-1 text-[11px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 rounded-full hover:bg-amber-500/25 transition-colors cursor-pointer"
                   >
                     {action}
                   </button>
@@ -172,23 +174,24 @@ export default function AIAssistant() {
               </div>
             )}
 
+            {/* Input Bar */}
             <form
               onSubmit={handleSubmit}
-              className="flex items-center gap-2 px-4 py-3 border-t border-gray-100"
+              className="flex items-center gap-2 px-4 py-3 border-t border-white/10 bg-black/80"
             >
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-1 px-4 py-2.5 text-sm bg-gray-50 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                placeholder="Ask about design, budget, furniture..."
+                className="flex-1 px-4 py-2 text-xs sm:text-sm bg-[#18181b] rounded-full border border-white/15 focus:outline-none focus:border-amber-400 text-white placeholder:text-gray-500 transition-all"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
-                className="h-10 w-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0"
+                className="h-9 w-9 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-black flex items-center justify-center hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0"
               >
-                <Send className="h-4 w-4" />
+                <Send className="h-4 w-4 stroke-[2.5]" />
               </button>
             </form>
           </motion.div>
@@ -196,15 +199,15 @@ export default function AIAssistant() {
       </AnimatePresence>
 
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.94 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-4 sm:right-6 z-50 h-14 w-14 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center"
+        className="fixed bottom-6 right-4 sm:right-6 z-50 h-14 w-14 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 text-black shadow-xl shadow-amber-500/25 flex items-center justify-center cursor-pointer"
       >
         {isOpen ? (
-          <X className="h-6 w-6" />
+          <X className="h-6 w-6 stroke-[3]" />
         ) : (
-          <MessageSquare className="h-6 w-6" />
+          <MessageSquare className="h-6 w-6 stroke-[2.5]" />
         )}
       </motion.button>
     </>

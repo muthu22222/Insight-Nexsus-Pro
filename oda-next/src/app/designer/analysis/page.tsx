@@ -107,7 +107,6 @@ export default function AnalysisPage() {
       toast.error(err.message || 'Failed to analyze room. Using default layout.');
       const fallbackAnalysis: RoomAnalysis = {
         roomType: 'Living Room',
-        dimensions: { length: 16, width: 14, height: 9.5, unit: 'ft' },
         lighting: 'Balanced Natural Light with Warm Recessed Lights',
         wallColor: 'Neutral Off-White / Alabaster',
         flooring: 'Light Natural Oak Hardwood',
@@ -117,7 +116,7 @@ export default function AnalysisPage() {
         ceiling: 'Recessed ceiling with warm LED strip accents',
         proportions: 'Spacious rectangular room with clear circulation paths',
         furniture: ['3-Seater Sofa', 'Coffee Table', 'TV Console Table'],
-        detectedItems: [],
+        emptyAreas: [],
         suggestedFurniture: [
           'Accent Armchair with Ottoman',
           'Modern Floor Lamp',
