@@ -39,9 +39,9 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12">
           {/* Logo & Description */}
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-1 text-xl font-bold tracking-tight mb-4">
-              <span className="text-white">ODA</span>
-              <span className="text-amber-500">NEXT</span>
+            <Link href="/" className="inline-flex items-center gap-1.5 text-xl font-bold tracking-tight mb-4">
+              <span className="text-white">Insight</span>
+              <span className="text-amber-500">Nexsus</span>
             </Link>
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
               AI-powered interior design. Upload your room, get a redesign, and
@@ -123,7 +123,7 @@ export default function Footer() {
       <div className="border-t border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-600 text-xs">
-            &copy; {new Date().getFullYear()} ODA Next. All rights reserved.
+            &copy; {new Date().getFullYear()} Insight Nexsus. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="text-gray-600 hover:text-gray-400 text-xs transition-colors duration-200">

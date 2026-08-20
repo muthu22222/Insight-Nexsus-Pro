@@ -69,18 +69,18 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
       <div className="flex items-center justify-between px-4 py-5">
         {!collapsed && (
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">ODA</span>
+            <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center shrink-0">
+              <span className="text-white font-bold text-xs tracking-wider">IN</span>
             </div>
             <span className="text-lg font-bold text-gray-900 tracking-tight">
-              ODA <span className="text-blue-600">NEXT</span>
+              Insight <span className="text-blue-600">Nexsus</span>
             </span>
           </Link>
         )}
         {collapsed && (
           <Link href="/dashboard" className="flex items-center justify-center w-full">
             <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">ODA</span>
+              <span className="text-white font-bold text-xs tracking-wider">IN</span>
             </div>
           </Link>
         )}

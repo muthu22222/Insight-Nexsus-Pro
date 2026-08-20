@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/contexts/AuthContext";
 import "./globals.css";
@@ -11,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ODA NEXT - AI Interior Design Platform",
+  title: "Insight Nexsus - AI Interior Design Platform",
   description:
     "Transform your living spaces with AI-powered interior design suggestions, furniture recommendations, and budget planning.",
   keywords: [
@@ -54,6 +55,14 @@ export default function RootLayout({
               iconTheme: { primary: "#ef4444", secondary: "#fff" },
             },
           }}
+        />
+        {/* External Chat Widget */}
+        <Script
+          src="http://127.0.0.1:8000/api/widget/embed.js"
+          data-org-id="7350e330-bff9-4497-a536-8d8254371eef"
+          data-position="bottom-right"
+          data-color="#2563eb"
+          strategy="afterInteractive"
         />
       </body>
     </html>

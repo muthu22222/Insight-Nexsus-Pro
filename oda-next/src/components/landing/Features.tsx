@@ -68,7 +68,7 @@ export default function Features() {
           className="text-center mb-16 md:mb-20"
         >
           <span className="text-amber-500 text-sm font-semibold tracking-widest uppercase">
-            Why ODA Next
+            Why Insight Nexsus
           </span>
           <h2 className="text-3xl md:text-5xl font-bold text-white mt-4">
             Everything You Need to Design Smarter

@@ -8,7 +8,7 @@ const testimonials = [
     name: "Sarah Chen",
     role: "Interior Designer",
     quote:
-      "ODA Next has completely changed how I present concepts to clients. What used to take days now takes minutes. The AI suggestions are shockingly accurate.",
+      "Insight Nexsus has completely changed how I present concepts to clients. What used to take days now takes minutes. The AI suggestions are shockingly accurate.",
     rating: 5,
   },
   {
@@ -22,7 +22,7 @@ const testimonials = [
     name: "Priya Patel",
     role: "Real Estate Stager",
     quote:
-      "For staging listings, ODA Next is invaluable. I can show buyers the potential of empty rooms instantly. My staging business has grown 40% since using it.",
+      "For staging listings, Insight Nexsus is invaluable. I can show buyers the potential of empty rooms instantly. My staging business has grown 40% since using it.",
     rating: 5,
   },
 ];

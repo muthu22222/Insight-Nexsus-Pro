@@ -112,7 +112,7 @@ export default function LoginPage() {
           <div className="text-center mb-8">
             <Link href="/" className="inline-block">
               <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-                ODA <span className="text-amber-600">NEXT</span>
+                Insight <span className="text-amber-600">Nexsus</span>
               </h1>
             </Link>
             <p className="text-gray-500 mt-2 text-sm">Welcome back. Sign in to continue.</p>

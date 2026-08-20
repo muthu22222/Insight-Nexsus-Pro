@@ -39,9 +39,9 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-1 text-xl md:text-2xl font-bold tracking-tight">
-            <span className="text-white">ODA</span>
-            <span className="text-amber-500">NEXT</span>
+          <Link href="/" className="flex items-center gap-1.5 text-xl md:text-2xl font-bold tracking-tight">
+            <span className="text-white">Insight</span>
+            <span className="text-amber-500">Nexsus</span>
           </Link>
 
           {/* Desktop Nav */}
