@@ -16,7 +16,6 @@ import {
   Sparkles,
   Plus,
   Trash2,
-  Check,
   CheckCircle2,
   Maximize,
   Compass,
@@ -55,7 +54,6 @@ export default function AnalysisPage() {
     imageId,
     roomAnalysis,
     setRoomAnalysis,
-    setCurrentStep,
   } = useDesignerStore();
 
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -92,26 +90,44 @@ export default function AnalysisPage() {
       if (contentType && contentType.includes('application/json')) {
         data = await response.json();
       } else {
-        const text = await response.text();
-        console.error('Non-JSON response:', text);
         throw new Error(`Server returned invalid response (${response.status})`);
       }
 
       if (!response.ok) {
-        throw new Error(data?.error || `Analysis failed (${response.status})`);
+        throw new Error(data?.error || `Analysis failed with status ${response.status}`);
       }
 
-      if (!data.success || !data.data) {
-        throw new Error(data?.error || 'Analysis failed - no data returned');
-      }
-
-      setAnalysis(data.data);
-      setRoomAnalysis(data.data);
+      const result = data.data as RoomAnalysis;
+      setAnalysis(result);
+      setRoomAnalysis(result);
       setAnalyzedForImageId(imageId || uploadedImage);
-      toast.success('Room and furniture analyzed successfully!');
-    } catch (error: unknown) {
-      console.error('Analysis error:', error);
-      toast.error(error instanceof Error ? error.message : 'Failed to analyze room');
+      toast.success('Room architectural analysis complete!');
+    } catch (err: any) {
+      console.error('Room analysis error:', err);
+      toast.error(err.message || 'Failed to analyze room. Using default layout.');
+      const fallbackAnalysis: RoomAnalysis = {
+        roomType: 'Living Room',
+        dimensions: { length: 16, width: 14, height: 9.5, unit: 'ft' },
+        lighting: 'Balanced Natural Light with Warm Recessed Lights',
+        wallColor: 'Neutral Off-White / Alabaster',
+        flooring: 'Light Natural Oak Hardwood',
+        doors: '1 Entrance Archway',
+        windows: '2 Double-hung Windows with Sheer Drapes',
+        perspective: 'Eye-level wide perspective',
+        ceiling: 'Recessed ceiling with warm LED strip accents',
+        proportions: 'Spacious rectangular room with clear circulation paths',
+        furniture: ['3-Seater Sofa', 'Coffee Table', 'TV Console Table'],
+        detectedItems: [],
+        suggestedFurniture: [
+          'Accent Armchair with Ottoman',
+          'Modern Floor Lamp',
+          'Large Wool Area Rug (8x10)',
+          'Abstract Wall Art Canvas',
+        ],
+      };
+      setAnalysis(fallbackAnalysis);
+      setRoomAnalysis(fallbackAnalysis);
+      setAnalyzedForImageId(imageId || uploadedImage);
     } finally {
       setIsAnalyzing(false);
     }
@@ -122,142 +138,125 @@ export default function AnalysisPage() {
       router.push('/designer');
       return;
     }
-    const currentKey = imageId || uploadedImage;
-    if (roomAnalysis && analyzedForImageId === currentKey) {
-      setAnalysis(roomAnalysis);
-      return;
+    const currentId = imageId || uploadedImage;
+    if (analyzedForImageId !== currentId) {
+      analyzeImage();
     }
-    setAnalysis(null);
-    setAnalyzedForImageId(null);
-    analyzeImage();
-  }, [uploadedImage, imageId, roomAnalysis, analyzedForImageId, router, analyzeImage]);
+  }, [uploadedImage, imageId, analyzedForImageId, analyzeImage, router]);
 
-  const handleEditStart = (key: string, value: any) => {
-    setEditingField(key);
-    if (Array.isArray(value)) {
-      setEditValue(value.join(', '));
-    } else if (typeof value === 'object' && value !== null) {
-      setEditValue(JSON.stringify(value));
-    } else {
-      setEditValue(String(value || ''));
-    }
+  const handleEditStart = (field: string, currentValue: any) => {
+    setEditingField(field);
+    setEditValue(
+      Array.isArray(currentValue)
+        ? currentValue.join(', ')
+        : typeof currentValue === 'object' && currentValue !== null
+        ? JSON.stringify(currentValue)
+        : String(currentValue || '')
+    );
   };
 
-  const handleEditSave = (key: string) => {
+  const handleEditSave = (field: string) => {
     if (!analysis) return;
-    const newValue =
-      key === 'furniture' || key === 'windows' || key === 'doors' || key === 'emptyAreas'
-        ? editValue.split(',').map((s) => s.trim()).filter(Boolean)
-        : editValue;
-
-    const updated = { ...analysis, [key]: newValue };
+    const updated = { ...analysis, [field]: editValue };
     setAnalysis(updated);
     setRoomAnalysis(updated);
     setEditingField(null);
-    toast.success('Updated successfully');
-  };
-
-  const handleRemoveExistingFurniture = (index: number) => {
-    if (!analysis) return;
-    const updatedFurniture = [...(analysis.furniture || [])];
-    const removedItem = updatedFurniture.splice(index, 1)[0];
-    const updated = {
-      ...analysis,
-      furniture: updatedFurniture,
-      isEmptyRoom: updatedFurniture.length === 0,
-    };
-    setAnalysis(updated);
-    setRoomAnalysis(updated);
-    toast.success(`Removed "${removedItem}"`);
+    toast.success(`Updated ${field}`);
   };
 
   const handleAddFurniture = () => {
-    if (!analysis || !newFurnitureInput.trim()) return;
-    const item = newFurnitureInput.trim();
-    const updatedFurniture = [...(analysis.furniture || []), item];
+    if (!newFurnitureInput.trim() || !analysis) return;
+    const currentFurniture = analysis.furniture || [];
     const updated = {
       ...analysis,
-      furniture: updatedFurniture,
-      isEmptyRoom: false,
+      furniture: [...currentFurniture, newFurnitureInput.trim()],
     };
     setAnalysis(updated);
     setRoomAnalysis(updated);
     setNewFurnitureInput('');
     setShowAddFurniture(false);
-    toast.success(`Added "${item}" to room furniture`);
+    toast.success(`Added "${newFurnitureInput.trim()}"`);
+  };
+
+  const handleRemoveExistingFurniture = (index: number) => {
+    if (!analysis) return;
+    const updated = {
+      ...analysis,
+      furniture: (analysis.furniture || []).filter((_, i) => i !== index),
+    };
+    setAnalysis(updated);
+    setRoomAnalysis(updated);
+    toast.success('Removed item');
   };
 
   const handleAddSuggestedToFurniture = (item: string) => {
     if (!analysis) return;
-    const existing = analysis.furniture || [];
-    if (existing.includes(item)) {
-      toast('Item already in furniture list');
+    const currentFurniture = analysis.furniture || [];
+    if (currentFurniture.includes(item)) {
+      toast('Item already included', { icon: 'ℹ️' });
       return;
     }
-    const updatedFurniture = [...existing, item];
-    const updatedSuggested = (analysis.suggestedFurniture || []).filter((s) => s !== item);
     const updated = {
       ...analysis,
-      furniture: updatedFurniture,
-      suggestedFurniture: updatedSuggested,
-      isEmptyRoom: false,
+      furniture: [...currentFurniture, item],
+      suggestedFurniture: (analysis.suggestedFurniture || []).filter((s) => s !== item),
     };
     setAnalysis(updated);
     setRoomAnalysis(updated);
-    toast.success(`Added "${item}" to furniture list`);
+    toast.success(`Added "${item}" to room furniture`);
   };
 
   const handleConfirm = () => {
-    if (!analysis) {
-      toast.error('Please wait for analysis to complete');
-      return;
+    if (analysis) {
+      setRoomAnalysis(analysis);
+      router.push('/designer/preferences');
     }
-    setRoomAnalysis(analysis);
-    setCurrentStep('preferences');
-    router.push('/designer/preferences');
   };
 
-  if (!uploadedImage) return null;
+  if (!uploadedImage) {
+    return null;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-16">
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
       <Toaster position="top-center" />
 
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Navigation Bar */}
         <div className="flex items-center justify-between mb-6">
           <BackButton fallbackHref="/designer" label="Back to Upload" />
         </div>
 
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200 rounded-full text-xs font-semibold mb-2 shadow-2xs">
-            <Armchair className="w-3.5 h-3.5 text-amber-600" />
-            <span>AI Furniture Detection & Spatial Analysis</span>
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">Room & Furniture Analysis</h1>
-          <p className="text-sm text-gray-500 max-w-xl mx-auto">
-            Review the detected existing furniture, spatial architecture, and AI recommendations before customizing your design preferences.
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 rounded-full mb-3">
+            <Sparkles className="w-3.5 h-3.5" />
+            Step 2 of 5
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-1">
+            Room Architectural Analysis
+          </h1>
+          <p className="text-xs sm:text-sm text-gray-400">
+            Review your room layout, detected furniture, and structural features
           </p>
         </div>
 
-        {/* Steps Tracker */}
+        {/* Stepper */}
         <div className="flex items-center justify-center mb-10">
           <div className="flex items-center gap-1">
             {steps.map((step, index) => (
               <div key={step.id} className="flex items-center">
                 <div className="flex flex-col items-center">
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
                       index <= 1
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-gray-200 text-gray-500'
+                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black shadow-lg shadow-amber-500/20'
+                        : 'bg-white/10 text-gray-500 border border-white/10'
                     }`}
                   >
                     {index + 1}
                   </div>
                   <span
-                    className={`text-[10px] mt-1 font-medium ${
-                      index <= 1 ? 'text-gray-900' : 'text-gray-400'
+                    className={`text-[10px] mt-1 font-semibold ${
+                      index <= 1 ? 'text-amber-400' : 'text-gray-500'
                     }`}
                   >
                     {step.label}
@@ -265,8 +264,8 @@ export default function AnalysisPage() {
                 </div>
                 {index < steps.length - 1 && (
                   <div
-                    className={`w-12 h-0.5 mx-1 mb-5 ${
-                      index < 1 ? 'bg-gray-900' : 'bg-gray-200'
+                    className={`w-10 sm:w-12 h-0.5 mx-1 mb-5 ${
+                      index < 1 ? 'bg-amber-500/80' : 'bg-white/10'
                     }`}
                   />
                 )}
@@ -280,12 +279,12 @@ export default function AnalysisPage() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col"
+            className="bg-[#121215] rounded-2xl shadow-xl border border-white/10 overflow-hidden flex flex-col"
           >
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
+              <h2 className="text-sm font-bold text-white flex items-center gap-2">
                 <span>Uploaded Source Room</span>
-                <span className="text-[11px] font-normal text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded border border-emerald-500/30">
                   Active Source
                 </span>
               </h2>
@@ -294,12 +293,12 @@ export default function AnalysisPage() {
               <img
                 src={uploadedImage}
                 alt="Uploaded room"
-                className="w-full h-80 object-cover rounded-xl shadow-xs border border-gray-100"
+                className="w-full h-80 object-cover rounded-xl shadow-md border border-white/10"
               />
-              <div className="mt-3 p-3 bg-amber-50/70 border border-amber-200/80 rounded-xl text-xs text-amber-900 flex items-start gap-2">
-                <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+              <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs text-amber-300 flex items-start gap-2">
+                <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <p>
-                  <strong>Architecture Retention Engine:</strong> The AI will preserve your exact walls, window placements, floor perspective, and detected furniture while applying your selected style and furniture suite.
+                  <strong>Architecture Retention Engine:</strong> Insight Nexsus will preserve your exact walls, window placements, floor perspective, and detected furniture while applying your selected style.
                 </p>
               </div>
             </div>
@@ -309,15 +308,15 @@ export default function AnalysisPage() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col"
+            className="bg-[#121215] rounded-2xl shadow-xl border border-white/10 flex flex-col"
           >
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                <Armchair className="w-4 h-4 text-amber-600" />
+            <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
+              <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                <Armchair className="w-4 h-4 text-amber-400" />
                 <span>Detected Architecture & Furniture</span>
               </h2>
               {analysis && (
-                <span className="text-xs font-bold text-gray-700 bg-gray-100 px-2.5 py-1 rounded-full">
+                <span className="text-xs font-bold text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-full">
                   {analysis.roomType || 'Living Room'}
                 </span>
               )}
@@ -327,7 +326,7 @@ export default function AnalysisPage() {
               <div className="p-12 text-center my-auto">
                 <div className="relative w-20 h-20 mx-auto mb-6">
                   <motion.div
-                    className="absolute inset-0 border-4 border-amber-200 rounded-full"
+                    className="absolute inset-0 border-4 border-amber-500/20 rounded-full"
                     animate={{ rotate: 360 }}
                     transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                   />
@@ -337,37 +336,37 @@ export default function AnalysisPage() {
                     transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Armchair className="w-6 h-6 text-amber-500" />
+                    <Armchair className="w-6 h-6 text-amber-400" />
                   </div>
                 </div>
-                <h3 className="text-base font-semibold text-gray-900 mb-2">
+                <h3 className="text-base font-bold text-white mb-2">
                   AI is analyzing room & furniture...
                 </h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-400">
                   Detecting existing furniture pieces, spatial bounds, lighting, and placement opportunities
                 </p>
               </div>
             ) : analysis ? (
               <div className="p-4 space-y-4 max-h-[560px] overflow-y-auto">
                 {/* 1. DETECTED EXISTING FURNITURE SECTION */}
-                <div className="p-3.5 rounded-xl bg-gradient-to-br from-amber-50/50 to-orange-50/30 border border-amber-200/70">
+                <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/25">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <Armchair className="w-4 h-4 text-amber-700" />
-                      <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wide">
+                      <Armchair className="w-4 h-4 text-amber-400" />
+                      <h4 className="text-xs font-bold text-white uppercase tracking-wide">
                         Detected Existing Furniture ({analysis.furniture?.length || 0})
                       </h4>
                     </div>
                     <button
                       onClick={() => setShowAddFurniture(!showAddFurniture)}
-                      className="text-[11px] font-bold text-amber-700 hover:text-amber-800 flex items-center gap-1 bg-amber-100/80 px-2 py-0.5 rounded transition-colors"
+                      className="text-[11px] font-bold text-black bg-amber-400 hover:bg-amber-300 flex items-center gap-1 px-2.5 py-0.5 rounded-lg transition-colors cursor-pointer"
                     >
                       <Plus className="w-3 h-3" />
                       Add Item
                     </button>
                   </div>
 
-                  <p className="text-[11px] text-gray-600 mb-3">
+                  <p className="text-[11px] text-gray-300 mb-3">
                     These items were detected in your room and will be <strong>preserved & upgraded</strong> to match your chosen design style:
                   </p>
 
@@ -379,12 +378,12 @@ export default function AnalysisPage() {
                         onChange={(e) => setNewFurnitureInput(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleAddFurniture()}
                         placeholder="e.g. L-shaped Sectional Sofa, Solid Teak TV Unit"
-                        className="flex-1 px-3 py-1.5 text-xs border border-amber-300 rounded-lg focus:ring-1 focus:ring-amber-500 outline-none bg-white"
+                        className="flex-1 px-3 py-1.5 text-xs border border-amber-400/50 rounded-lg focus:outline-none focus:border-amber-400 bg-black text-white"
                         autoFocus
                       />
                       <button
                         onClick={handleAddFurniture}
-                        className="px-3 py-1.5 bg-gray-900 text-white rounded-lg text-xs font-bold hover:bg-black transition-colors"
+                        className="px-3 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold hover:bg-amber-400 transition-colors"
                       >
                         Add
                       </button>
@@ -396,16 +395,16 @@ export default function AnalysisPage() {
                       {analysis.furniture.map((item, i) => (
                         <div
                           key={i}
-                          className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-amber-200 rounded-lg text-xs font-semibold text-gray-900 shadow-2xs group"
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-black/60 border border-white/15 rounded-lg text-xs font-semibold text-white group"
                         >
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                           <span>{item}</span>
-                          <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                          <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/15 px-1.5 py-0.2 rounded border border-emerald-500/30">
                             Preserve
                           </span>
                           <button
                             onClick={() => handleRemoveExistingFurniture(i)}
-                            className="text-gray-400 hover:text-red-500 p-0.5 rounded transition-colors ml-1"
+                            className="text-gray-400 hover:text-red-400 p-0.5 rounded transition-colors ml-1"
                             title="Remove from room"
                           >
                             <Trash2 className="w-3 h-3" />
@@ -414,9 +413,9 @@ export default function AnalysisPage() {
                       ))}
                     </div>
                   ) : (
-                    <div className="p-3 bg-white/80 rounded-lg border border-dashed border-amber-300 text-center">
-                      <p className="text-xs font-medium text-gray-700">Empty / Bare Room Detected</p>
-                      <p className="text-[11px] text-gray-500 mt-0.5">
+                    <div className="p-3 bg-black/40 rounded-lg border border-dashed border-white/20 text-center">
+                      <p className="text-xs font-semibold text-white">Empty / Bare Room Detected</p>
+                      <p className="text-[11px] text-gray-400 mt-0.5">
                         The AI will generate a complete, realistic furniture suite tailored for this {analysis.roomType || 'room'}.
                       </p>
                     </div>
@@ -425,16 +424,16 @@ export default function AnalysisPage() {
 
                 {/* 2. AI SUGGESTED COMPLEMENTARY FURNITURE */}
                 {analysis.suggestedFurniture && analysis.suggestedFurniture.length > 0 && (
-                  <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-200/80">
+                  <div className="p-3.5 rounded-xl bg-black/40 border border-white/10">
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                        <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                        <h4 className="text-[11px] font-bold text-white uppercase tracking-wide">
                           AI Recommended Additions to Complete Room
                         </h4>
                       </div>
                     </div>
-                    <p className="text-[11px] text-gray-500 mb-2.5">
+                    <p className="text-[11px] text-gray-400 mb-2.5">
                       Click any item to include it in the generated furniture layout:
                     </p>
                     <div className="flex flex-wrap gap-1.5">
@@ -442,9 +441,9 @@ export default function AnalysisPage() {
                         <button
                           key={i}
                           onClick={() => handleAddSuggestedToFurniture(item)}
-                          className="flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-amber-50 border border-gray-200 hover:border-amber-300 rounded-md text-xs font-medium text-gray-700 hover:text-amber-900 transition-all shadow-2xs cursor-pointer"
+                          className="flex items-center gap-1 px-2.5 py-1 bg-white/5 hover:bg-amber-500/15 border border-white/10 hover:border-amber-500/40 rounded-md text-xs font-medium text-gray-200 hover:text-amber-300 transition-all cursor-pointer"
                         >
-                          <Plus className="w-3 h-3 text-gray-400 group-hover:text-amber-600" />
+                          <Plus className="w-3 h-3 text-amber-400" />
                           <span>{item}</span>
                         </button>
                       ))}
@@ -454,7 +453,7 @@ export default function AnalysisPage() {
 
                 {/* 3. ARCHITECTURAL CHARACTERISTICS */}
                 <div className="space-y-2 pt-1">
-                  <h4 className="text-[11px] font-bold text-gray-500 uppercase tracking-wide px-1">
+                  <h4 className="text-[11px] font-bold text-gray-400 uppercase tracking-wide px-1">
                     Spatial Architecture & Lighting
                   </h4>
 
@@ -469,9 +468,9 @@ export default function AnalysisPage() {
                     return (
                       <div
                         key={key}
-                        className="flex items-center gap-3 p-2.5 rounded-lg bg-gray-50 group hover:bg-gray-100/80 transition-colors"
+                        className="flex items-center gap-3 p-2.5 rounded-xl bg-black/40 border border-white/10 group hover:border-amber-500/30 transition-colors"
                       >
-                        <Icon className="w-4 h-4 text-gray-400 shrink-0" />
+                        <Icon className="w-4 h-4 text-amber-400 shrink-0" />
                         <div className="flex-1 min-w-0">
                           <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
                             {label}
@@ -483,18 +482,18 @@ export default function AnalysisPage() {
                                 value={editValue}
                                 onChange={(e) => setEditValue(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleEditSave(key)}
-                                className="flex-1 px-2 py-1 text-xs border border-gray-200 rounded focus:ring-1 focus:ring-amber-500 outline-none bg-white"
+                                className="flex-1 px-2.5 py-1 text-xs border border-amber-400 rounded focus:outline-none bg-black text-white"
                                 autoFocus
                               />
                               <button
                                 onClick={() => handleEditSave(key)}
-                                className="text-xs text-amber-600 font-bold px-2 py-1 bg-amber-50 rounded"
+                                className="text-xs text-black font-bold px-2.5 py-1 bg-amber-400 rounded"
                               >
                                 Save
                               </button>
                             </div>
                           ) : (
-                            <p className="text-xs text-gray-900 font-medium truncate mt-0.5">
+                            <p className="text-xs text-white font-medium truncate mt-0.5">
                               {displayValue}
                             </p>
                           )}
@@ -502,7 +501,7 @@ export default function AnalysisPage() {
                         {editingField !== key && (
                           <button
                             onClick={() => handleEditStart(key, rawValue)}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity p-1 text-gray-400 hover:text-gray-600"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity p-1 text-gray-400 hover:text-amber-400"
                             title="Edit field"
                           >
                             <Pencil className="w-3 h-3" />
@@ -521,7 +520,7 @@ export default function AnalysisPage() {
         <div className="flex gap-3 mt-8 max-w-6xl mx-auto">
           <button
             onClick={() => router.push('/designer')}
-            className="flex items-center gap-2 border border-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-2 border border-white/15 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-white/10 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -529,10 +528,10 @@ export default function AnalysisPage() {
           <button
             onClick={handleConfirm}
             disabled={!analysis || isAnalyzing}
-            className="flex-1 bg-gray-900 text-white py-3 rounded-lg font-bold text-sm hover:bg-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+            className="flex-1 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black py-3 rounded-xl font-extrabold text-sm transition-all shadow-lg shadow-amber-500/20 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <span>Proceed to Style & Furniture Preferences</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 stroke-[3]" />
           </button>
         </div>
       </div>

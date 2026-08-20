@@ -140,13 +140,19 @@ export interface Store {
   lat: number;
   lng: number;
   rating: number;
-  city: string;
+  city?: string;
   category?: string;
   phone?: string;
   website?: string;
   timings?: string;
+  openingHours?: string;
   storeUrl?: string;
   distance?: number;
+  location?: {
+    type?: string;
+    coordinates?: [number, number];
+  };
+  source?: string;
 }
 
 export interface ApiResponse<T> {
