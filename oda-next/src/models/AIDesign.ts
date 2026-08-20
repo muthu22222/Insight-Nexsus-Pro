@@ -39,23 +39,23 @@ export const HotspotSchema = new Schema<IHotspot>(
   {
     id: {
       type: Schema.Types.Mixed,
-      default: 1,
+      default: () => new mongoose.Types.ObjectId().toString(),
     },
     x: {
       type: Number,
-      required: true,
+      default: 50,
     },
     y: {
       type: Number,
-      required: true,
+      default: 50,
     },
     label: {
       type: String,
-      required: true,
+      default: 'Furniture Item',
     },
     category: {
       type: String,
-      default: '',
+      default: 'Furniture',
     },
     description: {
       type: String,
@@ -63,7 +63,7 @@ export const HotspotSchema = new Schema<IHotspot>(
     },
     price: {
       type: Schema.Types.Mixed,
-      default: '',
+      default: 0,
     },
     store: {
       type: String,
@@ -117,7 +117,6 @@ export const AIDesignSchema = new Schema(
     },
     style: {
       type: String,
-      required: true,
       default: 'Modern',
     },
     furnitureStyle: {
@@ -126,17 +125,14 @@ export const AIDesignSchema = new Schema(
     },
     mood: {
       type: String,
-      required: true,
       default: 'Warm',
     },
     color: {
       type: String,
-      required: true,
       default: 'Neutral',
     },
     budget: {
       type: Number,
-      required: true,
       default: 200000,
     },
     description: {

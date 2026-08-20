@@ -59,7 +59,7 @@ const ProjectFurnitureSchema = new Schema<IProjectFurniture>(
     },
     name: {
       type: String,
-      required: true,
+      default: 'Furniture Item',
     },
     productName: {
       type: String,
@@ -75,7 +75,6 @@ const ProjectFurnitureSchema = new Schema<IProjectFurniture>(
     },
     price: {
       type: Number,
-      required: true,
       default: 0,
     },
     image: {
