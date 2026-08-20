@@ -1,5 +1,5 @@
 /**
- * Store Link Utility for ODA NEXT
+ * Store Link Utility for Insight Nexsus
  * Generates verified, guaranteed working live URLs for Amazon, Flipkart, and store retailers.
  * Prevents broken 404 / E002 error pages on Flipkart and Amazon.
  */

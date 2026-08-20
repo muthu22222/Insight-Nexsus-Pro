@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
           }
         }
 
-        const systemPrompt = `You are an AI interior design assistant for ODA NEXT, an Indian interior design platform.
+        const systemPrompt = `You are an AI interior design assistant for Insight Nexsus, an Indian interior design platform.
 You help users with room analysis, design suggestions, furniture recommendations, and budget planning.
 Always respond in a helpful, professional manner. Use Indian Rupees (₹) for currency.
 ${projectContext ? `\nContext about the current project: ${projectContext}` : ''}
@@ -69,7 +69,7 @@ Keep responses concise and actionable.`;
             const chat = model.startChat({
               history: [
                 { role: 'user', parts: [{ text: systemPrompt }] },
-                { role: 'model', parts: [{ text: 'Understood. I am ODA NEXT AI assistant, ready to help with interior design. How can I assist you today?' }] },
+                { role: 'model', parts: [{ text: 'Understood. I am Insight Nexsus AI assistant, ready to help with interior design. How can I assist you today?' }] },
                 ...conversationHistory.slice(0, -1),
               ],
             });

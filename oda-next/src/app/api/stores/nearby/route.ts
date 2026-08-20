@@ -36,7 +36,7 @@ async function geocodeLocation(query: string): Promise<{ lat: number; lng: numbe
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
     const res = await fetch(url, {
       headers: {
-        'User-Agent': 'ODANext/1.0 (Interior Design Studio Platform)',
+        'User-Agent': 'InsightNexsus/1.0 (Interior Design Studio Platform)',
       },
     });
     if (!res.ok) return null;
@@ -72,7 +72,7 @@ async function fetchFromOverpass(lat: number, lng: number, radiusMeters: number,
       const url = `${endpoint}?data=${encodeURIComponent(query)}`;
       const res = await fetch(url, {
         headers: {
-          'User-Agent': 'ODANext/1.0 (Interior Design Studio Platform)',
+          'User-Agent': 'InsightNexsus/1.0 (Interior Design Studio Platform)',
           Accept: 'application/json',
         },
       });
@@ -217,7 +217,7 @@ export async function GET(request: NextRequest) {
       data: uniqueStores,
       center: { lat, lng },
       count: uniqueStores.length,
-      source: 'OpenStreetMap Overpass API + ODA NEXT Database',
+      source: 'OpenStreetMap Overpass API + Insight Nexsus Database',
     });
   } catch (error) {
     console.error('Stores nearby error:', error);

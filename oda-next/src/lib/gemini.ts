@@ -108,7 +108,7 @@ export async function chatWithAssistant(
   message: string,
   context?: string
 ): Promise<string> {
-  const systemPrompt = `You are an AI interior design assistant for ODA NEXT, an Indian interior design platform.
+  const systemPrompt = `You are an AI interior design assistant for Insight Nexsus, an Indian interior design platform.
 You help users with room analysis, design suggestions, furniture recommendations, and budget planning.
 Always respond in a helpful, professional manner. Use Indian Rupees (₹) for currency.
 ${context ? `Context about the current project: ${context}` : ""}`;
