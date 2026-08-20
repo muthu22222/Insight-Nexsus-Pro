@@ -79,6 +79,9 @@ export default function StoresPage() {
             ? data.data
             : data.data.stores || [];
           setStores(list);
+          if (data.center && data.center.lat && data.center.lng) {
+            setUserLocation(data.center);
+          }
         }
       }
     } catch {
