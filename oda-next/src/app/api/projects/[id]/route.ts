@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import mongoose from 'mongoose';
 import Project from '@/models/Project';
 import { connectToDatabase } from '@/lib/mongodb';
 import { authenticate } from '@/lib/auth';
+
+function isValidObjectId(id: string) {
+  return mongoose.Types.ObjectId.isValid(id);
+}
 
 export async function GET(
   request: NextRequest,
@@ -12,10 +17,28 @@ export async function GET(
     await connectToDatabase();
     const { id } = await params;
 
-    const project = await Project.findOne({
-      _id: id,
-      userId: payload.userId,
-    });
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: 'Project ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const userIds = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    );
+
+    const query: any = {
+      userId: { $in: userIds },
+    };
+
+    if (isValidObjectId(id)) {
+      query._id = id;
+    } else {
+      query._id = id;
+    }
+
+    const project = await Project.findOne(query).lean();
 
     if (!project) {
       return NextResponse.json(
@@ -48,17 +71,32 @@ export async function PUT(
     await connectToDatabase();
     const { id } = await params;
 
-    const body = await request.json();
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: 'Project ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const userIds = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    );
+
+    const body = await request.json().catch(() => ({}));
+
+    // Prevent overriding ownership
+    delete body.userId;
+    delete body._id;
 
     const project = await Project.findOneAndUpdate(
-      { _id: id, userId: payload.userId },
+      { _id: id, userId: { $in: userIds } },
       { $set: body },
       { new: true, runValidators: true }
     );
 
     if (!project) {
       return NextResponse.json(
-        { success: false, error: 'Project not found' },
+        { success: false, error: 'Project not found or unauthorized' },
         { status: 404 }
       );
     }
@@ -78,6 +116,13 @@ export async function PUT(
   }
 }
 
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  return PUT(request, { params });
+}
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -87,14 +132,25 @@ export async function DELETE(
     await connectToDatabase();
     const { id } = await params;
 
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: 'Project ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const userIds = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    );
+
     const project = await Project.findOneAndDelete({
       _id: id,
-      userId: payload.userId,
+      userId: { $in: userIds },
     });
 
     if (!project) {
       return NextResponse.json(
-        { success: false, error: 'Project not found' },
+        { success: false, error: 'Project not found or unauthorized' },
         { status: 404 }
       );
     }

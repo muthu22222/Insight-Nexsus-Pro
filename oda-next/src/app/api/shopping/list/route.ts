@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Project from '@/models/Project';
+import Furniture from '@/models/Furniture';
 import FurnitureItem from '@/models/FurnitureItem';
 import { connectToDatabase } from '@/lib/mongodb';
 import { authenticate } from '@/lib/auth';
+import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,7 +14,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { projectId, furnitureItems } = body as {
       projectId: string;
-      furnitureItems: { furnitureId: string; quantity: number }[];
+      furnitureItems: { furnitureId?: string; name?: string; quantity: number; price?: number; store?: string; productLink?: string }[];
     };
 
     if (!projectId || !furnitureItems || !Array.isArray(furnitureItems)) {
@@ -22,9 +24,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const userIds = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    );
+
     const project = await Project.findOne({
       _id: projectId,
-      userId: payload.userId,
+      userId: { $in: userIds },
     });
 
     if (!project) {
@@ -34,30 +40,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const furnitureIds = furnitureItems.map((item) => item.furnitureId);
-    const furnitureDocs = await FurnitureItem.find({ _id: { $in: furnitureIds } });
+    const shoppingList = furnitureItems.map((item) => {
+      const pName = item.name || 'Furniture Item';
+      return {
+        furnitureId: item.furnitureId || '',
+        productName: pName,
+        name: pName,
+        quantity: item.quantity || 1,
+        price: item.price || 0,
+        store: item.store || 'Store',
+        productLink: item.productLink || '',
+        amazonUrl: getAmazonProductUrl(pName),
+        flipkartUrl: getFlipkartProductUrl(pName),
+        checked: false,
+      };
+    });
 
-    const furnitureMap = new Map(
-      furnitureDocs.map((f) => [f._id.toString(), f])
-    );
-
-    const shoppingList = furnitureItems
-      .map((item) => {
-        const furniture = furnitureMap.get(item.furnitureId);
-        if (!furniture) return null;
-
-        return {
-          furnitureId: furniture._id,
-          quantity: item.quantity || 1,
-          price: furniture.price,
-          store: furniture.storeName,
-          productLink: furniture.productUrl,
-          checked: false,
-        };
-      })
-      .filter(Boolean);
-
-    project.shoppingList = shoppingList as typeof project.shoppingList;
+    project.shoppingList = shoppingList as any;
     await project.save();
 
     return NextResponse.json({
@@ -90,10 +89,14 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const userIds = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    );
+
     const project = await Project.findOne({
       _id: projectId,
-      userId: payload.userId,
-    }).populate('shoppingList.furnitureId');
+      userId: { $in: userIds },
+    });
 
     if (!project) {
       return NextResponse.json(
@@ -104,7 +107,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: project.shoppingList,
+      data: project.shoppingList || [],
     });
   } catch (error) {
     console.error('Shopping list get error:', error);

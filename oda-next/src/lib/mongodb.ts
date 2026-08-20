@@ -20,21 +20,30 @@ if (!global.mongooseCache) {
 
 export async function connectToDatabase(): Promise<typeof mongoose> {
   if (!MONGODB_URI) {
-    throw new Error("MONGODB_URI not configured - using demo mode");
+    throw new Error("MONGODB_URI is not defined in environment variables");
   }
 
-  if (cached.conn) {
+  if (cached.conn && cached.conn.connection.readyState === 1) {
     return cached.conn;
   }
 
   if (!cached.promise) {
-    const opts = {
+    const opts: mongoose.ConnectOptions = {
       bufferCommands: false,
-      serverSelectionTimeoutMS: 2500,
-      connectTimeoutMS: 2500,
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((m) => m);
+    cached.promise = mongoose
+      .connect(MONGODB_URI, opts)
+      .then((m) => {
+        return m;
+      })
+      .catch((err) => {
+        cached.promise = null;
+        throw err;
+      });
   }
 
   try {
@@ -48,3 +57,4 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
 }
 
 export default connectToDatabase;
+

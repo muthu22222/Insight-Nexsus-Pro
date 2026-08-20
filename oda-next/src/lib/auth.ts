@@ -6,6 +6,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'oda-next-secret-key';
 
 export interface TokenPayload {
   userId: string;
+  firebaseUid?: string;
+  email?: string | null;
   role: 'user' | 'admin';
 }
 
@@ -21,7 +23,8 @@ export async function authenticate(
   request: NextRequest,
   options: { optional?: boolean } = {}
 ): Promise<TokenPayload> {
-  const authHeader = request.headers.get('Authorization');
+  const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+  
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     if (options.optional) {
       return { userId: 'guest-user', role: 'user' };
@@ -37,43 +40,77 @@ export async function authenticate(
     throw new Error('Unauthorized: Invalid token format');
   }
 
-  // Try Firebase token first
+  // 1. Try Firebase ID Token
   try {
     const decoded = await verifyFirebaseToken(token);
-    if (decoded.uid) {
-      // Look up user by firebaseUid or create on first login
+    if (decoded?.uid) {
+      const firebaseUid = decoded.uid;
+      const email = decoded.email?.toLowerCase() || '';
+
+      // Sync or lookup user in MongoDB
       try {
         const { connectToDatabase } = await import('@/lib/mongodb');
         const User = (await import('@/models/User')).default;
         await connectToDatabase();
 
-        let user = await User.findOne({ firebaseUid: decoded.uid });
-        if (!user && decoded.email) {
-          user = await User.findOne({ email: decoded.email.toLowerCase() });
+        let user = await User.findOne({ firebaseUid });
+        if (!user && email) {
+          user = await User.findOne({ email });
           if (user) {
-            user.firebaseUid = decoded.uid;
+            user.firebaseUid = firebaseUid;
             await user.save();
           }
         }
 
-        if (user) {
-          return { userId: user._id.toString(), role: user.role };
+        if (!user && email) {
+          try {
+            user = await User.create({
+              name: email.split('@')[0] || 'User',
+              email,
+              password: 'firebase-authenticated',
+              firebaseUid,
+              avatar: '',
+              role: 'user',
+            });
+          } catch (createErr) {
+            // If email already exists or duplicate key race condition, reload user
+            user = await User.findOne({ $or: [{ firebaseUid }, { email }] });
+          }
         }
-      } catch {
-        // DB not available, use demo fallback
+
+        if (user) {
+          return {
+            userId: user._id.toString(),
+            firebaseUid,
+            email: user.email,
+            role: user.role || 'user',
+          };
+        }
+      } catch (dbErr) {
+        console.warn('MongoDB user lookup in auth:', dbErr instanceof Error ? dbErr.message : dbErr);
       }
 
-      // If no MongoDB user found, create a virtual payload
-      return { userId: decoded.uid, role: 'user' };
+      return {
+        userId: firebaseUid,
+        firebaseUid,
+        email,
+        role: 'user',
+      };
     }
-  } catch {
-    // Not a Firebase token, try JWT
+  } catch (firebaseErr) {
+    // Not a Firebase token, try JWT next
   }
 
-  // Fallback to JWT (for demo mode)
+  // 2. Try JWT Token (e.g. for demo user / admin)
   try {
-    return verifyToken(token);
-  } catch {
+    const payload = verifyToken(token);
+    return {
+      userId: payload.userId,
+      firebaseUid: payload.firebaseUid || payload.userId,
+      email: payload.email,
+      role: payload.role || 'user',
+    };
+  } catch (jwtErr) {
     if (options.optional) {
       return { userId: 'guest-user', role: 'user' };
     }
@@ -82,9 +119,7 @@ export async function authenticate(
 }
 
 export function requireAdmin(request: NextRequest): TokenPayload {
-  // For admin routes, we need to check JWT-based admin role
-  // Firebase custom claims would be set via Firebase Admin SDK
-  const authHeader = request.headers.get('Authorization');
+  const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     throw new Error('Unauthorized: No token provided');
   }
@@ -94,7 +129,6 @@ export function requireAdmin(request: NextRequest): TokenPayload {
     throw new Error('Unauthorized: Invalid token format');
   }
 
-  // Try JWT first (for admin users)
   try {
     const payload = verifyToken(token);
     if (payload.role !== 'admin') {

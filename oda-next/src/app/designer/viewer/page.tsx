@@ -25,6 +25,8 @@ import {
   Send,
   Plus,
   Maximize2,
+  FolderCheck,
+  Loader2,
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
@@ -36,13 +38,24 @@ import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
 
 export default function ViewerPage() {
   const router = useRouter();
-  const { uploadedImage, selectedDesign, preferences } = useDesignerStore();
+  const { getToken } = useAuth();
+  const {
+    activeProjectId,
+    activeProjectName,
+    uploadedImage,
+    selectedDesign,
+    preferences,
+    roomAnalysis,
+    setActiveProject,
+  } = useDesignerStore();
   const [activeHotspot, setActiveHotspot] = useState<HotspotItem | null>(null);
   const [savedItems, setSavedItems] = useState<(string | number)[]>([]);
   const [viewMode, setViewMode] = useState<'redesign' | 'original' | 'split'>('redesign');
   const [sliderPosition, setSliderPosition] = useState(50);
   const [promptText, setPromptText] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const isDraggingRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -111,6 +124,109 @@ export default function ViewerPage() {
     toast.success('High-resolution design exported!');
   };
 
+  const handleSaveProject = async () => {
+    if (!selectedDesign) return;
+    setIsSaving(true);
+    try {
+      const token = await getToken();
+      if (!token) {
+        toast.error('Please login to save your project');
+        router.push('/auth/login');
+        return;
+      }
+
+      const furnitureList = activeHotspots.map((h) => {
+        const pName = h.label || 'Furniture Item';
+        const numPrice = typeof h.price === 'number' ? h.price : parseInt(String(h.price || '0').replace(/[^\d]/g, ''), 10) || 15000;
+        return {
+          name: pName,
+          productName: pName,
+          category: h.category || 'Furniture',
+          brand: h.brand || 'Retailer',
+          price: numPrice,
+          image: redesignImage,
+          description: h.description || '',
+          style: selectedDesign.style || 'Modern',
+          rating: 4.5,
+          amazonUrl: getAmazonProductUrl(pName, h.amazonUrl),
+          flipkartUrl: getFlipkartProductUrl(pName, h.flipkartUrl),
+          productUrl: h.productUrl || '',
+          storeName: h.store || 'Urban Ladder',
+          inStock: true,
+        };
+      });
+
+      const shoppingList = furnitureList.map((f) => ({
+        furnitureId: f.name,
+        productName: f.name,
+        category: f.category,
+        quantity: 1,
+        price: f.price,
+        store: f.storeName,
+        productLink: f.productUrl,
+        amazonUrl: f.amazonUrl,
+        flipkartUrl: f.flipkartUrl,
+        checked: false,
+      }));
+
+      const payload = {
+        projectId: activeProjectId || undefined,
+        name: activeProjectName || `${selectedDesign.style || 'Modern'} Room Project`,
+        originalImage: uploadedImage || '',
+        roomImage: uploadedImage || '',
+        generatedImage: redesignImage,
+        roomType: roomAnalysis?.roomType || 'Living Room',
+        roomAnalysis: roomAnalysis || {},
+        selectedStyle: selectedDesign.style || 'Modern',
+        style: selectedDesign.style || 'Modern',
+        mood: selectedDesign.mood || 'Warm',
+        colorPreference: selectedDesign.color || 'Neutral',
+        color: selectedDesign.color || 'Neutral',
+        budget: Number(selectedDesign.budget || 200000),
+        selectedDesign,
+        designs: [selectedDesign],
+        furniture: furnitureList,
+        furniturePrices: furnitureList.map((f) => f.price),
+        amazonUrls: furnitureList.map((f) => f.amazonUrl).filter(Boolean),
+        flipkartUrls: furnitureList.map((f) => f.flipkartUrl).filter(Boolean),
+        shoppingList,
+        budgetPlan: {
+          totalBudget: Number(selectedDesign.budget || 200000),
+          allocations: [
+            { category: 'Main Furniture', amount: Math.round(Number(selectedDesign.budget || 200000) * 0.5), percentage: 50 },
+            { category: 'Lighting & Decor', amount: Math.round(Number(selectedDesign.budget || 200000) * 0.25), percentage: 25 },
+            { category: 'Textiles & Rugs', amount: Math.round(Number(selectedDesign.budget || 200000) * 0.25), percentage: 25 },
+          ],
+          remaining: 0,
+          spent: furnitureList.reduce((acc, cur) => acc + cur.price, 0),
+        },
+        status: 'completed',
+      };
+
+      const res = await fetch('/api/projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setActiveProject(data.data._id, data.data.name);
+        setIsSaved(true);
+        toast.success('Project saved to MongoDB successfully!');
+      } else {
+        toast.error('Failed to save project');
+      }
+    } catch {
+      toast.error('Could not save project');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDraggingRef.current || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -172,6 +288,20 @@ export default function ViewerPage() {
           <div className="absolute top-4 left-4 z-40 flex items-center gap-2">
             <BackButton fallbackHref="/designer/generate" label="Back to Generate" variant="floating" />
             <div className="bg-black/75 backdrop-blur-xl border border-white/15 rounded-2xl px-2.5 py-1.5 flex items-center gap-2 shadow-2xl text-white">
+              <button
+                onClick={handleSaveProject}
+                disabled={isSaving}
+                className="flex items-center gap-1.5 px-2.5 py-1 bg-white/15 hover:bg-white/25 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer"
+              >
+                {isSaving ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : isSaved ? (
+                  <FolderCheck className="w-3.5 h-3.5 text-emerald-400" />
+                ) : (
+                  <Save className="w-3.5 h-3.5 text-amber-400" />
+                )}
+                <span>{isSaved ? 'Saved in MongoDB' : 'Save Project'}</span>
+              </button>
               <button
                 onClick={handleExport}
                 className="flex items-center gap-1.5 px-2.5 py-1 hover:bg-white/15 rounded-xl text-xs font-semibold text-white/90 transition-colors"

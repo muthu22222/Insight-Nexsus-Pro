@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useCallback, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
-import { Upload, X, Image as ImageIcon, Loader2, CheckCircle } from 'lucide-react';
+import { Upload, X, Image as ImageIcon, Loader2, CheckCircle, FolderOpen } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
 import { useAuth } from '@/contexts/AuthContext';
@@ -20,12 +20,47 @@ const steps = [
 
 export default function DesignerUploadPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const projectIdParam = searchParams.get('projectId');
   const { getToken } = useAuth();
-  const { setUploadedImage, clearPreviousUpload, setCurrentStep } = useDesignerStore();
+  const { setUploadedImage, clearPreviousUpload, setCurrentStep, loadProjectState } = useDesignerStore();
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [isLoadingProject, setIsLoadingProject] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+
+  // Load project from MongoDB if projectId is present in query parameters
+  useEffect(() => {
+    if (!projectIdParam) return;
+
+    const loadProject = async () => {
+      setIsLoadingProject(true);
+      try {
+        const token = await getToken();
+        if (!token) return;
+
+        const res = await fetch(`/api/projects/${projectIdParam}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.data) {
+            loadProjectState(data.data);
+            toast.success(`Loaded project "${data.data.name}"`);
+            router.push('/designer/generate');
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load project into designer:', e);
+      } finally {
+        setIsLoadingProject(false);
+      }
+    };
+
+    loadProject();
+  }, [projectIdParam, getToken, loadProjectState, router]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const selected = acceptedFiles[0];
@@ -104,7 +139,6 @@ export default function DesignerUploadPage() {
       const imageUrl = data.data?.imageUrl || data.imageUrl || preview;
       const imageId = data.data?.imageId || `img_${Date.now()}`;
 
-      // This atomically updates uploadedImage, imageId, and completely wipes previous roomAnalysis and generatedDesigns
       setUploadedImage(imageUrl, imageId);
       setCurrentStep('analysis');
 
@@ -119,6 +153,15 @@ export default function DesignerUploadPage() {
   };
 
   const handleContinue = handleUpload;
+
+  if (isLoadingProject) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-white space-y-4">
+        <Loader2 className="h-9 w-9 animate-spin text-blue-600" />
+        <p className="text-sm font-semibold text-gray-700">Loading your project from MongoDB...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

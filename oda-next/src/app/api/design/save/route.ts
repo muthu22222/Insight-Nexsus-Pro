@@ -18,9 +18,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const userIds = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    );
+
     const project = await Project.findOne({
       _id: projectId,
-      userId: payload.userId,
+      userId: { $in: userIds },
     });
 
     if (!project) {
@@ -63,9 +67,13 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const userIds = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    );
+
     const project = await Project.findOne({
       _id: projectId,
-      userId: payload.userId,
+      userId: { $in: userIds },
     });
 
     if (!project) {

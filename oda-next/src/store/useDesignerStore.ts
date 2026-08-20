@@ -2,6 +2,8 @@ import { create } from "zustand";
 import type { RoomAnalysis, AIDesign, DesignPreferences } from "@/types";
 
 interface DesignerState {
+  activeProjectId: string | null;
+  activeProjectName: string | null;
   imageId: string | null;
   uploadedImage: string | null;
   roomAnalysis: RoomAnalysis | null;
@@ -17,17 +19,22 @@ interface DesignerState {
   setGeneratedDesigns: (designs: AIDesign[]) => void;
   setSelectedDesign: (design: AIDesign | null) => void;
   setCurrentStep: (step: DesignerState["currentStep"]) => void;
+  setActiveProject: (id: string | null, name?: string | null) => void;
+  loadProjectState: (project: any) => void;
   reset: () => void;
 }
 
 const defaultPreferences: DesignPreferences = {
   style: "modern",
+  furnitureStyle: "modern",
   mood: "warm",
   color: "neutral",
   budget: 200000,
 };
 
 export const useDesignerStore = create<DesignerState>((set) => ({
+  activeProjectId: null,
+  activeProjectName: null,
   imageId: null,
   uploadedImage: null,
   roomAnalysis: null,
@@ -36,8 +43,6 @@ export const useDesignerStore = create<DesignerState>((set) => ({
   selectedDesign: null,
   currentStep: "upload",
 
-  // Setting a new uploaded image automatically wipes old room analysis and generated designs
-  // while preserving user design preferences (style, mood, color, budget)
   setUploadedImage: (image, imageId) =>
     set({
       uploadedImage: image,
@@ -49,6 +54,8 @@ export const useDesignerStore = create<DesignerState>((set) => ({
 
   clearPreviousUpload: () =>
     set({
+      activeProjectId: null,
+      activeProjectName: null,
       uploadedImage: null,
       imageId: null,
       roomAnalysis: null,
@@ -64,8 +71,49 @@ export const useDesignerStore = create<DesignerState>((set) => ({
   setGeneratedDesigns: (designs) => set({ generatedDesigns: designs }),
   setSelectedDesign: (design) => set({ selectedDesign: design }),
   setCurrentStep: (step) => set({ currentStep: step }),
+  setActiveProject: (id, name = null) =>
+    set({ activeProjectId: id, activeProjectName: name }),
+
+  loadProjectState: (project: any) => {
+    if (!project) return;
+    const roomImg = project.originalImage || project.roomImage || null;
+    const designs = Array.isArray(project.designs) && project.designs.length > 0
+      ? project.designs
+      : project.selectedDesign
+      ? [project.selectedDesign]
+      : [];
+
+    const activeDesign =
+      (typeof project.selectedDesign === 'object' && project.selectedDesign) ||
+      designs[project.selectedDesignIndex || 0] ||
+      designs[0] ||
+      null;
+
+    const prefs: DesignPreferences = {
+      style: project.selectedStyle || project.style || 'modern',
+      furnitureStyle: project.selectedStyle || project.style || 'modern',
+      mood: project.mood || 'warm',
+      color: project.colorPreference || project.color || 'neutral',
+      budget: Number(project.budget || 200000),
+    };
+
+    set({
+      activeProjectId: project._id,
+      activeProjectName: project.name,
+      uploadedImage: roomImg,
+      imageId: project._id,
+      roomAnalysis: project.roomAnalysis || null,
+      preferences: prefs,
+      generatedDesigns: designs,
+      selectedDesign: activeDesign,
+      currentStep: activeDesign ? 'viewer' : 'generate',
+    });
+  },
+
   reset: () =>
     set({
+      activeProjectId: null,
+      activeProjectName: null,
       imageId: null,
       uploadedImage: null,
       roomAnalysis: null,

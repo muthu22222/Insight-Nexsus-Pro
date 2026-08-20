@@ -20,6 +20,8 @@ import {
   DollarSign,
   Palette,
   Compass,
+  FolderCheck,
+  Eye,
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
@@ -42,6 +44,8 @@ export default function GeneratePage() {
   const router = useRouter();
   const { getToken } = useAuth();
   const {
+    activeProjectId,
+    activeProjectName,
     uploadedImage,
     imageId,
     roomAnalysis,
@@ -50,6 +54,7 @@ export default function GeneratePage() {
     setGeneratedDesigns,
     setSelectedDesign,
     setCurrentStep,
+    setActiveProject,
   } = useDesignerStore();
 
   const [isGenerating, setIsGenerating] = useState(true);
@@ -59,6 +64,12 @@ export default function GeneratePage() {
   const [viewMode, setViewMode] = useState<'redesign' | 'original' | 'split'>('redesign');
   const [sliderPosition, setSliderPosition] = useState(50);
   const [previewZoomOpen, setPreviewZoomOpen] = useState(false);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [projectNameInput, setProjectNameInput] = useState(
+    activeProjectName || `${preferences?.furnitureStyle || preferences?.style || 'Modern'} ${roomAnalysis?.roomType || 'Living Room'} Project`
+  );
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const isGeneratingRef = useRef(false);
 
   const fallbackRoomImage = uploadedImage || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&auto=format&fit=crop&q=85';
@@ -191,6 +202,120 @@ export default function GeneratePage() {
     generateDesign();
   };
 
+  const handleSaveProject = async () => {
+    if (!design) {
+      toast.error('No design to save');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const token = await getToken();
+      if (!token) {
+        toast.error('Please login to save your project');
+        router.push('/auth/login');
+        return;
+      }
+
+      const activeDesignImage = design.generatedImages?.[0] || fallbackRoomImage;
+      const furnitureList = (design.hotspots || []).map((h: any, idx: number) => {
+        const pName = h.label || `Item ${idx + 1}`;
+        const numPrice = typeof h.price === 'number' ? h.price : parseInt(String(h.price || '0').replace(/[^\d]/g, ''), 10) || 15000;
+        return {
+          name: pName,
+          productName: pName,
+          category: h.category || 'Furniture',
+          brand: h.brand || 'Retail Brand',
+          price: numPrice,
+          image: h.image || activeDesignImage,
+          description: h.description || '',
+          style: preferences.furnitureStyle || preferences.style || 'Modern',
+          rating: 4.5,
+          amazonUrl: getAmazonProductUrl(pName, h.amazonUrl),
+          flipkartUrl: getFlipkartProductUrl(pName, h.flipkartUrl),
+          productUrl: h.productUrl || '',
+          storeName: h.store || 'Urban Ladder',
+          inStock: true,
+        };
+      });
+
+      const shoppingList = furnitureList.map((f) => ({
+        furnitureId: f.name,
+        productName: f.name,
+        category: f.category,
+        quantity: 1,
+        price: f.price,
+        store: f.storeName,
+        productLink: f.productUrl,
+        amazonUrl: f.amazonUrl,
+        flipkartUrl: f.flipkartUrl,
+        checked: false,
+      }));
+
+      const payload = {
+        projectId: activeProjectId || undefined,
+        name: projectNameInput.trim() || `${preferences.furnitureStyle || 'Modern'} ${roomAnalysis?.roomType || 'Living Room'} Project`,
+        originalImage: uploadedImage || '',
+        roomImage: uploadedImage || '',
+        generatedImage: activeDesignImage,
+        roomType: roomAnalysis?.roomType || 'Living Room',
+        roomAnalysis: roomAnalysis || {},
+        selectedStyle: preferences.furnitureStyle || preferences.style || 'Modern',
+        style: preferences.furnitureStyle || preferences.style || 'Modern',
+        mood: preferences.mood || 'Warm',
+        colorPreference: preferences.color || 'Neutral',
+        color: preferences.color || 'Neutral',
+        budget: Number(preferences.budget || design.budget || 200000),
+        selectedDesign: design,
+        designs: [design],
+        furniture: furnitureList,
+        furniturePrices: furnitureList.map((f) => f.price),
+        amazonUrls: furnitureList.map((f) => f.amazonUrl).filter(Boolean),
+        flipkartUrls: furnitureList.map((f) => f.flipkartUrl).filter(Boolean),
+        shoppingList,
+        budgetPlan: {
+          totalBudget: Number(preferences.budget || 200000),
+          allocations: [
+            { category: 'Main Furniture', amount: Math.round(Number(preferences.budget || 200000) * 0.45), percentage: 45 },
+            { category: 'Lighting & Decor', amount: Math.round(Number(preferences.budget || 200000) * 0.25), percentage: 25 },
+            { category: 'Textiles & Rugs', amount: Math.round(Number(preferences.budget || 200000) * 0.15), percentage: 15 },
+            { category: 'Accessories', amount: Math.round(Number(preferences.budget || 200000) * 0.15), percentage: 15 },
+          ],
+          remaining: 0,
+          spent: furnitureList.reduce((acc, cur) => acc + cur.price, 0),
+        },
+        status: 'completed',
+      };
+
+      const res = await fetch('/api/projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || errorData.message || 'Failed to save project');
+      }
+
+      const resData = await res.json();
+      const savedProject = resData.data;
+
+      setActiveProject(savedProject._id, savedProject.name);
+      setIsSaved(true);
+      setIsSaveModalOpen(false);
+      toast.success('Project saved to MongoDB successfully!');
+    } catch (err: any) {
+      console.error('Save error:', err);
+      toast.error(err.message || 'Could not save project to database');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const redesignImage = design?.generatedImages?.[0] || fallbackRoomImage;
   const hotspots = design?.hotspots || [];
   const itemCount = hotspots.length;
@@ -203,6 +328,15 @@ export default function GeneratePage() {
         {/* Navigation Bar */}
         <div className="flex items-center justify-between mb-6">
           <BackButton fallbackHref="/designer/preferences" label="Back to Preferences" />
+          {isSaved && activeProjectId && (
+            <button
+              onClick={() => router.push(`/dashboard/projects/${activeProjectId}`)}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-semibold hover:bg-emerald-100 transition-colors"
+            >
+              <Eye className="w-3.5 h-3.5 text-emerald-600" />
+              <span>View in My Projects</span>
+            </button>
+          )}
         </div>
 
         {/* Header Title */}
@@ -513,11 +647,24 @@ export default function GeneratePage() {
                 Regenerate
               </button>
               <button
-                onClick={() => toast.success('Redesign saved to your project!')}
-                className="flex items-center gap-2 border border-gray-200 text-gray-700 px-5 py-2.5 rounded-lg font-medium text-sm hover:bg-gray-50 transition-colors"
+                onClick={() => setIsSaveModalOpen(true)}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm transition-colors ${
+                  isSaved
+                    ? 'bg-emerald-50 border border-emerald-300 text-emerald-700'
+                    : 'border border-gray-200 text-gray-700 hover:bg-gray-50'
+                }`}
               >
-                <Save className="w-4 h-4" />
-                Save Design
+                {isSaved ? (
+                  <>
+                    <FolderCheck className="w-4 h-4 text-emerald-600" />
+                    <span>Project Saved ✓</span>
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 text-blue-600" />
+                    <span>Save Project</span>
+                  </>
+                )}
               </button>
               <button
                 onClick={() => router.push('/furniture')}
@@ -536,6 +683,106 @@ export default function GeneratePage() {
           </div>
         ) : null}
       </div>
+
+      {/* Save Project Modal Dialog */}
+      <AnimatePresence>
+        {isSaveModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setIsSaveModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                    <Save className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 text-base">Save Design to Project</h3>
+                    <p className="text-xs text-gray-500">Persist full room design, furniture & shopping list to MongoDB</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsSaveModalOpen(false)}
+                  className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Project Name
+                  </label>
+                  <input
+                    type="text"
+                    value={projectNameInput}
+                    onChange={(e) => setProjectNameInput(e.target.value)}
+                    placeholder="e.g. Modern Living Room Redesign"
+                    className="w-full px-3.5 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+                    autoFocus
+                  />
+                </div>
+
+                <div className="bg-gray-50 rounded-xl p-3 text-xs space-y-1.5 text-gray-600 border border-gray-100">
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Room Type:</span>
+                    <span className="font-semibold text-gray-900">{roomAnalysis?.roomType || 'Living Room'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Style & Mood:</span>
+                    <span className="font-semibold text-gray-900">{preferences.furnitureStyle || 'Modern'} · {preferences.mood || 'Warm'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Furniture Count:</span>
+                    <span className="font-semibold text-gray-900">{itemCount} items with Amazon/Flipkart links</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Target Budget:</span>
+                    <span className="font-semibold text-gray-900">₹{Number(preferences.budget || 200000).toLocaleString('en-IN')}</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <button
+                    onClick={() => setIsSaveModalOpen(false)}
+                    className="flex-1 py-2.5 text-sm font-medium border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSaveProject}
+                    disabled={isSaving}
+                    className="flex-1 py-2.5 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-md disabled:opacity-50"
+                  >
+                    {isSaving ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Saving...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4" />
+                        <span>Confirm & Save</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Fullscreen Preview Modal */}
       <AnimatePresence>

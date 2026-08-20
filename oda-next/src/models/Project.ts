@@ -1,167 +1,122 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { AIDesignSchema, IAIDesign, HotspotSchema, IHotspot } from './AIDesign';
+import { RoomAnalysisSchema, IRoomAnalysis } from './RoomAnalysis';
+import { BudgetPlanSchema, IBudgetPlan, BudgetAllocationSchema, IBudgetAllocation } from './BudgetPlan';
+import { ShoppingListItemSchema, IShoppingListItem } from './ShoppingList';
+import { FurnitureSchema, IFurniture } from './Furniture';
 
-export interface IHotspot {
-  id: string;
-  x: number;
-  y: number;
-  label: string;
-  furnitureId: mongoose.Types.ObjectId;
-}
-
-export interface IDesign {
-  style: string;
-  mood: string;
-  color: string;
-  budget: number;
-  generatedImage: string;
-  hotspots: IHotspot[];
-}
-
-export interface IBudgetAllocation {
+export interface IProjectFurniture {
+  _id?: string;
+  name: string;
+  productName?: string;
   category: string;
-  amount: number;
-  percentage: number;
-}
-
-export interface IShoppingListItem {
-  furnitureId: mongoose.Types.ObjectId;
-  quantity: number;
+  brand: string;
   price: number;
-  store: string;
-  productLink: string;
-  checked: boolean;
+  image: string;
+  description: string;
+  style: string;
+  rating: number;
+  amazonUrl?: string | null;
+  flipkartUrl?: string | null;
+  productUrl: string;
+  storeName: string;
+  inStock?: boolean;
 }
 
 export interface IProject extends Document {
-  userId: mongoose.Types.ObjectId;
+  userId: string;
   name: string;
   roomImage: string;
   originalImage: string;
-  roomAnalysis: {
-    roomType: string;
-    wallColor: string;
-    flooring: string;
-    ceiling: string;
-    furniture: string[];
-    windows: string;
-    doors: string;
-    lighting: string;
-    emptyAreas: string[];
-    proportions: string;
-  };
-  designs: IDesign[];
+  generatedImage: string;
+  roomType: string;
+  selectedStyle: string;
+  style: string;
+  mood: string;
+  colorPreference: string;
+  color: string;
+  budget: number;
+  selectedDesign: any;
   selectedDesignIndex: number;
-  budgetPlan: {
-    totalBudget: number;
-    allocations: IBudgetAllocation[];
-    remaining: number;
-  };
+  roomAnalysis: any;
+  designs: IAIDesign[];
+  furniture: IProjectFurniture[];
+  furniturePrices: number[];
+  amazonUrls: string[];
+  flipkartUrls: string[];
+  budgetPlan: any;
   shoppingList: IShoppingListItem[];
-  status: 'draft' | 'analyzing' | 'generating' | 'completed';
+  status: 'draft' | 'analyzing' | 'designing' | 'completed';
   createdAt: Date;
   updatedAt: Date;
 }
 
-const HotspotSchema = new Schema<IHotspot>({
-  id: {
+const ProjectFurnitureSchema = new Schema<IProjectFurniture>({
+  name: {
     type: String,
     required: true,
   },
-  x: {
-    type: Number,
-    required: true,
-  },
-  y: {
-    type: Number,
-    required: true,
-  },
-  label: {
-    type: String,
-    required: true,
-  },
-  furnitureId: {
-    type: Schema.Types.ObjectId,
-    ref: 'FurnitureItem',
-  },
-});
-
-const DesignSchema = new Schema<IDesign>({
-  style: {
-    type: String,
-    required: true,
-  },
-  mood: {
-    type: String,
-    required: true,
-  },
-  color: {
-    type: String,
-    required: true,
-  },
-  budget: {
-    type: Number,
-    required: true,
-  },
-  generatedImage: {
+  productName: {
     type: String,
     default: '',
   },
-  hotspots: {
-    type: [HotspotSchema],
-    default: [],
-  },
-});
-
-const BudgetAllocationSchema = new Schema<IBudgetAllocation>({
   category: {
     type: String,
-    required: true,
+    default: 'Furniture',
   },
-  amount: {
-    type: Number,
-    required: true,
-  },
-  percentage: {
-    type: Number,
-    required: true,
-  },
-});
-
-const ShoppingListItemSchema = new Schema<IShoppingListItem>({
-  furnitureId: {
-    type: Schema.Types.ObjectId,
-    ref: 'FurnitureItem',
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-    default: 1,
+  brand: {
+    type: String,
+    default: '',
   },
   price: {
     type: Number,
     required: true,
+    default: 0,
   },
-  store: {
+  image: {
     type: String,
-    required: true,
+    default: '',
   },
-  productLink: {
+  description: {
     type: String,
-    required: true,
+    default: '',
   },
-  checked: {
+  style: {
+    type: String,
+    default: 'Modern',
+  },
+  rating: {
+    type: Number,
+    default: 4.5,
+  },
+  amazonUrl: {
+    type: String,
+    default: null,
+  },
+  flipkartUrl: {
+    type: String,
+    default: null,
+  },
+  productUrl: {
+    type: String,
+    default: '',
+  },
+  storeName: {
+    type: String,
+    default: 'Store',
+  },
+  inStock: {
     type: Boolean,
-    default: false,
+    default: true,
   },
 });
 
 const ProjectSchema = new Schema<IProject>(
   {
     userId: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
+      type: String,
+      required: [true, 'User ID is required'],
+      index: true,
     },
     name: {
       type: String,
@@ -176,69 +131,92 @@ const ProjectSchema = new Schema<IProject>(
       type: String,
       default: '',
     },
-    roomAnalysis: {
-      roomType: {
-        type: String,
-        default: '',
-      },
-      wallColor: {
-        type: String,
-        default: '',
-      },
-      flooring: {
-        type: String,
-        default: '',
-      },
-      ceiling: {
-        type: String,
-        default: '',
-      },
-      furniture: {
-        type: [String],
-        default: [],
-      },
-      windows: {
-        type: String,
-        default: '',
-      },
-      doors: {
-        type: String,
-        default: '',
-      },
-      lighting: {
-        type: String,
-        default: '',
-      },
-      emptyAreas: {
-        type: [String],
-        default: [],
-      },
-      proportions: {
-        type: String,
-        default: '',
-      },
+    generatedImage: {
+      type: String,
+      default: '',
     },
-    designs: {
-      type: [DesignSchema],
-      default: [],
+    roomType: {
+      type: String,
+      default: 'Living Room',
+    },
+    selectedStyle: {
+      type: String,
+      default: 'Modern',
+    },
+    style: {
+      type: String,
+      default: 'Modern',
+    },
+    mood: {
+      type: String,
+      default: 'Warm',
+    },
+    colorPreference: {
+      type: String,
+      default: 'Neutral',
+    },
+    color: {
+      type: String,
+      default: 'Neutral',
+    },
+    budget: {
+      type: Number,
+      default: 200000,
+    },
+    selectedDesign: {
+      type: Schema.Types.Mixed,
+      default: null,
     },
     selectedDesignIndex: {
       type: Number,
       default: 0,
     },
+    roomAnalysis: {
+      type: Schema.Types.Mixed,
+      default: () => ({
+        roomType: 'Living Room',
+        wallColor: '',
+        flooring: '',
+        ceiling: '',
+        furniture: [],
+        existingFurniture: [],
+        suggestedFurniture: [],
+        isEmptyRoom: false,
+        windows: '',
+        doors: '',
+        lighting: '',
+        emptyAreas: [],
+        proportions: '',
+      }),
+    },
+    designs: {
+      type: [AIDesignSchema],
+      default: [],
+    },
+    furniture: {
+      type: [ProjectFurnitureSchema],
+      default: [],
+    },
+    furniturePrices: {
+      type: [Number],
+      default: [],
+    },
+    amazonUrls: {
+      type: [String],
+      default: [],
+    },
+    flipkartUrls: {
+      type: [String],
+      default: [],
+    },
     budgetPlan: {
-      totalBudget: {
-        type: Number,
-        default: 0,
-      },
-      allocations: {
-        type: [BudgetAllocationSchema],
-        default: [],
-      },
-      remaining: {
-        type: Number,
-        default: 0,
-      },
+      type: Schema.Types.Mixed,
+      default: () => ({
+        totalBudget: 200000,
+        allocations: [],
+        remaining: 200000,
+        spent: 0,
+      }),
     },
     shoppingList: {
       type: [ShoppingListItemSchema],
@@ -246,8 +224,8 @@ const ProjectSchema = new Schema<IProject>(
     },
     status: {
       type: String,
-      enum: ['draft', 'analyzing', 'generating', 'completed'],
-      default: 'draft',
+      enum: ['draft', 'analyzing', 'designing', 'completed'],
+      default: 'completed',
     },
   },
   {
@@ -255,9 +233,19 @@ const ProjectSchema = new Schema<IProject>(
   }
 );
 
-ProjectSchema.index({ userId: 1 });
+ProjectSchema.index({ userId: 1, createdAt: -1 });
 
 const Project =
   mongoose.models.Project || mongoose.model<IProject>('Project', ProjectSchema);
 
 export default Project;
+export {
+  ProjectSchema,
+  HotspotSchema,
+  AIDesignSchema,
+  RoomAnalysisSchema,
+  BudgetPlanSchema,
+  BudgetAllocationSchema,
+  ShoppingListItemSchema,
+  FurnitureSchema,
+};
