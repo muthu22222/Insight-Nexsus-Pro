@@ -68,9 +68,11 @@ export async function POST(request: NextRequest) {
     }
   } catch (error) {
     console.error('Sync user error:', error);
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    const status = message.includes('token') || message.includes('Unauthorized') ? 401 : 500;
     return NextResponse.json(
-      { success: false, error: 'Internal server error' },
-      { status: 500 }
+      { success: false, error: message },
+      { status }
     );
   }
 }
