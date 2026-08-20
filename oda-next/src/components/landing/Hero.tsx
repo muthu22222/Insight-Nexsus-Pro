@@ -292,39 +292,6 @@ export default function Hero() {
             transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6 w-full relative"
           >
-            {/* Floating Glassmorphism Badge 1 (Top Left Overhang) */}
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-5 -left-4 z-30 hidden sm:flex items-center gap-2.5 bg-black/85 backdrop-blur-xl border border-white/20 px-3.5 py-2 rounded-xl shadow-2xl"
-            >
-              <div className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
-                <Zap className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="text-[11px] font-bold text-white">AI Vision Engine</p>
-                <p className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                  Rendered in 2.4s
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Floating Glassmorphism Badge 2 (Bottom Right Overhang) */}
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-              className="absolute -bottom-5 -right-4 z-30 hidden sm:flex items-center gap-2.5 bg-black/85 backdrop-blur-xl border border-white/20 px-3.5 py-2 rounded-xl shadow-2xl"
-            >
-              <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400">
-                <ShoppingBag className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="text-[11px] font-bold text-white">Live Store Match</p>
-                <p className="text-[10px] text-amber-300 font-semibold">1,200+ Catalog Products</p>
-              </div>
-            </motion.div>
-
             {/* Main Interactive Carousel Container */}
             <div
               onMouseEnter={() => setIsPaused(true)}
