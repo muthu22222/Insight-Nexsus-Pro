@@ -94,9 +94,13 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Auth /me error:', error);
     const message = error instanceof Error ? error.message : 'Internal server error';
-    const status = message.includes('Unauthorized') ? 401 : 500;
+    const status = message.toLowerCase().includes('unauthorized') ||
+      message.toLowerCase().includes('token') ||
+      message.toLowerCase().includes('expired') ||
+      message.toLowerCase().includes('bearer')
+        ? 401
+        : 500;
     return NextResponse.json(
       { success: false, error: message },
       { status }

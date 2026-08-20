@@ -173,54 +173,69 @@ async function resolveAndSaveGeneratedImage(
   fallbackUrl: string,
   designId: string
 ): Promise<string> {
-  const generatedDir = path.join(process.cwd(), 'public', 'generated');
-  if (!fs.existsSync(generatedDir)) {
-    fs.mkdirSync(generatedDir, { recursive: true });
-  }
-
-  const localFileName = `${designId}.jpg`;
-  const localFilePath = path.join(generatedDir, localFileName);
-  const publicUrl = `/generated/${localFileName}`;
-
   const fluxAiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1280&height=853&model=flux&seed=${baseSeed}&nologo=true`;
 
   try {
-    const res = await fetch(fluxAiUrl, { signal: AbortSignal.timeout(8000) });
-    if (res.ok) {
-      const buffer = await res.arrayBuffer();
-      if (buffer.byteLength > 5000) {
-        fs.writeFileSync(localFilePath, Buffer.from(buffer));
-        return publicUrl;
-      }
-    }
-  } catch (e) {
-    console.warn('[Design Generate] AI endpoint fetch timed out or failed, using curated image:', e instanceof Error ? e.message : e);
-  }
-
-  // If remote generation is slow, copy or fetch fallback image and save locally
-  if (fallbackUrl.startsWith('/')) {
+    const generatedDir = path.join(process.cwd(), 'public', 'generated');
     try {
-      const srcPath = path.join(process.cwd(), 'public', fallbackUrl.startsWith('/') ? fallbackUrl.slice(1) : fallbackUrl);
-      if (fs.existsSync(srcPath)) {
-        fs.copyFileSync(srcPath, localFilePath);
-        return publicUrl;
+      if (!fs.existsSync(generatedDir)) {
+        fs.mkdirSync(generatedDir, { recursive: true });
       }
-    } catch (copyErr) {
-      console.warn('Failed to copy local design asset:', copyErr);
+    } catch {}
+
+    const localFileName = `${designId}.jpg`;
+    const localFilePath = path.join(generatedDir, localFileName);
+    const publicUrl = `/generated/${localFileName}`;
+
+    try {
+      const res = await fetch(fluxAiUrl, { signal: AbortSignal.timeout(8000) });
+      if (res.ok) {
+        const buffer = await res.arrayBuffer();
+        if (buffer.byteLength > 5000) {
+          try {
+            fs.writeFileSync(localFilePath, Buffer.from(buffer));
+            return publicUrl;
+          } catch {
+            return fluxAiUrl;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('[Design Generate] AI endpoint fetch timed out or failed, using curated image:', e instanceof Error ? e.message : e);
     }
+
+    if (fallbackUrl.startsWith('/')) {
+      try {
+        const srcPath = path.join(process.cwd(), 'public', fallbackUrl.startsWith('/') ? fallbackUrl.slice(1) : fallbackUrl);
+        if (fs.existsSync(srcPath)) {
+          try {
+            fs.copyFileSync(srcPath, localFilePath);
+            return publicUrl;
+          } catch {
+            return fallbackUrl;
+          }
+        }
+      } catch {}
+      return fallbackUrl;
+    }
+
+    try {
+      const resFallback = await fetch(fallbackUrl, { signal: AbortSignal.timeout(5000) });
+      if (resFallback.ok) {
+        const buffer = await resFallback.arrayBuffer();
+        try {
+          fs.writeFileSync(localFilePath, Buffer.from(buffer));
+          return publicUrl;
+        } catch {
+          return fallbackUrl;
+        }
+      }
+    } catch {}
+
     return fallbackUrl;
+  } catch {
+    return fluxAiUrl || fallbackUrl;
   }
-
-  try {
-    const resFallback = await fetch(fallbackUrl, { signal: AbortSignal.timeout(5000) });
-    if (resFallback.ok) {
-      const buffer = await resFallback.arrayBuffer();
-      fs.writeFileSync(localFilePath, Buffer.from(buffer));
-      return publicUrl;
-    }
-  } catch {}
-
-  return fallbackUrl;
 }
 
 export async function POST(request: NextRequest) {
