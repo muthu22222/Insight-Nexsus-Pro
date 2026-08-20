@@ -133,18 +133,20 @@ function DesignerUploadContent() {
 
       if (res.ok) {
         const data = await res.json();
-        setUploadedImage(data.data.url, preview);
+        const uploadedUrl = data.data?.imageUrl || data.data?.url || preview;
+        const uploadedId = data.data?.imageId || `room_${Date.now()}`;
+        setUploadedImage(uploadedUrl, uploadedId);
         toast.success('Room photo uploaded successfully!');
         router.push('/designer/analysis');
       } else {
         const errorData = await res.json().catch(() => ({}));
         toast.error(errorData.error || 'Failed to upload image. Using local preview.');
-        setUploadedImage(preview, preview);
+        setUploadedImage(preview, `room_${Date.now()}`);
         router.push('/designer/analysis');
       }
     } catch {
       toast.error('Network error during upload. Continuing with local preview.');
-      setUploadedImage(preview, preview);
+      setUploadedImage(preview, `room_${Date.now()}`);
       router.push('/designer/analysis');
     } finally {
       setIsUploading(false);

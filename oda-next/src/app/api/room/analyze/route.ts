@@ -224,7 +224,7 @@ Provide ONLY the JSON output without any markdown or conversational text.`;
               console.log(`[Room Analyze] Attempting vision analysis with model: ${modelName} for image ${imageId || 'new'}`);
               const model = genAI.getGenerativeModel({ model: modelName });
               const timeoutPromise = new Promise<never>((_, reject) =>
-                setTimeout(() => reject(new Error('AI timeout')), 6500)
+                setTimeout(() => reject(new Error('AI timeout')), 15000)
               );
               const resultPromise = model.generateContent([
                 prompt,
