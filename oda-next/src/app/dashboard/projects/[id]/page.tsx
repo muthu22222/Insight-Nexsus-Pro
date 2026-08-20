@@ -190,7 +190,7 @@ export default function ProjectDetailPage() {
     const doc = new jsPDF();
 
     doc.setFontSize(20);
-    doc.text(`ODA NEXT - ${project.name}`, 20, 20);
+    doc.text(`Insight Nexsus - ${project.name}`, 20, 20);
     doc.setFontSize(12);
     doc.text(`Room Type: ${project.roomType || project.roomAnalysis?.roomType || 'Living Room'}`, 20, 30);
     doc.text(`Status: ${project.status || 'Completed'}`, 20, 38);
