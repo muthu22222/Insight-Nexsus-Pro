@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
-import { Upload, X, Image as ImageIcon, Loader2, CheckCircle, FolderOpen } from 'lucide-react';
+import { Upload, X, Image as ImageIcon, Loader2, CheckCircle } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
 import { useAuth } from '@/contexts/AuthContext';
@@ -18,7 +18,7 @@ const steps = [
   { id: 'viewer', label: 'Viewer' },
 ];
 
-export default function DesignerUploadPage() {
+function DesignerUploadContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const projectIdParam = searchParams.get('projectId');
@@ -320,5 +320,19 @@ export default function DesignerUploadPage() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+export default function DesignerUploadPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center bg-white">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        </div>
+      }
+    >
+      <DesignerUploadContent />
+    </Suspense>
   );
 }
