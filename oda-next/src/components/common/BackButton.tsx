@@ -8,7 +8,7 @@ export interface BackButtonProps {
   /**
    * Explicit route to navigate back to.
    * If provided, router.push(fallbackHref) is used.
-   * If not provided, window.history.back() or router.back() is used.
+   * If not provided, window.history.back() or router.push('/dashboard') is used.
    */
   fallbackHref?: string;
   /**
@@ -34,12 +34,12 @@ export interface BackButtonProps {
 }
 
 export default function BackButton({
-  fallbackHref,
-  label = 'Back',
+  fallbackHref = '/dashboard',
+  label = 'Back to Dashboard',
   variant = 'default',
   className = '',
   onClick,
-  ariaLabel = 'Go back to previous page',
+  ariaLabel = 'Go back to dashboard',
 }: BackButtonProps) {
   const router = useRouter();
 
@@ -55,7 +55,7 @@ export default function BackButton({
       if (typeof window !== 'undefined' && window.history.length > 1) {
         router.back();
       } else {
-        router.push('/');
+        router.push('/dashboard');
       }
     }
   };

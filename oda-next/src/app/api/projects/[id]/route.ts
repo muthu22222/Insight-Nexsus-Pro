@@ -24,19 +24,14 @@ export async function GET(
       );
     }
 
-    const userIds = Array.from(
-      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    const userIds: string[] = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter((x): x is string => Boolean(x)))
     );
 
     const query: any = {
       userId: { $in: userIds },
+      _id: id,
     };
-
-    if (isValidObjectId(id)) {
-      query._id = id;
-    } else {
-      query._id = id;
-    }
 
     const project = await Project.findOne(query).lean();
 
@@ -78,8 +73,8 @@ export async function PUT(
       );
     }
 
-    const userIds = Array.from(
-      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    const userIds: string[] = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter((x): x is string => Boolean(x)))
     );
 
     const body = await request.json().catch(() => ({}));
@@ -91,7 +86,7 @@ export async function PUT(
     const project = await Project.findOneAndUpdate(
       { _id: id, userId: { $in: userIds } },
       { $set: body },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!project) {
@@ -139,8 +134,8 @@ export async function DELETE(
       );
     }
 
-    const userIds = Array.from(
-      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    const userIds: string[] = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter((x): x is string => Boolean(x)))
     );
 
     const project = await Project.findOneAndDelete({
@@ -157,7 +152,7 @@ export async function DELETE(
 
     return NextResponse.json({
       success: true,
-      data: { message: 'Project deleted successfully' },
+      message: 'Project deleted successfully',
     });
   } catch (error) {
     console.error('Project delete error:', error);

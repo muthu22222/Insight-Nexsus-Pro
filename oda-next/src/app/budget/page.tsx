@@ -174,7 +174,7 @@ export default function BudgetPage() {
           >
             <Menu className="h-5 w-5 text-gray-600" />
           </button>
-          <BackButton fallbackHref="/" label="Back" variant="subtle" />
+          <BackButton fallbackHref="/dashboard" label="Back" variant="subtle" />
           <div className="flex-1">
             <h1 className="text-xl font-bold text-gray-900">Budget Planner</h1>
             <p className="text-sm text-gray-500 mt-0.5">

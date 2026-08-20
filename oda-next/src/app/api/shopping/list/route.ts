@@ -24,8 +24,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const userIds = Array.from(
-      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    const userIds: string[] = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter((x): x is string => Boolean(x)))
     );
 
     const project = await Project.findOne({
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
       data: project.shoppingList,
     });
   } catch (error) {
-    console.error('Shopping list create error:', error);
+    console.error('Shopping list save error:', error);
     const message = error instanceof Error ? error.message : 'Internal server error';
     const status = message.includes('Unauthorized') ? 401 : 500;
     return NextResponse.json(
@@ -89,8 +89,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const userIds = Array.from(
-      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    const userIds: string[] = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter((x): x is string => Boolean(x)))
     );
 
     const project = await Project.findOne({

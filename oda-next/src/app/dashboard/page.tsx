@@ -112,7 +112,6 @@ export default function DashboardPage() {
           >
             <Menu className="h-5 w-5 text-gray-600" />
           </button>
-          <BackButton fallbackHref="/" label="Back" variant="subtle" />
           <div className="flex-1">
             <h1 className="text-xl font-bold text-gray-900">
               Welcome back, {userData?.name?.split(" ")[0] || "Designer"} 👋

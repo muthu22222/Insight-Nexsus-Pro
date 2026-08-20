@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const userIds = Array.from(
-      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    const userIds: string[] = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter((x): x is string => Boolean(x)))
     );
 
     const project = await Project.findOne({
@@ -67,8 +67,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const userIds = Array.from(
-      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    const userIds: string[] = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter((x): x is string => Boolean(x)))
     );
 
     const project = await Project.findOne({

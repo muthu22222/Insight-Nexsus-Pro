@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
     const payload = await authenticate(request);
     await connectToDatabase();
 
-    const userIds = Array.from(
-      new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+    const userIds: string[] = Array.from(
+      new Set([payload.userId, payload.firebaseUid].filter((x): x is string => Boolean(x)))
     );
 
     const projects = await Project.find({
@@ -65,45 +65,57 @@ export async function POST(request: NextRequest) {
       projectId,
     } = body;
 
-    const projectName =
-      name?.trim() ||
-      `${selectedStyle || style || 'Modern'} ${roomType || 'Living Room'} Project`;
-
     const primaryUserId = payload.firebaseUid || payload.userId;
+
+    const projectName =
+      (typeof name === 'string' && name.trim()) ||
+      `${selectedStyle || style || 'Modern'} ${roomType || roomAnalysis?.roomType || 'Room'} Project`;
+
     const origImg = originalImage || roomImage || '';
     const genImg =
       generatedImage ||
+      (selectedDesign && (selectedDesign.generatedImage || selectedDesign.generatedImages?.[0])) ||
       (Array.isArray(designs) && designs[0]?.generatedImages?.[0]) ||
-      selectedDesign?.generatedImages?.[0] ||
       '';
 
-    // Normalize furniture list and ensure real Amazon & Flipkart URLs
+    // Normalize designs
+    let normalizedDesigns: any[] = [];
+    if (Array.isArray(designs) && designs.length > 0) {
+      normalizedDesigns = designs;
+    } else if (selectedDesign) {
+      normalizedDesigns = [selectedDesign];
+    }
+
+    // Normalize furniture items with real live store links
     let normalizedFurniture: any[] = [];
     if (Array.isArray(furniture) && furniture.length > 0) {
-      normalizedFurniture = furniture.map((f: any) => {
-        const pName = f.name || f.productName || f.label || 'Furniture Item';
+      normalizedFurniture = furniture.map((item: any, idx: number) => {
+        const pName = item.name || item.productName || `Furniture Item ${idx + 1}`;
+        const numPrice = typeof item.price === 'number' ? item.price : parseInt(String(item.price || '0').replace(/[^\d]/g, ''), 10) || 15000;
         return {
+          _id: item._id || `furn_${idx + 1}`,
           name: pName,
           productName: pName,
-          category: f.category || 'Furniture',
-          brand: f.brand || 'Retailer',
-          price: typeof f.price === 'number' ? f.price : parseInt(String(f.price || '0').replace(/[^\d]/g, ''), 10) || 15000,
-          image: f.image || genImg || origImg,
-          description: f.description || '',
-          style: f.style || selectedStyle || style || 'Modern',
-          rating: typeof f.rating === 'number' ? f.rating : 4.5,
-          amazonUrl: getAmazonProductUrl(pName, f.amazonUrl),
-          flipkartUrl: getFlipkartProductUrl(pName, f.flipkartUrl),
-          productUrl: f.productUrl || '',
-          storeName: f.storeName || f.store || 'Urban Ladder',
-          inStock: f.inStock !== undefined ? f.inStock : true,
+          category: item.category || 'Furniture',
+          brand: item.brand || 'Retailer',
+          price: numPrice,
+          image: item.image || genImg || origImg,
+          description: item.description || '',
+          style: item.style || selectedStyle || style || 'Modern',
+          rating: item.rating || 4.5,
+          amazonUrl: getAmazonProductUrl(pName, item.amazonUrl),
+          flipkartUrl: getFlipkartProductUrl(pName, item.flipkartUrl),
+          productUrl: item.productUrl || 'https://www.urbanladder.com',
+          storeName: item.storeName || item.store || 'Urban Ladder',
+          inStock: true,
         };
       });
-    } else if (selectedDesign?.hotspots && Array.isArray(selectedDesign.hotspots)) {
+    } else if (selectedDesign && Array.isArray(selectedDesign.hotspots)) {
       normalizedFurniture = selectedDesign.hotspots.map((h: any, idx: number) => {
-        const pName = h.label || `Furniture Item ${idx + 1}`;
+        const pName = h.label || `Product ${idx + 1}`;
         const numPrice = typeof h.price === 'number' ? h.price : parseInt(String(h.price || '0').replace(/[^\d]/g, ''), 10) || 15000;
         return {
+          _id: h.id || `hotspot_${idx + 1}`,
           name: pName,
           productName: pName,
           category: h.category || 'Furniture',
@@ -115,7 +127,7 @@ export async function POST(request: NextRequest) {
           rating: 4.5,
           amazonUrl: getAmazonProductUrl(pName, h.amazonUrl),
           flipkartUrl: getFlipkartProductUrl(pName, h.flipkartUrl),
-          productUrl: h.productUrl || '',
+          productUrl: h.productUrl || 'https://www.urbanladder.com',
           storeName: h.store || 'Urban Ladder',
           inStock: true,
         };
@@ -169,30 +181,24 @@ export async function POST(request: NextRequest) {
       }));
     }
 
-    // Normalize designs array
-    let normalizedDesigns: any[] = [];
-    if (Array.isArray(designs) && designs.length > 0) {
-      normalizedDesigns = designs;
-    } else if (selectedDesign) {
-      normalizedDesigns = [
-        {
-          style: selectedDesign.style || selectedStyle || style || 'Modern',
-          furnitureStyle: selectedDesign.furnitureStyle || selectedStyle || style || 'Modern',
-          mood: selectedDesign.mood || mood || 'Warm',
-          color: selectedDesign.color || colorPreference || color || 'Neutral',
-          budget: Number(selectedDesign.budget || budget || 200000),
-          description: selectedDesign.description || '',
-          generatedImages: selectedDesign.generatedImages || (genImg ? [genImg] : []),
-          generatedImage: genImg,
-          hotspots: selectedDesign.hotspots || [],
-        },
-      ];
-    }
+    // Normalize budget plan
+    const calculatedSpend = prices.reduce((a: number, b: number) => a + (Number(b) || 0), 0);
+    const targetBudget = Number(budget || selectedDesign?.budget || 200000);
+    const plan = budgetPlan || {
+      totalBudget: targetBudget,
+      allocations: [
+        { category: 'Main Furniture', amount: Math.round(targetBudget * 0.5), percentage: 50 },
+        { category: 'Lighting & Decor', amount: Math.round(targetBudget * 0.25), percentage: 25 },
+        { category: 'Textiles & Rugs', amount: Math.round(targetBudget * 0.25), percentage: 25 },
+      ],
+      remaining: Math.max(0, targetBudget - calculatedSpend),
+      spent: calculatedSpend,
+    };
 
     // If projectId provided, check ownership and update
     if (projectId) {
-      const userIds = Array.from(
-        new Set([payload.userId, payload.firebaseUid].filter(Boolean))
+      const userIds: string[] = Array.from(
+        new Set([payload.userId, payload.firebaseUid].filter((x): x is string => Boolean(x)))
       );
       const existing = await Project.findOne({
         _id: projectId,
@@ -218,7 +224,7 @@ export async function POST(request: NextRequest) {
         if (prices.length > 0) existing.furniturePrices = prices;
         if (azUrls.length > 0) existing.amazonUrls = azUrls;
         if (fkUrls.length > 0) existing.flipkartUrls = fkUrls;
-        if (budgetPlan) existing.budgetPlan = budgetPlan;
+        if (budgetPlan) existing.budgetPlan = plan;
         if (normalizedShoppingList.length > 0) existing.shoppingList = normalizedShoppingList;
         if (status) existing.status = status;
 
@@ -238,14 +244,6 @@ export async function POST(request: NextRequest) {
       originalImage: origImg,
       generatedImage: genImg,
       roomType: roomType || roomAnalysis?.roomType || 'Living Room',
-      selectedStyle: selectedStyle || style || 'Modern',
-      style: style || selectedStyle || 'Modern',
-      mood: mood || 'Warm',
-      colorPreference: colorPreference || color || 'Neutral',
-      color: color || colorPreference || 'Neutral',
-      budget: Number(budget || selectedDesign?.budget || 200000),
-      selectedDesign: selectedDesign || (normalizedDesigns[0] ?? null),
-      selectedDesignIndex: 0,
       roomAnalysis: roomAnalysis || {
         roomType: roomType || 'Living Room',
         wallColor: '',
@@ -261,17 +259,20 @@ export async function POST(request: NextRequest) {
         emptyAreas: [],
         proportions: '',
       },
+      selectedStyle: selectedStyle || style || 'Modern',
+      style: selectedStyle || style || 'Modern',
+      mood: mood || 'Warm',
+      colorPreference: colorPreference || color || 'Neutral',
+      color: colorPreference || color || 'Neutral',
+      budget: targetBudget,
+      selectedDesign: selectedDesign || (normalizedDesigns[0] ?? null),
+      selectedDesignIndex: 0,
       designs: normalizedDesigns,
       furniture: normalizedFurniture,
       furniturePrices: prices,
       amazonUrls: azUrls,
       flipkartUrls: fkUrls,
-      budgetPlan: budgetPlan || {
-        totalBudget: Number(budget || 200000),
-        allocations: [],
-        remaining: Number(budget || 200000),
-        spent: prices.reduce((a, b) => a + b, 0),
-      },
+      budgetPlan: plan,
       shoppingList: normalizedShoppingList,
       status: status || 'completed',
     });
@@ -284,7 +285,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('Project create error:', error);
+    console.error('Project create/update error:', error);
     const message = error instanceof Error ? error.message : 'Internal server error';
     const status = message.includes('Unauthorized') ? 401 : 500;
     return NextResponse.json(

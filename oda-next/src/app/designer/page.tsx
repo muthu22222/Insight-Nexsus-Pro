@@ -170,7 +170,7 @@ function DesignerUploadContent() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Navigation Bar */}
         <div className="flex items-center justify-between mb-6">
-          <BackButton fallbackHref="/" label="Back to Home" />
+          <BackButton fallbackHref="/dashboard" label="Back to Dashboard" />
         </div>
 
         <div className="text-center mb-8">
