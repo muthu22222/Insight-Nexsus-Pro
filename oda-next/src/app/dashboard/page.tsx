@@ -4,59 +4,60 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  Menu,
-  Plus,
   FolderOpen,
   Bookmark,
   Calculator,
   ShoppingCart,
-  ArrowRight,
   Wand2,
   Sofa,
+  Plus,
+  ArrowRight,
   Loader2,
+  Menu,
+  Sparkles,
 } from "lucide-react";
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
-import BackButton from "@/components/common/BackButton";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Project } from "@/types";
-import { formatCurrency } from "@/utils/helpers";
 
 const container = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.08 } },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: "spring" as const, damping: 20 } },
+  hidden: { opacity: 0, y: 15 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
+function formatCurrency(amount: number) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
 export default function DashboardPage() {
-  const { user, userData, loading: authLoading, getToken } = useAuth();
+  const { userData, loading: authLoading } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (authLoading || !user) return;
-
-    const fetchData = async () => {
+    async function fetchProjects() {
       try {
-        const token = await getToken();
-        if (!token) return;
-
-        const projectsRes = await fetch("/api/projects", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (projectsRes.ok) {
-          const projectsData = await projectsRes.json();
-          if (projectsData.success && projectsData.data) {
-            const projectList = Array.isArray(projectsData.data)
-              ? projectsData.data
-              : projectsData.data.projects || [];
-            setProjects(projectList);
+        const res = await fetch("/api/projects");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.data) {
+            setProjects(data.data);
           }
         }
       } catch {
@@ -64,23 +65,30 @@ export default function DashboardPage() {
       } finally {
         setLoading(false);
       }
-    };
+    }
 
-    fetchData();
-  }, [user, authLoading, getToken]);
+    if (userData) {
+      fetchProjects();
+    } else if (!authLoading) {
+      setLoading(false);
+    }
+  }, [userData, authLoading]);
 
   const totalSavedDesigns = projects.reduce(
     (acc, p) => acc + (p.designs?.length || 0),
     0
   );
+
   const totalBudget = projects.reduce(
     (acc, p) => acc + (p.budgetPlan?.totalBudget || 0),
     0
   );
+
   const totalShoppingItems = projects.reduce(
     (acc, p) => acc + (p.shoppingList?.length || 0),
     0
   );
+
   const recentDesigns = projects
     .flatMap((p) =>
       (p.designs || []).map((d) => ({
@@ -94,37 +102,37 @@ export default function DashboardPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="flex h-screen items-center justify-center bg-[#0a0a0a]">
+        <Loader2 className="h-8 w-8 animate-spin text-amber-400" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-gray-200 bg-white/80 backdrop-blur-md px-4 sm:px-6 py-4">
+        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-white/10 bg-[#0a0a0a]/85 backdrop-blur-md px-4 sm:px-6 py-4">
           <button
             onClick={() => setMobileOpen(true)}
-            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors"
           >
-            <Menu className="h-5 w-5 text-gray-600" />
+            <Menu className="h-5 w-5 text-gray-400" />
           </button>
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-gray-900">
+            <h1 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
               Welcome back, {userData?.name?.split(" ")[0] || "Designer"} 👋
             </h1>
-            <p className="text-sm text-gray-500 mt-0.5">
-              Here&apos;s an overview of your design projects
+            <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
+              Here&apos;s an overview of your AI interior design studio
             </p>
           </div>
           <Link
             href="/designer"
-            className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium rounded-xl hover:shadow-lg transition-shadow"
+            className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black text-sm font-extrabold rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition-all active:scale-98"
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-4 w-4 stroke-[3]" />
             New Design
           </Link>
         </header>
@@ -136,119 +144,123 @@ export default function DashboardPage() {
             animate="show"
             className="space-y-6"
           >
+            {/* Stat Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <motion.div variants={item}>
                 <Link
                   href="/dashboard/projects"
-                  className="block bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md transition-shadow group"
+                  className="block bg-[#121215] rounded-2xl border border-white/10 p-5 hover:border-amber-500/40 hover:bg-white/[0.04] transition-all group shadow-sm"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="h-11 w-11 rounded-xl bg-blue-50 flex items-center justify-center">
-                      <FolderOpen className="h-5 w-5 text-blue-600" />
+                    <div className="h-11 w-11 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                      <FolderOpen className="h-5 w-5 text-amber-400" />
                     </div>
-                    <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-blue-600 transition-colors" />
+                    <ArrowRight className="h-4 w-4 text-gray-500 group-hover:text-amber-400 transition-colors" />
                   </div>
-                  <p className="mt-4 text-2xl font-bold text-gray-900">
+                  <p className="mt-4 text-2xl font-black text-white">
                     {projects.length}
                   </p>
-                  <p className="text-sm text-gray-500">My Projects</p>
+                  <p className="text-xs sm:text-sm text-gray-400 font-medium">My Projects</p>
                 </Link>
               </motion.div>
 
               <motion.div variants={item}>
-                <div className="bg-white rounded-2xl border border-gray-100 p-5">
+                <div className="bg-[#121215] rounded-2xl border border-white/10 p-5 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <div className="h-11 w-11 rounded-xl bg-violet-50 flex items-center justify-center">
-                      <Bookmark className="h-5 w-5 text-violet-600" />
+                    <div className="h-11 w-11 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
+                      <Bookmark className="h-5 w-5 text-violet-400" />
                     </div>
                   </div>
-                  <p className="mt-4 text-2xl font-bold text-gray-900">
+                  <p className="mt-4 text-2xl font-black text-white">
                     {totalSavedDesigns}
                   </p>
-                  <p className="text-sm text-gray-500">Saved Designs</p>
+                  <p className="text-xs sm:text-sm text-gray-400 font-medium">Saved AI Designs</p>
                 </div>
               </motion.div>
 
               <motion.div variants={item}>
                 <Link
                   href="/budget"
-                  className="block bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md transition-shadow group"
+                  className="block bg-[#121215] rounded-2xl border border-white/10 p-5 hover:border-emerald-500/40 hover:bg-white/[0.04] transition-all group shadow-sm"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="h-11 w-11 rounded-xl bg-green-50 flex items-center justify-center">
-                      <Calculator className="h-5 w-5 text-green-600" />
+                    <div className="h-11 w-11 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                      <Calculator className="h-5 w-5 text-emerald-400" />
                     </div>
-                    <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-green-600 transition-colors" />
+                    <ArrowRight className="h-4 w-4 text-gray-500 group-hover:text-emerald-400 transition-colors" />
                   </div>
-                  <p className="mt-4 text-2xl font-bold text-gray-900">
+                  <p className="mt-4 text-2xl font-black text-white">
                     {formatCurrency(totalBudget)}
                   </p>
-                  <p className="text-sm text-gray-500">Total Budget</p>
+                  <p className="text-xs sm:text-sm text-gray-400 font-medium">Total Budget Managed</p>
                 </Link>
               </motion.div>
 
               <motion.div variants={item}>
-                <div className="bg-white rounded-2xl border border-gray-100 p-5">
+                <div className="bg-[#121215] rounded-2xl border border-white/10 p-5 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <div className="h-11 w-11 rounded-xl bg-amber-50 flex items-center justify-center">
-                      <ShoppingCart className="h-5 w-5 text-amber-600" />
+                    <div className="h-11 w-11 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                      <ShoppingCart className="h-5 w-5 text-blue-400" />
                     </div>
                   </div>
-                  <p className="mt-4 text-2xl font-bold text-gray-900">
+                  <p className="mt-4 text-2xl font-black text-white">
                     {totalShoppingItems}
                   </p>
-                  <p className="text-sm text-gray-500">Shopping List Items</p>
+                  <p className="text-xs sm:text-sm text-gray-400 font-medium">Shopping List Items</p>
                 </div>
               </motion.div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            {/* Quick Action Banner Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3.5">
               <Link
                 href="/designer"
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium rounded-xl hover:shadow-lg transition-shadow"
+                className="flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black text-sm font-extrabold rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.01] transition-all"
               >
-                <Wand2 className="h-4 w-4" />
-                Start New Design
+                <Wand2 className="h-4 w-4 stroke-[2.5]" />
+                Start New AI Design
               </Link>
               <Link
                 href="/furniture"
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-200 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-center gap-2 px-6 py-3.5 bg-white/5 border border-white/15 text-white text-sm font-semibold rounded-xl hover:bg-white/10 transition-colors"
               >
-                <Sofa className="h-4 w-4" />
-                Browse Furniture
+                <Sofa className="h-4 w-4 text-amber-400" />
+                Browse Catalog Furniture
               </Link>
             </div>
 
+            {/* Recent AI Designs Section */}
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-amber-400" />
                   Recent AI Designs
                 </h2>
                 <Link
                   href="/dashboard/projects"
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+                  className="text-xs sm:text-sm text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1"
                 >
-                  View All
+                  View All Projects
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
 
               {recentDesigns.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center">
-                  <div className="h-14 w-14 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                    <Wand2 className="h-7 w-7 text-gray-400" />
+                <div className="bg-[#121215] rounded-2xl border border-white/10 p-12 text-center">
+                  <div className="h-14 w-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-4">
+                    <Wand2 className="h-7 w-7 text-amber-400" />
                   </div>
-                  <p className="text-gray-500 font-medium mb-1">
+                  <p className="text-white font-bold mb-1">
                     No designs yet
                   </p>
-                  <p className="text-sm text-gray-400 mb-4">
-                    Upload a room photo and let AI create beautiful designs for you
+                  <p className="text-sm text-gray-400 mb-5 max-w-sm mx-auto">
+                    Upload a room photo and let Insight Nexsus AI create tailored photorealistic designs for you.
                   </p>
                   <Link
                     href="/designer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 transition-colors"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-black text-sm font-extrabold rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition-transform"
                   >
-                    <Wand2 className="h-4 w-4" />
+                    <Wand2 className="h-4 w-4 stroke-[2.5]" />
                     Start Designing
                   </Link>
                 </div>
@@ -258,31 +270,31 @@ export default function DashboardPage() {
                     <motion.div
                       key={design._id}
                       variants={item}
-                      className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group"
+                      className="bg-[#121215] rounded-2xl border border-white/10 overflow-hidden hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/5 transition-all group"
                     >
-                      <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
+                      <div className="aspect-[4/3] bg-black relative overflow-hidden">
                         {design.generatedImages?.[0] ? (
                           <img
                             src={design.generatedImages[0]}
                             alt={`${design.style} design`}
-                            className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         ) : (
                           <div className="h-full w-full flex items-center justify-center">
-                            <Wand2 className="h-8 w-8 text-gray-300" />
+                            <Wand2 className="h-8 w-8 text-gray-600" />
                           </div>
                         )}
                       </div>
                       <div className="p-4">
-                        <p className="font-medium text-gray-900 text-sm truncate">
+                        <p className="font-bold text-white text-sm truncate">
                           {design.projectName}
                         </p>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-gray-400 mt-1">
                           {design.style} · {design.mood}
                         </p>
                         <Link
                           href={`/dashboard/projects/${design.projectId}`}
-                          className="mt-3 inline-flex items-center text-xs font-medium text-blue-600 hover:text-blue-700"
+                          className="mt-3 inline-flex items-center text-xs font-bold text-amber-400 hover:text-amber-300"
                         >
                           View Project
                           <ArrowRight className="h-3 w-3 ml-1" />
