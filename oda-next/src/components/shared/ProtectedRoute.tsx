@@ -26,8 +26,8 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (loading || !mounted) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="flex h-screen items-center justify-center bg-[#0a0a0a]">
+        <Loader2 className="h-8 w-8 animate-spin text-amber-400" />
       </div>
     );
   }

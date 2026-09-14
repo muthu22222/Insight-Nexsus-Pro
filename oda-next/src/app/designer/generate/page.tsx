@@ -346,7 +346,7 @@ export default function GeneratePage() {
         toast.success('Project saved to MongoDB successfully!');
       } else {
         const errorData = await res.json().catch(() => ({}));
-        toast.error(errorData.error || `Failed to save project (${res.status})`);
+        toast.error(errorData.error || errorData.message || `Failed to save project (${res.status})`);
       }
     } catch (e: any) {
       console.error(e);

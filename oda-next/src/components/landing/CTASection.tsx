@@ -3,8 +3,11 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function CTASection() {
+  const { user } = useAuth();
+
   return (
     <section id="cta" className="py-24 md:py-32 bg-[#0a0a0a] relative overflow-hidden">
       {/* Background gradient */}
@@ -30,7 +33,7 @@ export default function CTASection() {
           </p>
 
           <Link
-            href="/auth/register"
+            href={user ? "/dashboard" : "/auth/login"}
             className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-black font-bold px-10 py-4 rounded-lg text-base transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/25"
           >
             START DESIGNING NOW

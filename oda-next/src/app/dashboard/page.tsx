@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
+import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Project } from "@/types";
 
@@ -116,7 +117,8 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <ProtectedRoute>
+      <div className="min-h-screen bg-[#0a0a0a] text-white">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
       <div className="lg:pl-64">
@@ -318,5 +320,6 @@ export default function DashboardPage() {
 
       <AIAssistant />
     </div>
+    </ProtectedRoute>
   );
 }

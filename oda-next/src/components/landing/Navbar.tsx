@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navLinks = [
   { label: "Home", href: "#hero" },
@@ -16,6 +17,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const { user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -59,18 +61,30 @@ export default function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link
-              href="/auth/login"
-              className="text-sm text-gray-300 hover:text-white transition-colors duration-200 px-4 py-2"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/auth/register"
-              className="text-sm font-semibold bg-amber-500 hover:bg-amber-400 text-black px-5 py-2.5 rounded-lg transition-colors duration-200"
-            >
-              Get Started
-            </Link>
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="text-sm font-semibold bg-amber-500 hover:bg-amber-400 text-black px-5 py-2.5 rounded-lg transition-colors duration-200 flex items-center gap-1.5"
+              >
+                Dashboard
+                <ArrowRight size={16} />
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/auth/login"
+                  className="text-sm text-gray-300 hover:text-white transition-colors duration-200 px-4 py-2"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/register"
+                  className="text-sm font-semibold bg-amber-500 hover:bg-amber-400 text-black px-5 py-2.5 rounded-lg transition-colors duration-200"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Hamburger */}
@@ -106,20 +120,32 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="pt-4 border-t border-white/10 space-y-3">
-                <Link
-                  href="/auth/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="block text-center text-gray-300 hover:text-white py-2.5 border border-white/10 rounded-lg transition-colors duration-200"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/auth/register"
-                  onClick={() => setMobileOpen(false)}
-                  className="block text-center bg-amber-500 hover:bg-amber-400 text-black font-semibold py-2.5 rounded-lg transition-colors duration-200"
-                >
-                  Get Started
-                </Link>
+                {user ? (
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="block text-center bg-amber-500 hover:bg-amber-400 text-black font-semibold py-2.5 rounded-lg transition-colors duration-200"
+                  >
+                    Go to Dashboard
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      href="/auth/login"
+                      onClick={() => setMobileOpen(false)}
+                      className="block text-center text-gray-300 hover:text-white py-2.5 border border-white/10 rounded-lg transition-colors duration-200"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/auth/register"
+                      onClick={() => setMobileOpen(false)}
+                      className="block text-center bg-amber-500 hover:bg-amber-400 text-black font-semibold py-2.5 rounded-lg transition-colors duration-200"
+                    >
+                      Get Started
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>

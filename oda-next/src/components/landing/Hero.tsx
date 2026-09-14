@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface SlideRoom {
   id: number;
@@ -117,6 +118,7 @@ const slideVariants: Variants = {
 };
 
 export default function Hero() {
+  const { user } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
@@ -250,7 +252,7 @@ export default function Hero() {
             {/* CTA Buttons */}
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-3.5 mb-8">
               <Link
-                href="/designer"
+                href={user ? "/dashboard" : "/auth/login"}
                 className="group relative inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black font-extrabold px-8 py-3.5 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-amber-500/25 hover:scale-[1.02] active:scale-98 overflow-hidden"
               >
                 {/* Button shine sweep animation */}
@@ -260,7 +262,7 @@ export default function Hero() {
               </Link>
 
               <Link
-                href="/dashboard/projects"
+                href={user ? "/dashboard/projects" : "/auth/login"}
                 className="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/40 text-white font-semibold px-7 py-3.5 rounded-xl text-sm transition-all duration-200 hover:bg-white/10 backdrop-blur-sm"
               >
                 <span>EXPLORE STUDIO</span>
