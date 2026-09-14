@@ -6,9 +6,14 @@ import { GEMINI_MODELS } from '@/lib/gemini';
 import type { RoomAnalysis } from '@/types';
 
 function parseDataUrl(dataUrl: string): { mimeType: string; base64: string } | null {
-  const match = dataUrl.match(/^data:(.+);base64,(.+)$/);
-  if (!match) return null;
-  return { mimeType: match[1], base64: match[2] };
+  if (!dataUrl || typeof dataUrl !== 'string' || !dataUrl.startsWith('data:')) return null;
+  const commaIndex = dataUrl.indexOf(',');
+  if (commaIndex === -1) return null;
+  const header = dataUrl.substring(5, commaIndex);
+  if (!header.includes(';base64')) return null;
+  const mimeType = header.replace(';base64', '').trim();
+  const base64 = dataUrl.substring(commaIndex + 1);
+  return { mimeType: mimeType || 'image/jpeg', base64 };
 }
 
 import fs from 'fs';
@@ -21,14 +26,14 @@ async function fetchImageAsBase64(imageUrl: string): Promise<{ mimeType: string;
   }
 
   // Handle local relative paths e.g. /uploads/rooms/...
-  if (imageUrl.startsWith('/uploads/') || imageUrl.startsWith('uploads/')) {
+  if (imageUrl.startsWith('/uploads/') || imageUrl.startsWith('uploads/') || imageUrl.startsWith('/')) {
     try {
       const cleanPath = imageUrl.startsWith('/') ? imageUrl.slice(1) : imageUrl;
       const fullPath = path.join(process.cwd(), 'public', cleanPath);
       if (fs.existsSync(fullPath)) {
         const fileBuffer = fs.readFileSync(fullPath);
         return {
-          mimeType: cleanPath.endsWith('.png') ? 'image/png' : 'image/jpeg',
+          mimeType: cleanPath.endsWith('.png') ? 'image/png' : cleanPath.endsWith('.webp') ? 'image/webp' : 'image/jpeg',
           base64: fileBuffer.toString('base64'),
         };
       }
@@ -37,7 +42,12 @@ async function fetchImageAsBase64(imageUrl: string): Promise<{ mimeType: string;
     }
   }
 
-  const response = await fetch(imageUrl, { cache: 'no-store' });
+  let fetchUrl = imageUrl;
+  if (imageUrl.startsWith('/')) {
+    fetchUrl = `http://localhost:${process.env.PORT || 3000}${imageUrl}`;
+  }
+
+  const response = await fetch(fetchUrl, { cache: 'no-store' });
   if (!response.ok) {
     throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`);
   }
