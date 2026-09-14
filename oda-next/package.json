@@ -6,7 +6,9 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "tsx src/scripts/seed-dummy-data.ts",
+    "seed:all": "tsx src/scripts/seed-furniture.ts && tsx src/scripts/seed-stores.ts && tsx src/scripts/seed-admin.ts && tsx src/scripts/seed-demo-user.ts && tsx src/scripts/seed-dummy-data.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
