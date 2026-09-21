@@ -65,28 +65,28 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
   };
 
   const sidebarContent = (
-    <div className="flex h-full flex-col bg-[#1c1309] border-r border-[#523A25] text-[#FAF6F0]">
-      <div className="flex items-center justify-between px-4 py-5 border-b border-[#523A25]">
+    <div className="flex h-full flex-col bg-[#22150E] border-r border-[#D8C3A5]/15 text-[#F5EFE7]">
+      <div className="flex items-center justify-between px-4 py-5 border-b border-[#D8C3A5]/15">
         {!collapsed && (
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-xl bg-[#6E473B] border border-[#A78D78]/30 flex items-center justify-center shrink-0 shadow-md shadow-[#6E473B]/20">
-              <span className="text-[#FAF6F0] font-black text-xs tracking-wider">IN</span>
+            <div className="h-9 w-9 rounded-xl bg-[#8F5F4A] border border-[#C9A66B]/35 flex items-center justify-center shrink-0 shadow-md shadow-[#8F5F4A]/20">
+              <span className="text-[#F5EFE7] font-black text-xs tracking-wider">IN</span>
             </div>
-            <span className="text-lg font-bold text-[#E1D4C2] tracking-tight">
-              Insight <span className="text-[#A78D78]">Nexsus</span>
+            <span className="text-lg font-bold text-[#F5EFE7] tracking-tight">
+              Insight <span className="text-[#C9A66B]">Nexsus</span>
             </span>
           </Link>
         )}
         {collapsed && (
           <Link href="/dashboard" className="flex items-center justify-center w-full">
-            <div className="h-9 w-9 rounded-xl bg-[#6E473B] border border-[#A78D78]/30 flex items-center justify-center shadow-md shadow-[#6E473B]/20">
-              <span className="text-[#FAF6F0] font-black text-xs tracking-wider">IN</span>
+            <div className="h-9 w-9 rounded-xl bg-[#8F5F4A] border border-[#C9A66B]/35 flex items-center justify-center shadow-md shadow-[#8F5F4A]/20">
+              <span className="text-[#F5EFE7] font-black text-xs tracking-wider">IN</span>
             </div>
           </Link>
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-lg hover:bg-[#6E473B]/20 text-[#BEB5A9] hover:text-[#FAF6F0] transition-colors"
+          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-lg hover:bg-[#8F5F4A]/20 text-[#CDBFB2] hover:text-[#F5EFE7] transition-colors"
         >
           <ChevronLeft
             className={`h-4 w-4 transition-transform ${collapsed ? "rotate-180" : ""}`}
@@ -94,7 +94,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
         </button>
         <button
           onClick={onMobileClose}
-          className="lg:hidden h-7 w-7 flex items-center justify-center rounded-lg hover:bg-[#6E473B]/20 text-[#BEB5A9]"
+          className="lg:hidden h-7 w-7 flex items-center justify-center rounded-lg hover:bg-[#8F5F4A]/20 text-[#CDBFB2]"
         >
           <X className="h-4 w-4" />
         </button>
@@ -112,10 +112,10 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
                   document.dispatchEvent(new CustomEvent("toggle-ai-assistant"));
                   onMobileClose?.();
                 }}
-                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all hover:bg-[#6E473B]/15 text-[#BEB5A9] hover:text-[#FAF6F0] cursor-pointer ${collapsed ? "justify-center" : ""}`}
+                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all hover:bg-[#8F5F4A]/15 text-[#CDBFB2] hover:text-[#F5EFE7] cursor-pointer ${collapsed ? "justify-center" : ""}`}
                 title={collapsed ? item.label : undefined}
               >
-                <Icon className="h-4.5 w-4.5 shrink-0 text-[#A78D78]" />
+                <Icon className="h-4.5 w-4.5 shrink-0 text-[#C9A66B]" />
                 {!collapsed && <span>{item.label}</span>}
               </button>
             );
@@ -127,24 +127,24 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
               onClick={onMobileClose}
               className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
                 active
-                  ? "bg-[#6E473B]/25 text-[#E1D4C2] border border-[#A78D78]/40 font-semibold shadow-xs"
-                  : "text-[#BEB5A9] hover:bg-[#6E473B]/15 hover:text-[#FAF6F0] border border-transparent"
+                  ? "bg-[#8F5F4A]/25 text-[#F5EFE7] border border-[#8F5F4A]/60 font-semibold shadow-xs"
+                  : "text-[#CDBFB2] hover:bg-[#8F5F4A]/15 hover:text-[#F5EFE7] border border-transparent"
               } ${collapsed ? "justify-center" : ""}`}
               title={collapsed ? item.label : undefined}
             >
-              <Icon className={`h-4.5 w-4.5 shrink-0 ${active ? "text-[#E1D4C2]" : "text-[#A78D78]"}`} />
+              <Icon className={`h-4.5 w-4.5 shrink-0 ${active ? "text-[#C9A66B]" : "text-[#CDBFB2]"}`} />
               {!collapsed && <span>{item.label}</span>}
             </Link>
           );
         })}
       </nav>
 
-      <div className="border-t border-[#523A25] p-3 bg-[#140c06]/50">
+      <div className="border-t border-[#D8C3A5]/15 p-3 bg-[#1C120C]/70">
         {user && (
           <div
             className={`flex items-center gap-3 rounded-xl px-3 py-2.5 ${collapsed ? "justify-center" : ""}`}
           >
-            <div className="h-8 w-8 rounded-full bg-[#6E473B] border border-[#A78D78]/30 flex items-center justify-center text-[#FAF6F0] text-xs font-black shrink-0">
+            <div className="h-8 w-8 rounded-full bg-[#8F5F4A] border border-[#C9A66B]/30 flex items-center justify-center text-[#F5EFE7] text-xs font-black shrink-0">
               {user.avatar ? (
                 <img
                   src={user.avatar}
@@ -157,21 +157,21 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
             </div>
             {!collapsed && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-[#FAF6F0] truncate">
+                <p className="text-sm font-semibold text-[#F5EFE7] truncate">
                   {user.name}
                 </p>
-                <p className="text-xs text-[#BEB5A9] truncate">{user.email}</p>
+                <p className="text-xs text-[#CDBFB2] truncate">{user.email}</p>
               </div>
             )}
           </div>
         )}
         <div className={`mt-2 mb-2 flex items-center px-1 ${collapsed ? "justify-center" : "justify-between"}`}>
-          {!collapsed && <span className="text-xs text-[#BEB5A9] font-medium">Theme</span>}
+          {!collapsed && <span className="text-xs text-[#CDBFB2] font-medium">Theme</span>}
           <ThemeToggle />
         </div>
         <button
           onClick={handleLogout}
-          className={`mt-1.5 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-colors ${collapsed ? "justify-center" : ""}`}
+          className={`mt-1.5 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#CDBFB2] hover:bg-[#8F5F4A]/15 hover:text-[#F5EFE7] transition-colors ${collapsed ? "justify-center" : ""}`}
           title={collapsed ? "Logout" : undefined}
         >
           <LogOut className="h-4.5 w-4.5 shrink-0" />
