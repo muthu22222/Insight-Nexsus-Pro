@@ -249,12 +249,13 @@ export async function POST(request: NextRequest) {
     const body = await request.json().catch(() => ({}));
     const { imageUrl, imageId, requestId } = body;
     const roomAnalysis: RoomAnalysis = body.roomAnalysis || body.analysis || {};
-    const preferences = body.preferences || {
-      style: 'modern',
-      furnitureStyle: 'modern',
-      mood: 'warm',
-      color: 'neutral',
-      budget: 200000,
+    const rawPreferences = body.preferences || {};
+    const preferences = {
+      style: rawPreferences.style || body.style || 'modern',
+      furnitureStyle: rawPreferences.furnitureStyle || body.furnitureStyle || rawPreferences.style || body.style || 'modern',
+      mood: rawPreferences.mood || body.mood || 'warm',
+      color: rawPreferences.color || body.color || 'neutral',
+      budget: Number(rawPreferences.budget || body.budget || 200000),
     };
 
     const apiKey = process.env.GEMINI_API_KEY?.trim();

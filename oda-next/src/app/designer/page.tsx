@@ -8,6 +8,7 @@ import { Upload, X, Image as ImageIcon, Loader2, CheckCircle, Sparkles } from 'l
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
 import { useAuth } from '@/contexts/AuthContext';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 import BackButton from '@/components/common/BackButton';
 
 import { compressImageFile } from '@/utils/helpers';
@@ -165,32 +166,33 @@ function DesignerUploadContent() {
 
   if (isLoadingProject) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center bg-[#0a0a0a] text-white space-y-4">
-        <Loader2 className="h-9 w-9 animate-spin text-amber-400" />
-        <p className="text-sm font-bold text-gray-300">Loading your project from MongoDB...</p>
+      <div className="flex h-screen flex-col items-center justify-center bg-[#291C0E] text-[#FAF6F0] space-y-4">
+        <Loader2 className="h-9 w-9 animate-spin text-[#A78D78]" />
+        <p className="text-sm font-bold text-[#E1D4C2]">Loading your project from MongoDB...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#291C0E] text-[#FAF6F0]">
       <Toaster position="top-center" />
 
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Navigation Bar */}
         <div className="flex items-center justify-between mb-6">
           <BackButton fallbackHref="/dashboard" label="Back to Dashboard" />
+          <ThemeToggle />
         </div>
 
         <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 rounded-full mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E1D4C2] uppercase tracking-widest bg-[#6E473B]/25 border border-[#A78D78]/30 px-3.5 py-1 rounded-full mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-[#A78D78]" />
             AI Designer Studio
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#FAF6F0] mb-1">
             Upload Your Room
           </h1>
-          <p className="text-xs sm:text-sm text-gray-400">
+          <p className="text-xs sm:text-sm text-[#BEB5A9]">
             Upload a photo of your empty or furnished room to begin AI generation
           </p>
         </div>
@@ -204,22 +206,22 @@ function DesignerUploadContent() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
                       index === 0
-                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black shadow-lg shadow-amber-500/20'
-                        : 'bg-white/10 text-gray-500 border border-white/10'
+                        ? 'bg-[#6E473B] text-[#FAF6F0] border border-[#A78D78]/40 shadow-lg shadow-[#6E473B]/25'
+                        : 'bg-[#362413] text-[#BEB5A9] border border-[#523A25]'
                     }`}
                   >
                     {index + 1}
                   </div>
                   <span
                     className={`text-[10px] mt-1 font-semibold ${
-                      index === 0 ? 'text-amber-400' : 'text-gray-500'
+                      index === 0 ? 'text-[#E1D4C2]' : 'text-[#BEB5A9]'
                     }`}
                   >
                     {step.label}
                   </span>
                 </div>
                 {index < steps.length - 1 && (
-                  <div className="w-10 sm:w-12 h-0.5 bg-white/10 mx-1 mb-5" />
+                  <div className="w-10 sm:w-12 h-0.5 bg-[#523A25] mx-1 mb-5" />
                 )}
               </div>
             ))}
@@ -229,7 +231,7 @@ function DesignerUploadContent() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#121215] rounded-2xl shadow-2xl border border-white/10 p-6 sm:p-8"
+          className="bg-[#1c1309] rounded-2xl shadow-2xl border border-[#523A25] p-6 sm:p-8"
         >
           <AnimatePresence mode="wait">
             {!preview ? (
@@ -243,23 +245,23 @@ function DesignerUploadContent() {
                   {...getRootProps()}
                   className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all ${
                     isDragActive
-                      ? 'border-amber-400 bg-amber-500/10'
-                      : 'border-white/15 hover:border-amber-500/40 hover:bg-white/[0.02]'
+                      ? 'border-[#A78D78] bg-[#6E473B]/20'
+                      : 'border-[#523A25] hover:border-[#A78D78]/60 hover:bg-[#362413]/40'
                   }`}
                 >
                   <input {...getInputProps()} />
                   <div className="flex flex-col items-center">
-                    <div className="w-16 h-16 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center mb-4 text-amber-400">
+                    <div className="w-16 h-16 bg-[#6E473B]/25 border border-[#A78D78]/30 rounded-2xl flex items-center justify-center mb-4 text-[#E1D4C2]">
                       <Upload className="w-7 h-7" />
                     </div>
-                    <p className="text-base font-bold text-white mb-1">
+                    <p className="text-base font-bold text-[#FAF6F0] mb-1">
                       {isDragActive ? 'Drop your image here' : 'Drag & drop your room photo'}
                     </p>
-                    <p className="text-xs text-gray-400 mb-4">
+                    <p className="text-xs text-[#BEB5A9] mb-4">
                       or click to browse from device
                     </p>
-                    <div className="flex items-center gap-2 text-xs text-gray-400 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg">
-                      <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
+                    <div className="flex items-center gap-2 text-xs text-[#BEB5A9] bg-[#362413] border border-[#523A25] px-3 py-1.5 rounded-lg">
+                      <ImageIcon className="w-3.5 h-3.5 text-[#A78D78]" />
                       <span>JPG, PNG, WEBP • Max 10MB</span>
                     </div>
                   </div>
@@ -272,7 +274,7 @@ function DesignerUploadContent() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
               >
-                <div className="relative rounded-2xl overflow-hidden bg-black border border-white/10">
+                <div className="relative rounded-2xl overflow-hidden bg-black border border-[#523A25]">
                   <img
                     src={preview}
                     alt="Room preview"
@@ -289,8 +291,8 @@ function DesignerUploadContent() {
                   {isUploading && (
                     <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
                       <div className="text-center">
-                        <Loader2 className="w-10 h-10 text-amber-400 animate-spin mx-auto mb-3" />
-                        <p className="text-white text-sm font-bold">Uploading... {uploadProgress}%</p>
+                        <Loader2 className="w-10 h-10 text-[#A78D78] animate-spin mx-auto mb-3" />
+                        <p className="text-[#FAF6F0] text-sm font-bold">Uploading... {uploadProgress}%</p>
                       </div>
                     </div>
                   )}
@@ -298,9 +300,9 @@ function DesignerUploadContent() {
 
                 {isUploading && (
                   <div className="mt-4">
-                    <div className="w-full bg-black rounded-full h-1.5 border border-white/10 overflow-hidden">
+                    <div className="w-full bg-black rounded-full h-1.5 border border-[#523A25] overflow-hidden">
                       <motion.div
-                        className="bg-amber-400 h-1.5 rounded-full"
+                        className="bg-[#A78D78] h-1.5 rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${uploadProgress}%` }}
                         transition={{ duration: 0.3 }}
@@ -313,21 +315,21 @@ function DesignerUploadContent() {
                   <button
                     onClick={handleRetake}
                     disabled={isUploading}
-                    className="flex-1 border border-white/15 text-white py-3 rounded-xl font-semibold text-sm hover:bg-white/10 transition-colors disabled:opacity-50"
+                    className="flex-1 border border-[#523A25] text-[#E1D4C2] py-3 rounded-xl font-semibold text-sm hover:bg-[#362413] transition-colors disabled:opacity-50"
                   >
                     Retake
                   </button>
                   <button
                     onClick={handleContinue}
                     disabled={isUploading}
-                    className="flex-1 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black py-3 rounded-xl font-extrabold text-sm transition-all shadow-lg shadow-amber-500/20 hover:scale-[1.01] disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="flex-1 bg-[#6E473B] hover:bg-[#855749] text-[#FAF6F0] py-3 rounded-xl font-bold text-sm transition-all shadow-lg shadow-[#6E473B]/25 hover:scale-[1.01] disabled:opacity-50 flex items-center justify-center gap-2 border border-[#A78D78]/30"
                   >
                     {isUploading ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
                     ) : (
                       <>
                         Continue to Analysis
-                        <CheckCircle className="w-4 h-4 stroke-[2.5]" />
+                        <CheckCircle className="w-4 h-4 stroke-[2.5] text-[#E1D4C2]" />
                       </>
                     )}
                   </button>
@@ -345,8 +347,8 @@ export default function DesignerUploadPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-screen items-center justify-center bg-[#0a0a0a]">
-          <Loader2 className="h-8 w-8 animate-spin text-amber-400" />
+        <div className="flex h-screen items-center justify-center bg-[#291C0E]">
+          <Loader2 className="h-8 w-8 animate-spin text-[#A78D78]" />
         </div>
       }
     >

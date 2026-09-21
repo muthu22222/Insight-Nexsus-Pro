@@ -14,6 +14,7 @@ import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import BackButton from "@/components/common/BackButton";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import type { BudgetPlan } from "@/types";
 import { formatCurrency } from "@/utils/helpers";
@@ -172,6 +173,7 @@ export default function BudgetPage() {
                 Plan and optimize your interior design budget with AI
               </p>
             </div>
+            <ThemeToggle />
             {plan && (
               <button
                 onClick={handleDownloadPDF}

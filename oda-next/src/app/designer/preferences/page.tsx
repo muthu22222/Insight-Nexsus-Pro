@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, Check, Sparkles, Armchair } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
 import BackButton from '@/components/common/BackButton';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 
 const steps = [
   { id: 'upload', label: 'Upload' },
@@ -78,12 +79,18 @@ export default function PreferencesPage() {
   const [selectedBudget, setSelectedBudget] = useState(preferences.budget || 200000);
   const [customBudget, setCustomBudget] = useState('');
   const [isCustomBudget, setIsCustomBudget] = useState(false);
+  const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
+    setHasHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasHydrated) return;
     if (!uploadedImage) {
       router.push('/designer');
     }
-  }, [uploadedImage, router]);
+  }, [hasHydrated, uploadedImage, router]);
 
   const sections = ['Style', 'Furniture Style', 'Mood', 'Color', 'Budget'];
 
@@ -116,7 +123,7 @@ export default function PreferencesPage() {
     router.push('/designer/generate');
   };
 
-  if (!uploadedImage) {
+  if (!hasHydrated || !uploadedImage) {
     return null;
   }
 
@@ -127,6 +134,7 @@ export default function PreferencesPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <BackButton fallbackHref="/designer/analysis" label="Back to Analysis" />
+          <ThemeToggle />
         </div>
 
         <div className="text-center mb-8">

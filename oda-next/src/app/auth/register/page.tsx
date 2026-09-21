@@ -165,7 +165,7 @@ export default function RegisterPage() {
           <div className="text-center mb-8">
             <Link href="/" className="inline-block">
               <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-                Insight <span className="text-amber-600">Nexsus</span>
+                Insight <span className="text-[#6E473B]">Nexsus</span>
               </h1>
             </Link>
             <p className="text-gray-500 mt-2 text-sm">Create your account to get started</p>
@@ -283,7 +283,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gray-900 text-white py-2.5 rounded-lg font-medium text-sm hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
+              className="w-full bg-[#6E473B] text-[#FAF6F0] py-2.5 rounded-lg font-semibold text-sm hover:bg-[#855749] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2 shadow-md shadow-[#6E473B]/20"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -333,7 +333,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-gray-500 mt-6">
             Already have an account?{' '}
-            <Link href="/auth/login" className="text-amber-600 hover:text-amber-700 font-medium">
+            <Link href="/auth/login" className="text-[#6E473B] hover:text-[#855749] font-semibold">
               Sign In
             </Link>
           </p>

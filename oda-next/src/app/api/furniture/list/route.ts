@@ -70,6 +70,9 @@ export async function GET(request: NextRequest) {
         success: true,
         data: {
           items: mappedItems,
+          products: mappedItems,
+          total,
+          pages: Math.ceil(total / limit) || 1,
           pagination: {
             page,
             limit,
@@ -121,6 +124,9 @@ export async function GET(request: NextRequest) {
     success: true,
     data: {
       items: paginated,
+      products: paginated,
+      total,
+      pages: Math.ceil(total / limit) || 1,
       pagination: {
         page,
         limit,

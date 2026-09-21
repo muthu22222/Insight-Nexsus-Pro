@@ -19,6 +19,7 @@ import {
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Project } from "@/types";
 
@@ -137,9 +138,10 @@ export default function DashboardPage() {
               Here&apos;s an overview of your AI interior design studio
             </p>
           </div>
+          <ThemeToggle />
           <Link
             href="/designer"
-            className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black text-sm font-extrabold rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition-all active:scale-98"
+            className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-[#6E473B] hover:bg-[#855749] text-[#FAF6F0] text-sm font-bold rounded-xl shadow-lg shadow-[#6E473B]/25 border border-[#A78D78]/30 hover:scale-[1.02] transition-all active:scale-98"
           >
             <Plus className="h-4 w-4 stroke-[3]" />
             New Design
@@ -224,16 +226,16 @@ export default function DashboardPage() {
             <div className="flex flex-col sm:flex-row gap-3.5">
               <Link
                 href="/designer"
-                className="flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black text-sm font-extrabold rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.01] transition-all"
+                className="flex items-center justify-center gap-2 px-6 py-3.5 bg-[#6E473B] hover:bg-[#855749] text-[#FAF6F0] text-sm font-bold rounded-xl shadow-lg shadow-[#6E473B]/25 border border-[#A78D78]/30 hover:scale-[1.01] transition-all"
               >
                 <Wand2 className="h-4 w-4 stroke-[2.5]" />
                 Start New AI Design
               </Link>
               <Link
                 href="/furniture"
-                className="flex items-center justify-center gap-2 px-6 py-3.5 bg-white/5 border border-white/15 text-white text-sm font-semibold rounded-xl hover:bg-white/10 transition-colors"
+                className="flex items-center justify-center gap-2 px-6 py-3.5 bg-[#362413] border border-[#523A25] text-[#E1D4C2] text-sm font-semibold rounded-xl hover:bg-[#6E473B]/25 transition-colors"
               >
-                <Sofa className="h-4 w-4 text-amber-400" />
+                <Sofa className="h-4 w-4 text-[#A78D78]" />
                 Browse Catalog Furniture
               </Link>
             </div>
@@ -241,13 +243,13 @@ export default function DashboardPage() {
             {/* Recent AI Designs Section */}
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-amber-400" />
+                <h2 className="text-lg font-bold text-[#FAF6F0] flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-[#A78D78]" />
                   Recent AI Designs
                 </h2>
                 <Link
                   href="/dashboard/projects"
-                  className="text-xs sm:text-sm text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1"
+                  className="text-xs sm:text-sm text-[#A78D78] hover:text-[#E1D4C2] font-semibold flex items-center gap-1"
                 >
                   View All Projects
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -255,19 +257,19 @@ export default function DashboardPage() {
               </div>
 
               {recentDesigns.length === 0 ? (
-                <div className="bg-[#121215] rounded-2xl border border-white/10 p-12 text-center">
-                  <div className="h-14 w-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-4">
-                    <Wand2 className="h-7 w-7 text-amber-400" />
+                <div className="bg-[#1c1309] rounded-2xl border border-[#523A25] p-12 text-center">
+                  <div className="h-14 w-14 rounded-2xl bg-[#6E473B]/25 border border-[#A78D78]/30 flex items-center justify-center mx-auto mb-4">
+                    <Wand2 className="h-7 w-7 text-[#E1D4C2]" />
                   </div>
-                  <p className="text-white font-bold mb-1">
+                  <p className="text-[#FAF6F0] font-bold mb-1">
                     No designs yet
                   </p>
-                  <p className="text-sm text-gray-400 mb-5 max-w-sm mx-auto">
+                  <p className="text-sm text-[#BEB5A9] mb-5 max-w-sm mx-auto">
                     Upload a room photo and let Insight Nexsus AI create tailored photorealistic designs for you.
                   </p>
                   <Link
                     href="/designer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-black text-sm font-extrabold rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition-transform"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#6E473B] hover:bg-[#855749] text-[#FAF6F0] text-sm font-bold rounded-xl shadow-lg shadow-[#6E473B]/25 border border-[#A78D78]/30 hover:scale-[1.02] transition-transform"
                   >
                     <Wand2 className="h-4 w-4 stroke-[2.5]" />
                     Start Designing

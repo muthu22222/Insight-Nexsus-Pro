@@ -18,6 +18,7 @@ import {
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import BackButton from "@/components/common/BackButton";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { getAmazonProductUrl, getFlipkartProductUrl } from "@/lib/store-links";
 import type { FurnitureItem } from "@/types";
 import { formatCurrency } from "@/utils/helpers";
@@ -100,8 +101,10 @@ export default function FurniturePage() {
       const res = await fetch(`/api/furniture/list?${params.toString()}`);
       if (res.ok) {
         const data = await res.json();
-        setProducts(data.data.products || []);
-        setTotalPages(Math.ceil((data.data.total || 0) / perPage) || 1);
+        const items = data.data?.products || data.data?.items || (Array.isArray(data.data) ? data.data : []);
+        const total = data.data?.total ?? data.data?.pagination?.total ?? items.length;
+        setProducts(items);
+        setTotalPages(Math.ceil(total / perPage) || 1);
       }
     } catch {
       // silently fail
@@ -137,24 +140,27 @@ export default function FurniturePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#291C0E] text-[#FAF6F0]">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-white/10 bg-[#0a0a0a]/85 backdrop-blur-md px-4 sm:px-6 py-4">
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors"
-          >
-            <Menu className="h-5 w-5 text-gray-400" />
-          </button>
-          <BackButton fallbackHref="/dashboard" label="Back to Dashboard" variant="subtle" />
-          <div className="flex-1">
-            <h1 className="text-xl font-bold text-white tracking-tight">Furniture Catalog</h1>
-            <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
-              Explore verified furniture with instant Amazon and Flipkart links
-            </p>
+        <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-[#523A25] bg-[#291C0E]/90 backdrop-blur-md px-4 sm:px-6 py-4">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[#6E473B]/20 transition-colors"
+            >
+              <Menu className="h-5 w-5 text-[#BEB5A9]" />
+            </button>
+            <BackButton fallbackHref="/dashboard" label="Back to Dashboard" variant="subtle" />
+            <div>
+              <h1 className="text-xl font-bold text-[#FAF6F0] tracking-tight">Furniture Catalog</h1>
+              <p className="text-xs sm:text-sm text-[#BEB5A9] mt-0.5">
+                Explore verified furniture with instant Amazon and Flipkart links
+              </p>
+            </div>
           </div>
+          <ThemeToggle />
         </header>
 
         <main className="px-4 sm:px-6 py-6 max-w-7xl mx-auto">

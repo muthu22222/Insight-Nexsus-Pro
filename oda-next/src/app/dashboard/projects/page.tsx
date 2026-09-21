@@ -23,6 +23,7 @@ import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import BackButton from "@/components/common/BackButton";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Project } from "@/types";
 import { formatDate, formatCurrency } from "@/utils/helpers";
@@ -177,6 +178,7 @@ export default function ProjectsPage() {
                 Manage all your interior design projects ({projects.length} saved)
               </p>
             </div>
+            <ThemeToggle />
             <Link
               href="/designer"
               className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black text-sm font-extrabold rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition-all"

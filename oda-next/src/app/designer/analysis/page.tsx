@@ -24,6 +24,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
 import { useAuth } from '@/contexts/AuthContext';
 import BackButton from '@/components/common/BackButton';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 import type { RoomAnalysis } from '@/types';
 
 const steps = [
@@ -56,6 +57,7 @@ export default function AnalysisPage() {
     setRoomAnalysis,
   } = useDesignerStore();
 
+  const [hasHydrated, setHasHydrated] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysis, setAnalysis] = useState<RoomAnalysis | null>(roomAnalysis);
   const [analyzedForImageId, setAnalyzedForImageId] = useState<string | null>(null);
@@ -63,6 +65,10 @@ export default function AnalysisPage() {
   const [editValue, setEditValue] = useState('');
   const [newFurnitureInput, setNewFurnitureInput] = useState('');
   const [showAddFurniture, setShowAddFurniture] = useState(false);
+
+  useEffect(() => {
+    setHasHydrated(true);
+  }, []);
 
   const analyzeImage = useCallback(async () => {
     if (!uploadedImage) return;
@@ -158,6 +164,7 @@ export default function AnalysisPage() {
   }, [uploadedImage, imageId, getToken, setRoomAnalysis]);
 
   useEffect(() => {
+    if (!hasHydrated) return;
     if (!uploadedImage) {
       router.push('/designer');
       return;
@@ -166,7 +173,7 @@ export default function AnalysisPage() {
     if (analyzedForImageId !== currentId) {
       analyzeImage();
     }
-  }, [uploadedImage, imageId, analyzedForImageId, analyzeImage, router]);
+  }, [hasHydrated, uploadedImage, imageId, analyzedForImageId, analyzeImage, router]);
 
   const handleEditStart = (field: string, currentValue: any) => {
     setEditingField(field);
@@ -237,7 +244,7 @@ export default function AnalysisPage() {
     }
   };
 
-  if (!uploadedImage) {
+  if (!hasHydrated || !uploadedImage) {
     return null;
   }
 
@@ -248,6 +255,7 @@ export default function AnalysisPage() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <BackButton fallbackHref="/designer" label="Back to Upload" />
+          <ThemeToggle />
         </div>
 
         <div className="text-center mb-8">

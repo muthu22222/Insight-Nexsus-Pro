@@ -67,9 +67,9 @@ export default function Features() {
   const [isPaused, setIsPaused] = useState(false);
 
   return (
-    <section id="features" className="py-24 md:py-32 bg-[#0a0a0a] overflow-hidden relative">
+    <section id="features" className="py-24 md:py-32 bg-[#291C0E] overflow-hidden relative">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-amber-500/5 blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#6E473B]/20 blur-[140px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
         <motion.div
@@ -78,14 +78,14 @@ export default function Features() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-flex items-center gap-1.5 text-amber-400 text-xs sm:text-sm font-bold tracking-widest uppercase bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 rounded-full mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <span className="inline-flex items-center gap-1.5 text-[#E1D4C2] text-xs sm:text-sm font-bold tracking-widest uppercase bg-[#6E473B]/25 border border-[#A78D78]/35 px-3.5 py-1 rounded-full mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-[#A78D78]" />
             Why Insight Nexsus
           </span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mt-2 tracking-tight">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#FAF6F0] mt-2 tracking-tight">
             Everything You Need to Design Smarter
           </h2>
-          <p className="text-gray-400 text-sm sm:text-base max-w-xl mx-auto mt-4">
+          <p className="text-[#BEB5A9] text-sm sm:text-base max-w-xl mx-auto mt-4">
             From instant AI room mapping to guaranteed real store products and live budget calculation.
           </p>
         </motion.div>
@@ -119,23 +119,23 @@ export default function Features() {
               return (
                 <div
                   key={`row1-${feature.title}-${idx}`}
-                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-white/[0.03] border border-white/10 hover:border-amber-500/40 rounded-2xl p-7 transition-all duration-300 hover:bg-white/[0.06] hover:-translate-y-1.5 hover:shadow-xl hover:shadow-amber-500/10 backdrop-blur-md"
+                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-[#362413]/70 border border-[#523A25] hover:border-[#A78D78]/60 rounded-2xl p-7 transition-all duration-300 hover:bg-[#362413]/95 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#20160B] backdrop-blur-md"
                 >
                   {/* Top Badge & Icon */}
                   <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center group-hover:bg-amber-500/20 group-hover:scale-110 transition-all duration-300 shadow-inner">
-                      <Icon size={22} className="text-amber-400" />
+                    <div className="w-12 h-12 rounded-xl bg-[#6E473B]/25 border border-[#A78D78]/30 flex items-center justify-center group-hover:bg-[#6E473B]/40 group-hover:scale-110 transition-all duration-300 shadow-inner">
+                      <Icon size={22} className="text-[#E1D4C2]" />
                     </div>
-                    <span className="text-[11px] font-bold text-amber-400/80 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold text-[#E1D4C2] bg-[#6E473B]/30 border border-[#A78D78]/30 px-2.5 py-0.5 rounded-full">
                       {feature.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-white text-lg font-bold mb-2.5 group-hover:text-amber-300 transition-colors">
+                  <h3 className="text-[#FAF6F0] text-lg font-bold mb-2.5 group-hover:text-[#E1D4C2] transition-colors">
                     {feature.title}
                   </h3>
 
-                  <p className="text-gray-400 text-sm leading-relaxed">
+                  <p className="text-[#BEB5A9] text-sm leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
@@ -165,22 +165,22 @@ export default function Features() {
               return (
                 <div
                   key={`row2-${feature.title}-${idx}`}
-                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-white/[0.03] border border-white/10 hover:border-amber-500/40 rounded-2xl p-7 transition-all duration-300 hover:bg-white/[0.06] hover:-translate-y-1.5 hover:shadow-xl hover:shadow-amber-500/10 backdrop-blur-md"
+                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-[#362413]/70 border border-[#523A25] hover:border-[#A78D78]/60 rounded-2xl p-7 transition-all duration-300 hover:bg-[#362413]/95 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#20160B] backdrop-blur-md"
                 >
                   <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/20 group-hover:scale-110 transition-all duration-300 shadow-inner">
-                      <Icon size={22} className="text-blue-400" />
+                    <div className="w-12 h-12 rounded-xl bg-[#6E473B]/25 border border-[#A78D78]/30 flex items-center justify-center group-hover:bg-[#6E473B]/40 group-hover:scale-110 transition-all duration-300 shadow-inner">
+                      <Icon size={22} className="text-[#E1D4C2]" />
                     </div>
-                    <span className="text-[11px] font-bold text-blue-400/80 bg-blue-500/10 border border-blue-500/20 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold text-[#E1D4C2] bg-[#6E473B]/30 border border-[#A78D78]/30 px-2.5 py-0.5 rounded-full">
                       {feature.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-white text-lg font-bold mb-2.5 group-hover:text-blue-300 transition-colors">
+                  <h3 className="text-[#FAF6F0] text-lg font-bold mb-2.5 group-hover:text-[#E1D4C2] transition-colors">
                     {feature.title}
                   </h3>
 
-                  <p className="text-gray-400 text-sm leading-relaxed">
+                  <p className="text-[#BEB5A9] text-sm leading-relaxed">
                     {feature.description}
                   </p>
                 </div>

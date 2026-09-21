@@ -5,15 +5,16 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 
 const navLinks = [
-  { label: "Home", href: "#hero" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "AI Designer", href: "#features" },
-  { label: "Explore", href: "#testimonials" },
-  { label: "Furniture", href: "#cta" },
-  { label: "Stores", href: "#footer" },
-  { label: "About", href: "#footer" },
+  { label: "Home", href: "/#hero" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "AI Designer", href: "/designer" },
+  { label: "Explore", href: "/#testimonials" },
+  { label: "Furniture", href: "/furniture" },
+  { label: "Stores", href: "/stores" },
+  { label: "About", href: "/#footer" },
 ];
 
 export default function Navbar() {
@@ -34,7 +35,7 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/5 shadow-lg"
+          ? "bg-[#291C0E]/95 backdrop-blur-md border-b border-[#6E473B]/25 shadow-lg"
           : "bg-transparent"
       }`}
     >
@@ -42,8 +43,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-1.5 text-xl md:text-2xl font-bold tracking-tight">
-            <span className="text-white">Insight</span>
-            <span className="text-amber-500">Nexsus</span>
+            <span className="text-[#E1D4C2]">Insight</span>
+            <span className="text-[#A78D78]">Nexsus</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -52,7 +53,7 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
+                className="text-sm text-[#BEB5A9] hover:text-[#FAF6F0] transition-colors duration-200 font-medium"
               >
                 {link.label}
               </a>
@@ -61,10 +62,11 @@ export default function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-4">
+            <ThemeToggle />
             {user ? (
               <Link
                 href="/dashboard"
-                className="text-sm font-semibold bg-amber-500 hover:bg-amber-400 text-black px-5 py-2.5 rounded-lg transition-colors duration-200 flex items-center gap-1.5"
+                className="text-sm font-semibold bg-[#6E473B] hover:bg-[#855749] text-[#FAF6F0] px-5 py-2.5 rounded-lg transition-colors duration-200 flex items-center gap-1.5 shadow-md shadow-[#6E473B]/25 border border-[#A78D78]/30"
               >
                 Dashboard
                 <ArrowRight size={16} />
@@ -73,13 +75,13 @@ export default function Navbar() {
               <>
                 <Link
                   href="/auth/login"
-                  className="text-sm text-gray-300 hover:text-white transition-colors duration-200 px-4 py-2"
+                  className="text-sm text-[#E1D4C2] hover:text-white transition-colors duration-200 px-4 py-2 font-medium"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/auth/register"
-                  className="text-sm font-semibold bg-amber-500 hover:bg-amber-400 text-black px-5 py-2.5 rounded-lg transition-colors duration-200"
+                  className="text-sm font-semibold bg-[#6E473B] hover:bg-[#855749] text-[#FAF6F0] px-5 py-2.5 rounded-lg transition-colors duration-200 shadow-md shadow-[#6E473B]/25 border border-[#A78D78]/30"
                 >
                   Get Started
                 </Link>
@@ -87,14 +89,17 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile Hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden text-white p-2"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Hamburger & ThemeToggle */}
+          <div className="lg:hidden flex items-center gap-2">
+            <ThemeToggle />
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="text-[#FAF6F0] p-2"
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -106,7 +111,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="lg:hidden bg-[#0a0a0a] border-t border-white/5 overflow-hidden"
+            className="lg:hidden bg-[#291C0E] border-t border-[#6E473B]/25 overflow-hidden"
           >
             <div className="px-4 py-6 space-y-4">
               {navLinks.map((link) => (
@@ -114,17 +119,17 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="block text-gray-400 hover:text-white transition-colors duration-200 py-2"
+                  className="block text-[#BEB5A9] hover:text-[#FAF6F0] transition-colors duration-200 py-2 font-medium"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="pt-4 border-t border-white/10 space-y-3">
+              <div className="pt-4 border-t border-[#6E473B]/25 space-y-3">
                 {user ? (
                   <Link
                     href="/dashboard"
                     onClick={() => setMobileOpen(false)}
-                    className="block text-center bg-amber-500 hover:bg-amber-400 text-black font-semibold py-2.5 rounded-lg transition-colors duration-200"
+                    className="block text-center bg-[#6E473B] hover:bg-[#855749] text-[#FAF6F0] font-semibold py-2.5 rounded-lg transition-colors duration-200 border border-[#A78D78]/30"
                   >
                     Go to Dashboard
                   </Link>
@@ -133,14 +138,14 @@ export default function Navbar() {
                     <Link
                       href="/auth/login"
                       onClick={() => setMobileOpen(false)}
-                      className="block text-center text-gray-300 hover:text-white py-2.5 border border-white/10 rounded-lg transition-colors duration-200"
+                      className="block text-center text-[#E1D4C2] hover:text-white py-2.5 border border-[#A78D78]/25 rounded-lg transition-colors duration-200"
                     >
                       Sign In
                     </Link>
                     <Link
                       href="/auth/register"
                       onClick={() => setMobileOpen(false)}
-                      className="block text-center bg-amber-500 hover:bg-amber-400 text-black font-semibold py-2.5 rounded-lg transition-colors duration-200"
+                      className="block text-center bg-[#6E473B] hover:bg-[#855749] text-[#FAF6F0] font-semibold py-2.5 rounded-lg transition-colors duration-200 border border-[#A78D78]/30"
                     >
                       Get Started
                     </Link>

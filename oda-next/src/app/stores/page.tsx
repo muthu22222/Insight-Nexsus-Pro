@@ -17,6 +17,7 @@ import {
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import BackButton from "@/components/common/BackButton";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 import type { Store as StoreType } from "@/types";
 
 const categories = ["All", "Furniture", "Home Decor", "Lighting", "Curtains", "Mattress"];
@@ -111,24 +112,25 @@ export default function StoresPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#291C0E] text-[#FAF6F0]">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-white/10 bg-[#0a0a0a]/85 backdrop-blur-md px-4 sm:px-6 py-4">
+        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[#523A25] bg-[#291C0E]/90 backdrop-blur-md px-4 sm:px-6 py-4">
           <button
             onClick={() => setMobileOpen(true)}
-            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[#6E473B]/20 transition-colors"
           >
-            <Menu className="h-5 w-5 text-gray-400" />
+            <Menu className="h-5 w-5 text-[#BEB5A9]" />
           </button>
           <BackButton fallbackHref="/dashboard" label="Back to Dashboard" variant="subtle" />
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-white tracking-tight">Nearby Furniture Stores</h1>
-            <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
+            <h1 className="text-xl font-bold text-[#FAF6F0] tracking-tight">Nearby Furniture Stores</h1>
+            <p className="text-xs sm:text-sm text-[#BEB5A9] mt-0.5">
               Discover real showroom furniture stores near your location
             </p>
           </div>
+          <ThemeToggle />
         </header>
 
         <main className="px-4 sm:px-6 py-6 max-w-7xl mx-auto">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import "./globals.css";
 
@@ -30,10 +31,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} h-full`} data-scroll-behavior="smooth">
-      <body className="min-h-full bg-white text-gray-900 antialiased">
+    <html lang="en" className={`${inter.variable} h-full`} data-scroll-behavior="smooth" suppressHydrationWarning>
+      <body className="min-h-full antialiased transition-colors duration-200">
         <AuthProvider>
-          {children}
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
         </AuthProvider>
         <Toaster
           position="top-right"

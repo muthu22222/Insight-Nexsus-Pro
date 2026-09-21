@@ -50,7 +50,7 @@ const itemVariants = {
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 md:py-32 bg-[#0a0a0a]">
+    <section id="how-it-works" className="py-24 md:py-32 bg-[#291C0E]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -59,10 +59,10 @@ export default function HowItWorks() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16 md:mb-20"
         >
-          <span className="text-amber-500 text-sm font-semibold tracking-widest uppercase">
+          <span className="text-[#A78D78] text-sm font-bold tracking-widest uppercase bg-[#6E473B]/20 border border-[#A78D78]/30 px-3.5 py-1 rounded-full inline-block">
             How It Works
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mt-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#FAF6F0] mt-4">
             Four Steps to Your Dream Space
           </h2>
         </motion.div>
@@ -83,20 +83,20 @@ export default function HowItWorks() {
                 className="relative group"
               >
                 {/* Large faded number */}
-                <span className="absolute -top-6 -left-2 text-7xl md:text-8xl font-black text-white/[0.03] select-none pointer-events-none">
+                <span className="absolute -top-6 -left-2 text-7xl md:text-8xl font-black text-[#E1D4C2]/[0.07] select-none pointer-events-none">
                   {step.number}
                 </span>
 
-                <div className="relative bg-white/[0.02] border border-white/5 rounded-2xl p-8 hover:border-amber-500/30 transition-all duration-300 hover:bg-white/[0.04] h-full">
-                  <div className="w-14 h-14 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-6 group-hover:bg-amber-500/20 transition-colors duration-300">
-                    <Icon size={24} className="text-amber-500" />
+                <div className="relative bg-[#362413]/60 border border-[#523A25] rounded-2xl p-8 hover:border-[#A78D78]/60 transition-all duration-300 hover:bg-[#362413]/90 hover:shadow-xl hover:shadow-[#20160B] h-full backdrop-blur-sm">
+                  <div className="w-14 h-14 rounded-xl bg-[#6E473B]/25 border border-[#A78D78]/30 flex items-center justify-center mb-6 group-hover:bg-[#6E473B]/40 group-hover:scale-105 transition-all duration-300 shadow-inner">
+                    <Icon size={24} className="text-[#E1D4C2]" />
                   </div>
 
-                  <h3 className="text-white text-xl font-bold mb-3">
+                  <h3 className="text-[#FAF6F0] text-xl font-bold mb-3">
                     {step.title}
                   </h3>
 
-                  <p className="text-gray-400 text-sm leading-relaxed">
+                  <p className="text-[#BEB5A9] text-sm leading-relaxed">
                     {step.description}
                   </p>
                 </div>

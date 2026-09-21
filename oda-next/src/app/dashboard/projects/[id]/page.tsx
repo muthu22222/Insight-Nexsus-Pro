@@ -26,6 +26,7 @@ import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import BackButton from "@/components/common/BackButton";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { getAmazonProductUrl, getFlipkartProductUrl } from "@/lib/store-links";
 import { formatCurrency, formatDate } from "@/utils/helpers";
@@ -327,6 +328,7 @@ export default function ProjectDetailPage() {
             </div>
 
             <div className="flex items-center gap-2">
+              <ThemeToggle />
               <Link
                 href={`/designer?projectId=${project._id}`}
                 className="hidden sm:flex items-center gap-2 px-3.5 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-black text-xs font-extrabold rounded-xl shadow-md hover:scale-[1.02] transition-transform"

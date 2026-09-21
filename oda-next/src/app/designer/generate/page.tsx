@@ -22,6 +22,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useDesignerStore } from '@/store/useDesignerStore';
 import { useAuth } from '@/contexts/AuthContext';
 import BackButton from '@/components/common/BackButton';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 import FurnishedRoomView from '@/components/designer/FurnishedRoomView';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
 import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
@@ -64,7 +65,12 @@ export default function GeneratePage() {
   );
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [hasHydrated, setHasHydrated] = useState(false);
   const isGeneratingRef = useRef(false);
+
+  useEffect(() => {
+    setHasHydrated(true);
+  }, []);
 
   const fallbackRoomImage = uploadedImage || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&auto=format&fit=crop&q=85';
 
@@ -233,6 +239,7 @@ export default function GeneratePage() {
   ]);
 
   useEffect(() => {
+    if (!hasHydrated) return;
     if (!uploadedImage) {
       router.push('/designer');
       return;
@@ -244,10 +251,9 @@ export default function GeneratePage() {
     } else {
       setIsGenerating(false);
     }
-  }, [uploadedImage, imageId, generatedForImageId, generateDesign, router]);
+  }, [hasHydrated, uploadedImage, imageId, generatedForImageId, generateDesign, router]);
 
   const handleRegenerate = () => {
-    setGeneratedForImageId(null);
     generateDesign();
   };
 
@@ -363,7 +369,7 @@ export default function GeneratePage() {
     }
   };
 
-  if (!uploadedImage) {
+  if (!hasHydrated || !uploadedImage) {
     return null;
   }
 
@@ -378,6 +384,7 @@ export default function GeneratePage() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <BackButton fallbackHref="/designer/preferences" label="Back to Preferences" />
+          <ThemeToggle />
         </div>
 
         <div className="text-center mb-8">

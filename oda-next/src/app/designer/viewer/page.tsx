@@ -29,6 +29,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import FurnishedRoomView, { HotspotItem } from '@/components/designer/FurnishedRoomView';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
 import BackButton from '@/components/common/BackButton';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
 
 export default function ViewerPage() {
@@ -41,6 +42,11 @@ export default function ViewerPage() {
     selectedDesign,
     preferences,
     roomAnalysis,
+    cartItemIds,
+    addToCart,
+    removeFromCart,
+    toggleCartItem,
+    addAllToCart,
     setActiveProject,
   } = useDesignerStore();
   const [activeHotspot, setActiveHotspot] = useState<HotspotItem | null>(null);
@@ -51,9 +57,14 @@ export default function ViewerPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [hasHydrated, setHasHydrated] = useState(false);
   const isDraggingRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  useEffect(() => {
+    setHasHydrated(true);
+  }, []);
 
   const baseRoomImage = uploadedImage || 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&auto=format&fit=crop&q=85';
   const fallbackFurnished = getDesignImagesForStyle(selectedDesign?.style || selectedDesign?.furnitureStyle || 'Modern', undefined, Date.now())[0];
@@ -62,10 +73,11 @@ export default function ViewerPage() {
     : fallbackFurnished;
 
   useEffect(() => {
+    if (!hasHydrated) return;
     if (!uploadedImage && !selectedDesign) {
       router.push('/designer');
     }
-  }, [uploadedImage, selectedDesign, router]);
+  }, [hasHydrated, uploadedImage, selectedDesign, router]);
 
   const activeHotspots: HotspotItem[] = (selectedDesign?.hotspots && selectedDesign.hotspots.length > 0)
     ? selectedDesign.hotspots.map((h: any, idx: number) => ({
@@ -121,7 +133,9 @@ export default function ViewerPage() {
   };
 
   const handleAddAllToCart = () => {
-    toast.success(`Added all ${activeHotspots.length} products to project shopping list!`);
+    const allIds = activeHotspots.map((h) => String(h.id));
+    addAllToCart(allIds);
+    toast.success(`Added all ${activeHotspots.length} products to shopping cart!`);
   };
 
   const handlePromptSubmit = (e: React.FormEvent) => {
@@ -302,6 +316,7 @@ export default function ViewerPage() {
           {/* FLOATING TOP-LEFT CONTROL PILL */}
           <div className="absolute top-4 left-4 z-40 flex items-center gap-2">
             <BackButton fallbackHref="/designer/generate" label="Back to Generate" variant="floating" />
+            <ThemeToggle />
             <div className="bg-black/85 backdrop-blur-xl border border-white/15 rounded-2xl px-2.5 py-1.5 flex items-center gap-2 shadow-2xl text-white">
               <button
                 onClick={handleSaveProject}
@@ -347,7 +362,7 @@ export default function ViewerPage() {
             <div className="bg-black/85 backdrop-blur-xl border border-white/20 rounded-2xl px-3.5 py-2 flex items-center gap-3 shadow-2xl text-white">
               <div className="flex items-center gap-2">
                 <ShoppingCart className="w-4 h-4 text-amber-400" />
-                <span className="text-xs font-bold">Shopping cart ({activeHotspots.length})</span>
+                <span className="text-xs font-bold">Shopping cart ({cartItemIds.length})</span>
               </div>
               <div className="h-4 w-px bg-white/20" />
               <button
@@ -558,6 +573,32 @@ export default function ViewerPage() {
                         />
                         {savedItems.includes(currentItem.id) ? 'Saved in Project' : 'Save to Favorites'}
                       </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const idStr = String(currentItem.id);
+                          if (cartItemIds.includes(idStr)) {
+                            removeFromCart(idStr);
+                            toast('Removed from shopping list', { icon: '🛒' });
+                          } else {
+                            addToCart(idStr);
+                            toast.success(`Added ${currentItem.label} to shopping list!`);
+                          }
+                        }}
+                        className={`w-full border py-2 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
+                          cartItemIds.includes(String(currentItem.id))
+                            ? 'border-emerald-500/40 bg-emerald-500/15 text-emerald-300'
+                            : 'border-white/10 text-gray-300 hover:bg-white/5'
+                        }`}
+                      >
+                        <ShoppingCart className="w-3.5 h-3.5 text-amber-400" />
+                        <span>
+                          {cartItemIds.includes(String(currentItem.id))
+                            ? 'Remove from Cart'
+                            : 'Add to Cart'}
+                        </span>
+                      </button>
                     </div>
                   </div>
                 )}
@@ -572,20 +613,24 @@ export default function ViewerPage() {
                   <div className="space-y-1.5">
                     {activeHotspots.map((item) => {
                       const isSelected = currentItem && String(item.id) === String(currentItem.id);
+                      const inCart = cartItemIds.includes(String(item.id));
                       return (
-                        <button
+                        <div
                           key={String(item.id)}
-                          ref={(el) => {
-                            itemRefs.current[String(item.id)] = el;
-                          }}
-                          onClick={() => handleHotspotClick(item)}
-                          className={`w-full text-left p-2.5 rounded-xl border transition-all flex items-center justify-between cursor-pointer ${
+                          className={`w-full p-2.5 rounded-xl border transition-all flex items-center justify-between ${
                             isSelected
                               ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
                               : 'border-white/10 hover:border-amber-500/30 bg-black/40'
                           }`}
                         >
-                          <div className="flex items-center gap-2 min-w-0">
+                          <button
+                            type="button"
+                            ref={(el) => {
+                              itemRefs.current[String(item.id)] = el;
+                            }}
+                            onClick={() => handleHotspotClick(item)}
+                            className="flex items-center gap-2 min-w-0 text-left flex-1 cursor-pointer"
+                          >
                             <span
                               className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 transition-colors ${
                                 isSelected
@@ -601,9 +646,33 @@ export default function ViewerPage() {
                               </p>
                               <p className="text-[10px] text-gray-400">{item.store}</p>
                             </div>
+                          </button>
+                          <div className="flex items-center gap-2 shrink-0 ml-2">
+                            <span className="text-xs font-black text-amber-400">{item.price}</span>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const idStr = String(item.id);
+                                if (inCart) {
+                                  removeFromCart(idStr);
+                                  toast('Removed from cart', { icon: '🛒' });
+                                } else {
+                                  addToCart(idStr);
+                                  toast.success(`Added ${item.label} to cart`);
+                                }
+                              }}
+                              className={`p-1 rounded-lg border transition-colors cursor-pointer ${
+                                inCart
+                                  ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                                  : 'border-white/10 text-gray-400 hover:text-white hover:bg-white/10'
+                              }`}
+                              title={inCart ? 'Remove from cart' : 'Add to cart'}
+                            >
+                              <ShoppingCart className="w-3.5 h-3.5" />
+                            </button>
                           </div>
-                          <span className="text-xs font-black text-amber-400 shrink-0 ml-2">{item.price}</span>
-                        </button>
+                        </div>
                       );
                     })}
                   </div>

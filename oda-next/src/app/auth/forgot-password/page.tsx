@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
           <div className="text-center mb-8">
             <Link href="/" className="inline-block">
               <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-                Insight <span className="text-amber-600">Nexsus</span>
+                Insight <span className="text-[#6E473B]">Nexsus</span>
               </h1>
             </Link>
           </div>
@@ -119,7 +119,7 @@ export default function ForgotPasswordPage() {
                       }}
                       placeholder="you@example.com"
                       className={`w-full pl-10 pr-4 py-2.5 rounded-lg border ${
-                        error ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-200 focus:ring-amber-500 focus:border-amber-500'
+                        error ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-200 focus:ring-[#6E473B] focus:border-[#6E473B]'
                       } text-gray-900 text-sm placeholder-gray-400 outline-none transition-all`}
                     />
                   </div>
@@ -129,7 +129,7 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-gray-900 text-white py-2.5 rounded-lg font-medium text-sm hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-[#6E473B] text-[#FAF6F0] py-2.5 rounded-lg font-semibold text-sm hover:bg-[#855749] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md shadow-[#6E473B]/20"
                 >
                   {isLoading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -144,7 +144,7 @@ export default function ForgotPasswordPage() {
           <div className="mt-6 pt-6 border-t border-gray-100">
             <Link
               href="/auth/login"
-              className="flex items-center justify-center gap-2 text-sm text-gray-500 hover:text-gray-700 font-medium transition-colors"
+              className="flex items-center justify-center gap-2 text-sm text-[#6E473B] hover:text-[#855749] font-semibold transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Sign In

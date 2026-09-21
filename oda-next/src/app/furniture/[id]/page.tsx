@@ -18,6 +18,7 @@ import {
 import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import BackButton from "@/components/common/BackButton";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { getAmazonProductUrl, getFlipkartProductUrl } from "@/lib/store-links";
 import type { FurnitureItem, Project } from "@/types";
@@ -177,9 +178,12 @@ export default function ProductDetailPage() {
             <Menu className="h-5 w-5 text-gray-400" />
           </button>
           <BackButton fallbackHref="/furniture" label="Back to Catalog" variant="subtle" />
-          <h1 className="text-lg font-bold text-white tracking-tight truncate">
-            Product Details
-          </h1>
+          <div className="flex-1">
+            <h1 className="text-lg font-bold text-white tracking-tight truncate">
+              Product Details
+            </h1>
+          </div>
+          <ThemeToggle />
         </header>
 
         <main className="px-4 sm:px-6 py-6 max-w-6xl mx-auto">

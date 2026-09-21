@@ -107,29 +107,29 @@ export default function AIAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-96 h-[500px] bg-[#0c0c0e] rounded-2xl shadow-2xl border border-white/15 flex flex-col overflow-hidden text-white"
+            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-96 h-[500px] bg-[#1c1309] rounded-2xl shadow-2xl border border-[#523A25] flex flex-col overflow-hidden text-[#FAF6F0]"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 text-black">
+            <div className="flex items-center justify-between px-5 py-4 bg-[#6E473B] text-[#FAF6F0] border-b border-[#A78D78]/30">
               <div className="flex items-center gap-3">
                 <div className="h-9 w-9 rounded-full bg-black/20 flex items-center justify-center">
-                  <Sparkles className="h-5 w-5 text-black" />
+                  <Sparkles className="h-5 w-5 text-[#E1D4C2]" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black tracking-tight text-black">Insight Nexsus AI</h3>
-                  <p className="text-[11px] font-semibold text-black/80">Interior Design & Styling Expert</p>
+                  <h3 className="text-sm font-black tracking-tight text-[#FAF6F0]">Insight Nexsus AI</h3>
+                  <p className="text-[11px] font-semibold text-[#E1D4C2]">Interior Design & Styling Expert</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-black/10 transition-colors text-black"
+                className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-black/20 transition-colors text-[#FAF6F0]"
               >
                 <X className="h-4 w-4 stroke-[3]" />
               </button>
             </div>
 
             {/* Chat message list */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-black/40">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#140c06]/60">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
@@ -138,8 +138,8 @@ export default function AIAssistant() {
                   <div
                     className={`max-w-[82%] rounded-2xl px-4 py-2.5 text-xs sm:text-sm leading-relaxed ${
                       msg.role === "user"
-                        ? "bg-gradient-to-r from-amber-500 to-orange-500 text-black font-semibold rounded-br-xs shadow-md"
-                        : "bg-[#18181b] text-gray-200 border border-white/10 rounded-bl-xs shadow-xs"
+                        ? "bg-[#6E473B] text-[#FAF6F0] font-semibold rounded-br-xs shadow-md border border-[#A78D78]/40"
+                        : "bg-[#362413] text-[#FAF6F0] border border-[#523A25] rounded-bl-xs shadow-xs"
                     }`}
                   >
                     {msg.content}
@@ -148,11 +148,11 @@ export default function AIAssistant() {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-[#18181b] border border-white/10 rounded-2xl rounded-bl-xs px-4 py-3">
+                  <div className="bg-[#362413] border border-[#523A25] rounded-2xl rounded-bl-xs px-4 py-3">
                     <div className="flex gap-1.5">
-                      <span className="h-2 w-2 bg-amber-400 rounded-full animate-bounce" />
-                      <span className="h-2 w-2 bg-amber-400 rounded-full animate-bounce [animation-delay:0.15s]" />
-                      <span className="h-2 w-2 bg-amber-400 rounded-full animate-bounce [animation-delay:0.3s]" />
+                      <span className="h-2 w-2 bg-[#A78D78] rounded-full animate-bounce" />
+                      <span className="h-2 w-2 bg-[#A78D78] rounded-full animate-bounce [animation-delay:0.15s]" />
+                      <span className="h-2 w-2 bg-[#A78D78] rounded-full animate-bounce [animation-delay:0.3s]" />
                     </div>
                   </div>
                 </div>
@@ -161,12 +161,12 @@ export default function AIAssistant() {
             </div>
 
             {messages.length <= 2 && (
-              <div className="px-4 py-2 bg-black/60 border-t border-white/5 flex flex-wrap gap-1.5">
+              <div className="px-4 py-2 bg-[#1c1309] border-t border-[#523A25] flex flex-wrap gap-1.5">
                 {quickActions.map((action) => (
                   <button
                     key={action}
                     onClick={() => sendMessage(action)}
-                    className="px-2.5 py-1 text-[11px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 rounded-full hover:bg-amber-500/25 transition-colors cursor-pointer"
+                    className="px-2.5 py-1 text-[11px] font-bold bg-[#6E473B]/25 text-[#E1D4C2] border border-[#A78D78]/30 rounded-full hover:bg-[#6E473B]/40 transition-colors cursor-pointer"
                   >
                     {action}
                   </button>
@@ -177,19 +177,19 @@ export default function AIAssistant() {
             {/* Input Bar */}
             <form
               onSubmit={handleSubmit}
-              className="flex items-center gap-2 px-4 py-3 border-t border-white/10 bg-black/80"
+              className="flex items-center gap-2 px-4 py-3 border-t border-[#523A25] bg-[#1c1309]"
             >
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask about design, budget, furniture..."
-                className="flex-1 px-4 py-2 text-xs sm:text-sm bg-[#18181b] rounded-full border border-white/15 focus:outline-none focus:border-amber-400 text-white placeholder:text-gray-500 transition-all"
+                className="flex-1 px-4 py-2 text-xs sm:text-sm bg-[#362413] rounded-full border border-[#523A25] focus:outline-none focus:border-[#A78D78] text-[#FAF6F0] placeholder:text-[#BEB5A9] transition-all"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
-                className="h-9 w-9 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-black flex items-center justify-center hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0"
+                className="h-9 w-9 rounded-full bg-[#6E473B] text-[#FAF6F0] flex items-center justify-center hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0 border border-[#A78D78]/30 cursor-pointer"
               >
                 <Send className="h-4 w-4 stroke-[2.5]" />
               </button>
@@ -202,7 +202,7 @@ export default function AIAssistant() {
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.94 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-4 sm:right-6 z-50 h-14 w-14 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 text-black shadow-xl shadow-amber-500/25 flex items-center justify-center cursor-pointer"
+        className="fixed bottom-6 right-4 sm:right-6 z-50 h-14 w-14 rounded-full bg-[#6E473B] hover:bg-[#855749] text-[#FAF6F0] shadow-xl shadow-[#6E473B]/35 flex items-center justify-center cursor-pointer border border-[#A78D78]/40"
       >
         {isOpen ? (
           <X className="h-6 w-6 stroke-[3]" />
