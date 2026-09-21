@@ -112,21 +112,21 @@ export default function StoresPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#291C0E] text-[#FAF6F0]">
+    <div className="min-h-screen bg-[#2B1B12] text-[#F5EFE7]">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[#523A25] bg-[#291C0E]/90 backdrop-blur-md px-4 sm:px-6 py-4">
+        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[#D8C3A5]/15 bg-[#2B1B12]/90 backdrop-blur-md px-4 sm:px-6 py-4">
           <button
             onClick={() => setMobileOpen(true)}
-            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[#6E473B]/20 transition-colors"
+            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[#8F5F4A]/20 transition-colors"
           >
-            <Menu className="h-5 w-5 text-[#BEB5A9]" />
+            <Menu className="h-5 w-5 text-[#CDBFB2]" />
           </button>
           <BackButton fallbackHref="/dashboard" label="Back to Dashboard" variant="subtle" />
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-[#FAF6F0] tracking-tight">Nearby Furniture Stores</h1>
-            <p className="text-xs sm:text-sm text-[#BEB5A9] mt-0.5">
+            <h1 className="text-xl font-bold text-[#F5EFE7] tracking-tight">Nearby Furniture Stores</h1>
+            <p className="text-xs sm:text-sm text-[#CDBFB2] mt-0.5">
               Discover real showroom furniture stores near your location
             </p>
           </div>
