@@ -155,21 +155,21 @@ export default function BudgetPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <div className="min-h-screen bg-white text-[#0F172A]">
         <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
         <div className="lg:pl-64">
-          <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-white/10 bg-[#0a0a0a]/85 backdrop-blur-md px-4 sm:px-6 py-4">
+          <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[#E2E8F0] bg-white/95 backdrop-blur-md px-4 sm:px-6 py-4">
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors"
+              className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[#F1F3F5] transition-colors cursor-pointer"
             >
-              <Menu className="h-5 w-5 text-gray-400" />
+              <Menu className="h-5 w-5 text-[#0F172A]" />
             </button>
             <BackButton fallbackHref="/dashboard" label="Back to Dashboard" variant="subtle" />
             <div className="flex-1">
-              <h1 className="text-xl font-bold text-white tracking-tight">Budget Planner</h1>
-              <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
+              <h1 className="text-xl font-bold text-[#0F172A] tracking-tight">Budget Planner</h1>
+              <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
                 Plan and optimize your interior design budget with AI
               </p>
             </div>
@@ -177,9 +177,9 @@ export default function BudgetPage() {
             {plan && (
               <button
                 onClick={handleDownloadPDF}
-                className="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-white/5 border border-white/15 text-white text-xs font-bold rounded-xl hover:bg-white/10 transition-colors"
+                className="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-[#F1F3F5] border border-[#E2E8F0] text-[#0F172A] text-xs font-bold rounded-xl hover:bg-[#E2E8F0] transition-colors cursor-pointer"
               >
-                <Download className="h-4 w-4 text-amber-400" />
+                <Download className="h-4 w-4 text-[#0F172A]" />
                 Download PDF
               </button>
             )}
@@ -189,22 +189,22 @@ export default function BudgetPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-[#121215] rounded-2xl border border-white/10 p-6 sm:p-8 mb-6 shadow-xl"
+              className="bg-[#F8F9FA] rounded-2xl border border-[#E2E8F0] p-6 sm:p-8 mb-6 shadow-xs"
             >
               <div className="max-w-lg mx-auto text-center">
-                <div className="h-14 w-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-4 text-amber-400">
+                <div className="h-14 w-14 rounded-2xl bg-white border border-[#E2E8F0] flex items-center justify-center mx-auto mb-4 text-[#0F172A] shadow-xs">
                   <Calculator className="h-7 w-7" />
                 </div>
-                <h2 className="text-xl font-bold text-white mb-2">
+                <h2 className="text-xl font-bold text-[#0F172A] mb-2">
                   Set Your Total Interior Budget
                 </h2>
-                <p className="text-xs sm:text-sm text-gray-400 mb-6">
+                <p className="text-xs sm:text-sm text-[#64748B] mb-6">
                   Enter your total budget and let Insight Nexsus AI intelligently allocate it across rooms and furniture categories.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center gap-3 max-w-sm mx-auto">
                   <div className="relative flex-1 w-full">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#64748B] font-bold">
                       ₹
                     </span>
                     <input
@@ -215,13 +215,13 @@ export default function BudgetPage() {
                         setBudget(raw ? parseInt(raw).toLocaleString("en-IN") : "");
                       }}
                       placeholder="2,00,000"
-                      className="w-full pl-9 pr-4 py-3 bg-black border border-white/15 rounded-xl text-base font-bold text-white text-center focus:outline-none focus:border-amber-400"
+                      className="w-full pl-9 pr-4 py-3 bg-white border border-[#E2E8F0] rounded-xl text-base font-bold text-[#0F172A] placeholder-[#94A3B8] text-center focus:outline-none focus:border-[#0F172A]"
                     />
                   </div>
                   <button
                     onClick={handleGenerate}
                     disabled={generating || !budget}
-                    className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black font-extrabold text-sm rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shrink-0"
+                    className="w-full sm:w-auto px-6 py-3 bg-[#0F172A] hover:bg-[#1E293B] text-white font-extrabold text-sm rounded-xl border border-[#0F172A] shadow-md shadow-[#0F172A]/15 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shrink-0 cursor-pointer"
                   >
                     {generating ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -242,15 +242,15 @@ export default function BudgetPage() {
                 className="space-y-6"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <motion.div variants={item} className="bg-[#121215] rounded-2xl border border-white/10 p-5 shadow-xl">
-                    <p className="text-xs text-gray-400 font-semibold">Total Budget</p>
-                    <p className="text-2xl font-black text-white mt-1">
+                  <motion.div variants={item} className="bg-[#F8F9FA] rounded-2xl border border-[#E2E8F0] p-5 shadow-xs">
+                    <p className="text-xs text-[#64748B] font-semibold">Total Budget</p>
+                    <p className="text-2xl font-black text-[#0F172A] mt-1">
                       {formatCurrency(plan.totalBudget)}
                     </p>
                   </motion.div>
-                  <motion.div variants={item} className="bg-[#121215] rounded-2xl border border-white/10 p-5 shadow-xl">
-                    <p className="text-xs text-gray-400 font-semibold">Estimated Spend</p>
-                    <p className="text-2xl font-black text-amber-400 mt-1">
+                  <motion.div variants={item} className="bg-[#F8F9FA] rounded-2xl border border-[#E2E8F0] p-5 shadow-xs">
+                    <p className="text-xs text-[#64748B] font-semibold">Estimated Spend</p>
+                    <p className="text-2xl font-black text-[#0F172A] mt-1">
                       {formatCurrency(totalSpend)}
                     </p>
                   </motion.div>
@@ -278,14 +278,14 @@ export default function BudgetPage() {
                 {isOverBudget && (
                   <motion.div
                     variants={item}
-                    className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-5 flex items-start gap-3"
+                    className="bg-[#6D2932]/20 border border-[#C7B7A3]/30 rounded-2xl p-5 flex items-start gap-3"
                   >
-                    <AlertTriangle className="h-5 w-5 text-amber-400 mt-0.5 shrink-0" />
+                    <AlertTriangle className="h-5 w-5 text-[#E8D8C4] mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-bold text-amber-300">
+                      <p className="font-bold text-[#E8D8C4]">
                         Over budget by {formatCurrency(Math.abs(plan.remaining))}
                       </p>
-                      <p className="text-xs text-amber-200/80 mt-1">
+                      <p className="text-xs text-[#C7B7A3] mt-1">
                         Consider choosing budget-friendly alternatives or reducing quantities to stay within your budget.
                       </p>
                     </div>
@@ -295,10 +295,10 @@ export default function BudgetPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <motion.div
                     variants={item}
-                    className="bg-[#121215] rounded-2xl border border-white/10 p-6 shadow-xl"
+                    className="bg-[#63242C] rounded-2xl border border-[#C7B7A3]/20 p-6 shadow-xl"
                   >
-                    <h3 className="font-bold text-white mb-5 text-base flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-amber-400" />
+                    <h3 className="font-bold text-[#E8D8C4] mb-5 text-base flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#C7B7A3]" />
                       Budget Allocation
                     </h3>
                     <div className="space-y-4">
@@ -310,18 +310,18 @@ export default function BudgetPage() {
                                 className="h-3 w-3 rounded-full"
                                 style={{
                                   backgroundColor:
-                                    categoryColors[alloc.category] || "#64748b",
+                                    categoryColors[alloc.category] || "#6D2932",
                                 }}
                               />
-                              <span className="text-sm font-semibold text-gray-200">
+                              <span className="text-sm font-semibold text-[#E8D8C4]">
                                 {alloc.category}
                               </span>
                             </div>
-                            <span className="text-sm font-bold text-amber-400">
+                            <span className="text-sm font-bold text-[#C7B7A3]">
                               {formatCurrency(alloc.amount)} ({alloc.percentage}%)
                             </span>
                           </div>
-                          <div className="w-full h-2.5 bg-black rounded-full overflow-hidden border border-white/10">
+                          <div className="w-full h-2.5 bg-[#45161D] rounded-full overflow-hidden border border-[#C7B7A3]/15">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${alloc.percentage}%` }}
@@ -329,7 +329,7 @@ export default function BudgetPage() {
                               className="h-full rounded-full"
                               style={{
                                 backgroundColor:
-                                  categoryColors[alloc.category] || "#64748b",
+                                  categoryColors[alloc.category] || "#6D2932",
                               }}
                             />
                           </div>
@@ -340,9 +340,9 @@ export default function BudgetPage() {
 
                   <motion.div
                     variants={item}
-                    className="bg-[#121215] rounded-2xl border border-white/10 p-6 flex flex-col items-center shadow-xl"
+                    className="bg-[#63242C] rounded-2xl border border-[#C7B7A3]/20 p-6 flex flex-col items-center shadow-xl"
                   >
-                    <h3 className="font-bold text-white mb-5 self-start text-base">
+                    <h3 className="font-bold text-[#E8D8C4] mb-5 self-start text-base">
                       Distribution
                     </h3>
                     <div className="relative w-52 h-52">
@@ -350,12 +350,12 @@ export default function BudgetPage() {
                         className="w-full h-full rounded-full"
                         style={{ background: buildPieBackground() }}
                       />
-                      <div className="absolute inset-5 bg-[#121215] rounded-full flex items-center justify-center border border-white/10">
+                      <div className="absolute inset-5 bg-[#63242C] rounded-full flex items-center justify-center border border-[#C7B7A3]/15">
                         <div className="text-center">
-                          <p className="text-base font-black text-white">
+                          <p className="text-base font-black text-[#E8D8C4]">
                             {formatCurrency(plan.totalBudget)}
                           </p>
-                          <p className="text-[10px] text-gray-400 uppercase font-semibold">Total Plan</p>
+                          <p className="text-[10px] text-[#C7B7A3] uppercase font-semibold">Total Plan</p>
                         </div>
                       </div>
                     </div>
@@ -366,10 +366,10 @@ export default function BudgetPage() {
                             className="h-2.5 w-2.5 rounded-full shrink-0"
                             style={{
                               backgroundColor:
-                                categoryColors[alloc.category] || "#64748b",
+                                categoryColors[alloc.category] || "#6D2932",
                             }}
                           />
-                          <span className="text-xs text-gray-300 truncate">
+                          <span className="text-xs text-[#C7B7A3] truncate">
                             {alloc.category}
                           </span>
                         </div>
@@ -380,33 +380,33 @@ export default function BudgetPage() {
 
                 <motion.div
                   variants={item}
-                  className="bg-[#121215] rounded-2xl border border-white/10 p-6 shadow-xl"
+                  className="bg-[#63242C] rounded-2xl border border-[#C7B7A3]/20 p-6 shadow-xl"
                 >
-                  <h3 className="font-bold text-white mb-4 text-base">
+                  <h3 className="font-bold text-[#E8D8C4] mb-4 text-base">
                     Category Details
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {plan.allocations.map((alloc) => (
                       <div
                         key={alloc.category}
-                        className="p-4 rounded-xl bg-black/40 border border-white/10 hover:border-amber-500/40 transition-colors"
+                        className="p-4 rounded-xl bg-[#45161D] border border-[#C7B7A3]/15 hover:border-[#C7B7A3]/40 transition-colors"
                       >
                         <div className="flex items-center gap-2 mb-2">
                           <div
                             className="h-3 w-3 rounded-full"
                             style={{
                               backgroundColor:
-                                categoryColors[alloc.category] || "#64748b",
+                                categoryColors[alloc.category] || "#6D2932",
                             }}
                           />
-                          <span className="font-bold text-white text-sm">
+                          <span className="font-bold text-[#E8D8C4] text-sm">
                             {alloc.category}
                           </span>
                         </div>
-                        <p className="text-xl font-black text-amber-400">
+                        <p className="text-xl font-black text-[#E8D8C4]">
                           {formatCurrency(alloc.amount)}
                         </p>
-                        <p className="text-xs text-gray-400 mt-1">
+                        <p className="text-xs text-[#C7B7A3] mt-1">
                           {alloc.percentage}% of total budget
                         </p>
                       </div>
@@ -417,7 +417,7 @@ export default function BudgetPage() {
                 <div className="flex sm:hidden pb-6">
                   <button
                     onClick={handleDownloadPDF}
-                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-black font-extrabold text-sm rounded-xl shadow-lg"
+                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-[#6D2932] hover:bg-[#7F333E] text-[#E8D8C4] font-extrabold text-sm rounded-xl border border-[#C7B7A3]/30 shadow-lg"
                   >
                     <Download className="h-4 w-4" />
                     Download Budget PDF

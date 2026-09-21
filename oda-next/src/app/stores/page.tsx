@@ -112,21 +112,21 @@ export default function StoresPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#2B1B12] text-[#F5EFE7]">
+    <div className="min-h-screen bg-white text-[#0F172A]">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[#D8C3A5]/15 bg-[#2B1B12]/90 backdrop-blur-md px-4 sm:px-6 py-4">
+        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[#E2E8F0] bg-white/90 backdrop-blur-md px-4 sm:px-6 py-4">
           <button
             onClick={() => setMobileOpen(true)}
-            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[#8F5F4A]/20 transition-colors"
+            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[#F1F3F5] transition-colors cursor-pointer"
           >
-            <Menu className="h-5 w-5 text-[#CDBFB2]" />
+            <Menu className="h-5 w-5 text-[#0F172A]" />
           </button>
           <BackButton fallbackHref="/dashboard" label="Back to Dashboard" variant="subtle" />
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-[#F5EFE7] tracking-tight">Nearby Furniture Stores</h1>
-            <p className="text-xs sm:text-sm text-[#CDBFB2] mt-0.5">
+            <h1 className="text-xl font-bold text-[#0F172A] tracking-tight">Nearby Furniture Stores</h1>
+            <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
               Discover real showroom furniture stores near your location
             </p>
           </div>
@@ -137,22 +137,22 @@ export default function StoresPage() {
           {/* Search bar & Category select */}
           <div className="flex flex-col sm:flex-row gap-3 mb-6">
             <form onSubmit={handleSearch} className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#64748B]" />
               <input
                 type="text"
                 value={searchLocation}
                 onChange={(e) => setSearchLocation(e.target.value)}
                 placeholder="Search city, area, or address..."
-                className="w-full pl-11 pr-4 py-3 bg-[#121215] border border-white/10 rounded-xl text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400"
+                className="w-full pl-11 pr-4 py-3 bg-white border border-[#E2E8F0] rounded-xl text-sm text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#0F172A]"
               />
             </form>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="px-4 py-3 bg-[#121215] border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:border-amber-400 cursor-pointer"
+              className="px-4 py-3 bg-white border border-[#E2E8F0] rounded-xl text-sm text-[#0F172A] focus:outline-none focus:border-[#0F172A] cursor-pointer"
             >
               {categories.map((c) => (
-                <option key={c} value={c} className="bg-[#121215]">
+                <option key={c} value={c} className="bg-white text-[#0F172A]">
                   {c}
                 </option>
               ))}
@@ -164,13 +164,13 @@ export default function StoresPage() {
             <div className="w-full lg:w-80 shrink-0 overflow-y-auto space-y-3 pr-1">
               {loading ? (
                 <div className="flex items-center justify-center py-12">
-                  <Loader2 className="h-6 w-6 animate-spin text-amber-400" />
+                  <Loader2 className="h-6 w-6 animate-spin text-[#0F172A]" />
                 </div>
               ) : stores.length === 0 ? (
-                <div className="bg-[#121215] rounded-2xl border border-white/10 p-8 text-center">
-                  <Store className="h-10 w-10 text-gray-700 mx-auto mb-3" />
-                  <p className="text-white font-bold">No stores found</p>
-                  <p className="text-xs text-gray-400 mt-1">
+                <div className="bg-[#F8F9FA] rounded-2xl border border-[#E2E8F0] p-8 text-center">
+                  <Store className="h-10 w-10 text-[#64748B] mx-auto mb-3" />
+                  <p className="text-[#0F172A] font-bold">No stores found</p>
+                  <p className="text-xs text-[#64748B] mt-1">
                     Try adjusting your search location or category
                   </p>
                 </div>
@@ -181,17 +181,17 @@ export default function StoresPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     onClick={() => setSelectedStore(store)}
-                    className={`bg-[#121215] rounded-xl border p-4 cursor-pointer transition-all hover:border-amber-500/40 hover:shadow-md ${
+                    className={`bg-[#F8F9FA] rounded-xl border p-4 cursor-pointer transition-all hover:border-[#CBD5E1] hover:bg-white hover:shadow-sm ${
                       selectedStore?._id === store._id
-                        ? "border-amber-500 ring-2 ring-amber-500/20 bg-amber-500/5"
-                        : "border-white/10"
+                        ? "border-[#0F172A] ring-2 ring-[#0F172A]/20 bg-white"
+                        : "border-[#E2E8F0]"
                     }`}
                   >
-                    <h3 className="font-bold text-white text-sm">
+                    <h3 className="font-bold text-[#0F172A] text-sm">
                       {store.name}
                     </h3>
-                    <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
-                      <MapPin className="h-3 w-3 text-amber-400 shrink-0" />
+                    <p className="text-xs text-[#64748B] mt-1 flex items-center gap-1">
+                      <MapPin className="h-3 w-3 text-[#64748B] shrink-0" />
                       {store.address}
                     </p>
                     <div className="flex items-center gap-3 mt-3">
@@ -199,7 +199,7 @@ export default function StoresPage() {
                         <a
                           href={`tel:${store.phone}`}
                           onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-1 text-xs text-gray-400 hover:text-amber-400 transition-colors"
+                          className="flex items-center gap-1 text-xs text-[#64748B] hover:text-[#0F172A] transition-colors"
                         >
                           <Phone className="h-3 w-3" />
                           Call
@@ -211,7 +211,7 @@ export default function StoresPage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-1 text-xs text-gray-400 hover:text-amber-400 transition-colors"
+                          className="flex items-center gap-1 text-xs text-[#64748B] hover:text-[#0F172A] transition-colors"
                         >
                           <Globe className="h-3 w-3" />
                           Website
@@ -222,7 +222,7 @@ export default function StoresPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="flex items-center gap-1 text-xs text-amber-400 font-bold hover:underline transition-colors"
+                        className="flex items-center gap-1 text-xs text-[#0F172A] font-bold hover:underline transition-colors"
                       >
                         <Navigation className="h-3 w-3" />
                         Directions
@@ -234,7 +234,7 @@ export default function StoresPage() {
             </div>
 
             {/* Right Map Canvas */}
-            <div className="flex-1 rounded-2xl overflow-hidden border border-white/10 bg-black min-h-[300px] relative shadow-2xl">
+            <div className="flex-1 rounded-2xl overflow-hidden border border-[#E2E8F0] bg-[#F8F9FA] min-h-[300px] relative shadow-lg">
               {mapReady && MapComponent ? (
                 <MapComponent
                   center={userLocation}
@@ -244,7 +244,7 @@ export default function StoresPage() {
                 />
               ) : (
                 <div className="h-full flex items-center justify-center">
-                  <Loader2 className="h-8 w-8 animate-spin text-amber-400" />
+                  <Loader2 className="h-8 w-8 animate-spin text-[#0F172A]" />
                 </div>
               )}
             </div>
@@ -255,24 +255,24 @@ export default function StoresPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-6 bg-[#121215] rounded-2xl border border-white/10 p-6 shadow-2xl"
+              className="mt-6 bg-[#F8F9FA] rounded-2xl border border-[#E2E8F0] p-6 shadow-xl"
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <h2 className="text-lg font-bold text-white">
+                  <h2 className="text-lg font-bold text-[#0F172A]">
                     {selectedStore.name}
                   </h2>
-                  <p className="text-sm text-gray-400 mt-1 flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-amber-400" />
+                  <p className="text-sm text-[#64748B] mt-1 flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5 text-[#64748B]" />
                     {selectedStore.address}
                   </p>
                   <div className="flex items-center gap-4 mt-3">
                     {selectedStore.phone && (
                       <a
                         href={`tel:${selectedStore.phone}`}
-                        className="flex items-center gap-1.5 text-sm text-gray-300 hover:text-amber-400 transition-colors"
+                        className="flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#0F172A] transition-colors"
                       >
-                        <Phone className="h-4 w-4 text-amber-400" />
+                        <Phone className="h-4 w-4 text-[#64748B]" />
                         {selectedStore.phone}
                       </a>
                     )}
@@ -281,9 +281,9 @@ export default function StoresPage() {
                         href={selectedStore.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-sm text-gray-300 hover:text-amber-400 transition-colors"
+                        className="flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#0F172A] transition-colors"
                       >
-                        <Globe className="h-4 w-4 text-amber-400" />
+                        <Globe className="h-4 w-4 text-[#64748B]" />
                         Website
                       </a>
                     )}
@@ -295,30 +295,30 @@ export default function StoresPage() {
                         className={`text-sm ${
                           i < Math.round(selectedStore.rating)
                             ? "text-amber-400"
-                            : "text-gray-700"
+                            : "text-slate-300"
                         }`}
                       >
                         ★
                       </span>
                     ))}
-                    <span className="text-xs text-gray-400 ml-1">
+                    <span className="text-xs text-[#64748B] ml-1">
                       ({selectedStore.rating})
                     </span>
                   </div>
                 </div>
                 <button
                   onClick={() => setSelectedStore(null)}
-                  className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-white/10 text-gray-400 hover:text-white"
+                  className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-[#F1F3F5] text-[#64748B] hover:text-[#0F172A] cursor-pointer"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
-              <div className="flex gap-3 mt-4 pt-4 border-t border-white/10">
+              <div className="flex gap-3 mt-4 pt-4 border-t border-[#E2E8F0]">
                 <a
                   href={getDirectionsUrl(selectedStore)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-black text-sm font-extrabold rounded-xl shadow-md hover:scale-[1.02] transition-transform"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-[#0F172A] hover:bg-[#1E293B] text-white text-sm font-extrabold rounded-xl border border-[#0F172A] shadow-md hover:scale-[1.02] transition-transform"
                 >
                   <Navigation className="h-4 w-4" />
                   Get Directions
@@ -326,9 +326,9 @@ export default function StoresPage() {
                 {selectedStore.phone && (
                   <a
                     href={`tel:${selectedStore.phone}`}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-white/5 border border-white/15 text-white text-sm font-semibold rounded-xl hover:bg-white/10 transition-colors"
+                    className="flex items-center gap-2 px-5 py-2.5 bg-white border border-[#E2E8F0] text-[#0F172A] text-sm font-semibold rounded-xl hover:bg-[#F1F3F5] transition-colors"
                   >
-                    <Phone className="h-4 w-4 text-amber-400" />
+                    <Phone className="h-4 w-4 text-[#64748B]" />
                     Call Now
                   </a>
                 )}

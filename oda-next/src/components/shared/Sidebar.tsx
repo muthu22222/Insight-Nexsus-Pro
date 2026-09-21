@@ -65,28 +65,28 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
   };
 
   const sidebarContent = (
-    <div className="flex h-full flex-col bg-[#22150E] border-r border-[#D8C3A5]/15 text-[#F5EFE7]">
-      <div className="flex items-center justify-between px-4 py-5 border-b border-[#D8C3A5]/15">
+    <div className="flex h-full w-full flex-col bg-[#F8F9FA] border-r border-[#E2E8F0] text-[#0F172A]">
+      <div className="flex items-center justify-between px-4 py-5 border-b border-[#E2E8F0]">
         {!collapsed && (
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-xl bg-[#8F5F4A] border border-[#C9A66B]/35 flex items-center justify-center shrink-0 shadow-md shadow-[#8F5F4A]/20">
-              <span className="text-[#F5EFE7] font-black text-xs tracking-wider">IN</span>
+            <div className="h-9 w-9 rounded-xl bg-[#0F172A] border border-[#E2E8F0] flex items-center justify-center shrink-0 shadow-xs">
+              <span className="text-white font-black text-xs tracking-wider">IN</span>
             </div>
-            <span className="text-lg font-bold text-[#F5EFE7] tracking-tight">
-              Insight <span className="text-[#C9A66B]">Nexsus</span>
+            <span className="text-lg font-bold text-[#0F172A] tracking-tight">
+              Insight <span className="text-[#64748B]">Nexsus</span>
             </span>
           </Link>
         )}
         {collapsed && (
           <Link href="/dashboard" className="flex items-center justify-center w-full">
-            <div className="h-9 w-9 rounded-xl bg-[#8F5F4A] border border-[#C9A66B]/35 flex items-center justify-center shadow-md shadow-[#8F5F4A]/20">
-              <span className="text-[#F5EFE7] font-black text-xs tracking-wider">IN</span>
+            <div className="h-9 w-9 rounded-xl bg-[#0F172A] border border-[#E2E8F0] flex items-center justify-center shadow-xs">
+              <span className="text-white font-black text-xs tracking-wider">IN</span>
             </div>
           </Link>
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-lg hover:bg-[#8F5F4A]/20 text-[#CDBFB2] hover:text-[#F5EFE7] transition-colors"
+          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-lg hover:bg-[#EAECEF] text-[#64748B] hover:text-[#0F172A] transition-colors"
         >
           <ChevronLeft
             className={`h-4 w-4 transition-transform ${collapsed ? "rotate-180" : ""}`}
@@ -94,7 +94,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
         </button>
         <button
           onClick={onMobileClose}
-          className="lg:hidden h-7 w-7 flex items-center justify-center rounded-lg hover:bg-[#8F5F4A]/20 text-[#CDBFB2]"
+          className="lg:hidden h-7 w-7 flex items-center justify-center rounded-lg hover:bg-[#EAECEF] text-[#64748B]"
         >
           <X className="h-4 w-4" />
         </button>
@@ -112,10 +112,10 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
                   document.dispatchEvent(new CustomEvent("toggle-ai-assistant"));
                   onMobileClose?.();
                 }}
-                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all hover:bg-[#8F5F4A]/15 text-[#CDBFB2] hover:text-[#F5EFE7] cursor-pointer ${collapsed ? "justify-center" : ""}`}
+                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all hover:bg-[#F1F3F5] text-[#64748B] hover:text-[#0F172A] cursor-pointer ${collapsed ? "justify-center" : ""}`}
                 title={collapsed ? item.label : undefined}
               >
-                <Icon className="h-4.5 w-4.5 shrink-0 text-[#C9A66B]" />
+                <Icon className="h-4.5 w-4.5 shrink-0 text-[#64748B]" />
                 {!collapsed && <span>{item.label}</span>}
               </button>
             );
@@ -127,24 +127,24 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
               onClick={onMobileClose}
               className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
                 active
-                  ? "bg-[#8F5F4A]/25 text-[#F5EFE7] border border-[#8F5F4A]/60 font-semibold shadow-xs"
-                  : "text-[#CDBFB2] hover:bg-[#8F5F4A]/15 hover:text-[#F5EFE7] border border-transparent"
+                  ? "bg-[#EAECEF] text-[#0F172A] border border-[#E2E8F0] font-semibold shadow-xs"
+                  : "text-[#64748B] hover:bg-[#F1F3F5] hover:text-[#0F172A] border border-transparent"
               } ${collapsed ? "justify-center" : ""}`}
               title={collapsed ? item.label : undefined}
             >
-              <Icon className={`h-4.5 w-4.5 shrink-0 ${active ? "text-[#C9A66B]" : "text-[#CDBFB2]"}`} />
+              <Icon className={`h-4.5 w-4.5 shrink-0 ${active ? "text-[#0F172A]" : "text-[#64748B]"}`} />
               {!collapsed && <span>{item.label}</span>}
             </Link>
           );
         })}
       </nav>
 
-      <div className="border-t border-[#D8C3A5]/15 p-3 bg-[#1C120C]/70">
+      <div className="border-t border-[#E2E8F0] p-3 bg-[#F1F3F5]">
         {user && (
           <div
             className={`flex items-center gap-3 rounded-xl px-3 py-2.5 ${collapsed ? "justify-center" : ""}`}
           >
-            <div className="h-8 w-8 rounded-full bg-[#8F5F4A] border border-[#C9A66B]/30 flex items-center justify-center text-[#F5EFE7] text-xs font-black shrink-0">
+            <div className="h-8 w-8 rounded-full bg-[#0F172A] border border-[#E2E8F0] flex items-center justify-center text-white text-xs font-black shrink-0">
               {user.avatar ? (
                 <img
                   src={user.avatar}
@@ -157,21 +157,21 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
             </div>
             {!collapsed && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-[#F5EFE7] truncate">
+                <p className="text-sm font-semibold text-[#0F172A] truncate">
                   {user.name}
                 </p>
-                <p className="text-xs text-[#CDBFB2] truncate">{user.email}</p>
+                <p className="text-xs text-[#64748B] truncate">{user.email}</p>
               </div>
             )}
           </div>
         )}
         <div className={`mt-2 mb-2 flex items-center px-1 ${collapsed ? "justify-center" : "justify-between"}`}>
-          {!collapsed && <span className="text-xs text-[#CDBFB2] font-medium">Theme</span>}
+          {!collapsed && <span className="text-xs text-[#64748B] font-medium">Theme</span>}
           <ThemeToggle />
         </div>
         <button
           onClick={handleLogout}
-          className={`mt-1.5 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#CDBFB2] hover:bg-[#8F5F4A]/15 hover:text-[#F5EFE7] transition-colors ${collapsed ? "justify-center" : ""}`}
+          className={`mt-1.5 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#64748B] hover:bg-[#EAECEF] hover:text-[#0F172A] transition-colors ${collapsed ? "justify-center" : ""}`}
           title={collapsed ? "Logout" : undefined}
         >
           <LogOut className="h-4.5 w-4.5 shrink-0" />
@@ -183,7 +183,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
 
   return (
     <>
-      <aside className="hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:w-64">
+      <aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:w-64 bg-[#F8F9FA]">
         {sidebarContent}
       </aside>
 
@@ -195,14 +195,14 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
               animate={{ opacity: 0.7 }}
               exit={{ opacity: 0 }}
               onClick={onMobileClose}
-              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm lg:hidden"
             />
             <motion.aside
               initial={{ x: -280 }}
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed inset-y-0 left-0 z-50 w-64 lg:hidden"
+              className="fixed inset-y-0 left-0 z-50 w-64 lg:hidden bg-[#F8F9FA]"
             >
               {sidebarContent}
             </motion.aside>

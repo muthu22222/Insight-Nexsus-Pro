@@ -63,16 +63,16 @@ export default function BackButton({
   const getVariantStyles = () => {
     switch (variant) {
       case 'subtle':
-        return 'text-[#CDBFB2] hover:text-[#F5EFE7] hover:bg-[#8F5F4A]/15 active:bg-[#8F5F4A]/25 border-transparent';
+        return 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F3F5] active:bg-[#E2E8F0] border-transparent';
       case 'floating':
-        return 'bg-[#22150E]/90 backdrop-blur-xl text-[#F5EFE7] hover:text-[#C9A66B] border-[#D8C3A5]/25 shadow-xl hover:bg-[#2B1B12] active:scale-95';
+        return 'bg-white/90 backdrop-blur-xl text-[#0F172A] hover:text-[#0F172A] border-[#E2E8F0] shadow-md hover:bg-[#F8F9FA] active:scale-95';
       case 'pill':
-        return 'bg-[#8F5F4A]/20 text-[#D8C3A5] hover:bg-[#8F5F4A]/35 active:bg-[#8F5F4A]/50 border-[#C9A66B]/30 rounded-full px-4';
+        return 'bg-[#F1F3F5] text-[#0F172A] hover:bg-[#E2E8F0] active:bg-[#CBD5E1] border-[#E2E8F0] rounded-full px-4';
       case 'outline':
-        return 'bg-transparent border-[#D8C3A5]/30 text-[#CDBFB2] hover:bg-[#8F5F4A]/20 hover:border-[#C9A66B]/40 hover:text-[#F5EFE7] active:bg-[#8F5F4A]/30';
+        return 'bg-transparent border-[#E2E8F0] text-[#64748B] hover:bg-[#F1F3F5] hover:border-[#CBD5E1] hover:text-[#0F172A] active:bg-[#E2E8F0]';
       case 'default':
       default:
-        return 'bg-[#37241A]/70 text-[#CDBFB2] hover:text-[#F5EFE7] border-[#D8C3A5]/20 hover:border-[#C9A66B]/40 hover:bg-[#37241A] active:bg-[#3E291E] shadow-2xs hover:shadow-xs';
+        return 'bg-[#F1F3F5] text-[#0F172A] hover:text-[#0F172A] border-[#E2E8F0] hover:border-[#CBD5E1] hover:bg-[#E2E8F0] active:bg-[#CBD5E1] shadow-2xs hover:shadow-xs';
     }
   };
 
@@ -81,7 +81,7 @@ export default function BackButton({
       type="button"
       onClick={handleBack}
       aria-label={ariaLabel}
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg border transition-all duration-150 cursor-pointer select-none group focus:outline-none focus:ring-2 focus:ring-[#8F5F4A]/40 ${getVariantStyles()} ${className}`}
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg border transition-all duration-150 cursor-pointer select-none group focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20 ${getVariantStyles()} ${className}`}
     >
       <ArrowLeft className="w-4 h-4 transition-transform duration-150 group-hover:-translate-x-0.5 text-inherit" />
       <span>{label}</span>

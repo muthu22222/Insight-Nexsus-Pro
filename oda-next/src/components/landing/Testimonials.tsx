@@ -43,7 +43,7 @@ const itemVariants = {
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-24 md:py-32 bg-[#22150E]">
+    <section id="testimonials" className="py-24 md:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -52,10 +52,10 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16 md:mb-20"
         >
-          <span className="text-[#C9A66B] text-sm font-bold tracking-widest uppercase bg-[#8F5F4A]/15 border border-[#C9A66B]/30 px-3.5 py-1 rounded-full inline-block">
+          <span className="text-[#0F172A] text-sm font-bold tracking-widest uppercase bg-[#F1F3F5] border border-[#E2E8F0] px-3.5 py-1 rounded-full inline-block">
             Testimonials
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold text-[#F5EFE7] mt-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#0F172A] mt-4">
             What Our Users Say
           </h2>
         </motion.div>
@@ -71,7 +71,7 @@ export default function Testimonials() {
             <motion.div
               key={testimonial.name}
               variants={itemVariants}
-              className="relative bg-[#37241A]/80 border border-[#D8C3A5]/20 rounded-2xl p-8 hover:border-[#C9A66B]/50 hover:bg-[#3E291E] transition-all duration-300 shadow-md backdrop-blur-sm"
+              className="relative bg-[#F8F9FA] border border-[#E2E8F0] rounded-2xl p-8 hover:border-[#CBD5E1] hover:bg-white transition-all duration-300 shadow-sm backdrop-blur-sm"
             >
               {/* Stars */}
               <div className="flex gap-1 mb-5">
@@ -79,20 +79,20 @@ export default function Testimonials() {
                   <Star
                     key={i}
                     size={16}
-                    className="fill-[#C9A66B] text-[#C9A66B]"
+                    className="fill-amber-400 text-amber-400"
                   />
                 ))}
               </div>
 
               {/* Quote */}
-              <p className="text-[#F5EFE7] text-sm leading-relaxed mb-6 font-normal">
+              <p className="text-[#0F172A] text-sm leading-relaxed mb-6 font-normal">
                 &ldquo;{testimonial.quote}&rdquo;
               </p>
 
               {/* Author */}
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#8F5F4A]/20 border border-[#C9A66B]/30 flex items-center justify-center">
-                  <span className="text-[#C9A66B] text-sm font-bold">
+                <div className="w-10 h-10 rounded-full bg-white border border-[#E2E8F0] flex items-center justify-center">
+                  <span className="text-[#0F172A] text-sm font-bold">
                     {testimonial.name
                       .split(" ")
                       .map((n) => n[0])
@@ -100,10 +100,10 @@ export default function Testimonials() {
                   </span>
                 </div>
                 <div>
-                  <p className="text-[#F5EFE7] text-sm font-semibold">
+                  <p className="text-[#0F172A] text-sm font-semibold">
                     {testimonial.name}
                   </p>
-                  <p className="text-[#CDBFB2] text-xs">{testimonial.role}</p>
+                  <p className="text-[#64748B] text-xs">{testimonial.role}</p>
                 </div>
               </div>
             </motion.div>

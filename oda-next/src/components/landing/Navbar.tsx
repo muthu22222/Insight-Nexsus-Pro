@@ -35,16 +35,16 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#2B1B12]/95 backdrop-blur-md border-b border-[#D8C3A5]/15 shadow-lg"
-          : "bg-transparent"
+          ? "bg-white/95 backdrop-blur-md border-b border-[#E2E8F0] shadow-sm"
+          : "bg-white/80 backdrop-blur-xs border-b border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-1.5 text-xl md:text-2xl font-bold tracking-tight">
-            <span className="text-[#F5EFE7]">Insight</span>
-            <span className="text-[#C9A66B]">Nexsus</span>
+            <span className="text-[#0F172A]">Insight</span>
+            <span className="text-[#64748B]">Nexsus</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -53,7 +53,7 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-sm text-[#CDBFB2] hover:text-[#C9A66B] transition-colors duration-200 font-medium"
+                className="text-sm text-[#64748B] hover:text-[#0F172A] transition-colors duration-200 font-medium"
               >
                 {link.label}
               </a>
@@ -66,7 +66,7 @@ export default function Navbar() {
             {user ? (
               <Link
                 href="/dashboard"
-                className="text-sm font-semibold bg-[#8F5F4A] hover:bg-[#A26E57] text-[#F5EFE7] px-5 py-2.5 rounded-lg transition-colors duration-200 flex items-center gap-1.5 shadow-md shadow-[#8F5F4A]/25 border border-[#C9A66B]/30"
+                className="text-sm font-semibold bg-[#0F172A] hover:bg-[#1E293B] text-white px-5 py-2.5 rounded-lg transition-colors duration-200 flex items-center gap-1.5 shadow-sm border border-[#0F172A]"
               >
                 Dashboard
                 <ArrowRight size={16} />
@@ -75,13 +75,13 @@ export default function Navbar() {
               <>
                 <Link
                   href="/auth/login"
-                  className="text-sm text-[#F5EFE7] hover:text-[#C9A66B] transition-colors duration-200 px-4 py-2 font-medium"
+                  className="text-sm text-[#0F172A] hover:text-[#334155] transition-colors duration-200 px-4 py-2 font-medium"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/auth/register"
-                  className="text-sm font-semibold bg-[#8F5F4A] hover:bg-[#A26E57] text-[#F5EFE7] px-5 py-2.5 rounded-lg transition-colors duration-200 shadow-md shadow-[#8F5F4A]/25 border border-[#C9A66B]/30"
+                  className="text-sm font-semibold bg-[#0F172A] hover:bg-[#1E293B] text-white px-5 py-2.5 rounded-lg transition-colors duration-200 shadow-sm border border-[#0F172A]"
                 >
                   Get Started
                 </Link>
@@ -94,7 +94,7 @@ export default function Navbar() {
             <ThemeToggle />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="text-[#F5EFE7] p-2"
+              className="text-[#0F172A] p-2 cursor-pointer"
               aria-label="Toggle menu"
             >
               {mobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -111,7 +111,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="lg:hidden bg-[#22150E] border-t border-[#D8C3A5]/15 overflow-hidden"
+            className="lg:hidden bg-white border-t border-[#E2E8F0] shadow-xl overflow-hidden"
           >
             <div className="px-4 py-6 space-y-4">
               {navLinks.map((link) => (
@@ -119,17 +119,17 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="block text-[#CDBFB2] hover:text-[#F5EFE7] transition-colors duration-200 py-2 font-medium"
+                  className="block text-[#64748B] hover:text-[#0F172A] transition-colors duration-200 py-2 font-medium"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="pt-4 border-t border-[#D8C3A5]/15 space-y-3">
+              <div className="pt-4 border-t border-[#E2E8F0] space-y-3">
                 {user ? (
                   <Link
                     href="/dashboard"
                     onClick={() => setMobileOpen(false)}
-                    className="block text-center bg-[#8F5F4A] hover:bg-[#A26E57] text-[#F5EFE7] font-semibold py-2.5 rounded-lg transition-colors duration-200 border border-[#C9A66B]/30"
+                    className="block text-center bg-[#0F172A] hover:bg-[#1E293B] text-white font-semibold py-2.5 rounded-lg transition-colors duration-200 border border-[#0F172A]"
                   >
                     Go to Dashboard
                   </Link>
@@ -138,14 +138,14 @@ export default function Navbar() {
                     <Link
                       href="/auth/login"
                       onClick={() => setMobileOpen(false)}
-                      className="block text-center text-[#F5EFE7] hover:text-[#C9A66B] py-2.5 border border-[#D8C3A5]/25 rounded-lg transition-colors duration-200"
+                      className="block text-center text-[#0F172A] hover:text-[#334155] py-2.5 border border-[#E2E8F0] rounded-lg transition-colors duration-200"
                     >
                       Sign In
                     </Link>
                     <Link
                       href="/auth/register"
                       onClick={() => setMobileOpen(false)}
-                      className="block text-center bg-[#8F5F4A] hover:bg-[#A26E57] text-[#F5EFE7] font-semibold py-2.5 rounded-lg transition-colors duration-200 border border-[#C9A66B]/30"
+                      className="block text-center bg-[#0F172A] hover:bg-[#1E293B] text-white font-semibold py-2.5 rounded-lg transition-colors duration-200 border border-[#0F172A]"
                     >
                       Get Started
                     </Link>

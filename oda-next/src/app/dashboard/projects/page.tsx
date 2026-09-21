@@ -151,37 +151,37 @@ export default function ProjectsPage() {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#0a0a0a]">
-        <Loader2 className="h-8 w-8 animate-spin text-amber-400" />
+      <div className="flex h-screen items-center justify-center bg-white">
+        <Loader2 className="h-8 w-8 animate-spin text-[#0F172A]" />
       </div>
     );
   }
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <div className="min-h-screen bg-white text-[#0F172A]">
         <Toaster position="top-center" />
         <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
         <div className="lg:pl-64">
-          <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-white/10 bg-[#0a0a0a]/85 backdrop-blur-md px-4 sm:px-6 py-4">
+          <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[#E2E8F0] bg-white/95 backdrop-blur-md px-4 sm:px-6 py-4">
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors"
+              className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[#F1F3F5] transition-colors cursor-pointer"
             >
-              <Menu className="h-5 w-5 text-gray-400" />
+              <Menu className="h-5 w-5 text-[#0F172A]" />
             </button>
             <BackButton fallbackHref="/dashboard" label="Back" variant="subtle" />
             <div className="flex-1">
-              <h1 className="text-xl font-bold text-white tracking-tight">My Projects</h1>
-              <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
+              <h1 className="text-xl font-bold text-[#0F172A] tracking-tight">My Projects</h1>
+              <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
                 Manage all your interior design projects ({projects.length} saved)
               </p>
             </div>
             <ThemeToggle />
             <Link
               href="/designer"
-              className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black text-sm font-extrabold rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#0F172A] hover:bg-[#1E293B] text-white text-sm font-bold rounded-xl shadow-md shadow-[#0F172A]/15 border border-[#0F172A] hover:scale-[1.02] transition-all"
             >
               <Plus className="h-4 w-4 stroke-[3]" />
               New Project
@@ -193,20 +193,20 @@ export default function ProjectsPage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-[#121215] rounded-2xl border border-white/10 p-16 text-center shadow-xl"
+                className="bg-[#F8F9FA] rounded-2xl border border-[#E2E8F0] p-16 text-center shadow-xs"
               >
-                <div className="h-16 w-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mx-auto mb-5">
+                <div className="h-16 w-16 rounded-2xl bg-white border border-[#E2E8F0] text-[#0F172A] flex items-center justify-center mx-auto mb-5 shadow-xs">
                   <FolderOpen className="h-8 w-8" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">
+                <h3 className="text-lg font-bold text-[#0F172A] mb-2">
                   No projects saved yet
                 </h3>
-                <p className="text-gray-400 mb-6 max-w-sm mx-auto text-sm">
+                <p className="text-[#64748B] mb-6 max-w-sm mx-auto text-sm">
                   Upload a photo of your room, let AI generate photorealistic interior designs with matched catalog furniture, and save your project!
                 </p>
                 <Link
                   href="/designer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-black text-sm font-extrabold rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition-transform"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#0F172A] hover:bg-[#1E293B] text-white text-sm font-bold rounded-xl shadow-md shadow-[#0F172A]/15 border border-[#0F172A] hover:scale-[1.02] transition-transform"
                 >
                   <Plus className="h-4 w-4 stroke-[3]" />
                   Start Your First Design
@@ -233,9 +233,9 @@ export default function ProjectsPage() {
                     <motion.div
                       key={project._id}
                       variants={item}
-                      className="bg-[#121215] rounded-2xl border border-white/10 overflow-hidden hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/5 transition-all group flex flex-col"
+                      className="bg-[#F8F9FA] rounded-2xl border border-[#E2E8F0] overflow-hidden hover:border-[#CBD5E1] hover:shadow-xl hover:bg-white transition-all group flex flex-col"
                     >
-                      <div className="aspect-[16/10] bg-black relative overflow-hidden">
+                      <div className="aspect-[16/10] bg-slate-100 relative overflow-hidden">
                         {thumbnail ? (
                           <img
                             src={thumbnail}
@@ -244,17 +244,17 @@ export default function ProjectsPage() {
                           />
                         ) : (
                           <div className="h-full w-full flex items-center justify-center">
-                            <ImageIcon className="h-10 w-10 text-gray-700" />
+                            <ImageIcon className="h-10 w-10 text-[#94A3B8]" />
                           </div>
                         )}
                         <span
                           className={`absolute top-3 right-3 px-2.5 py-1 text-[11px] font-bold rounded-full ${
-                            statusColors[project.status] || "bg-white/10 text-gray-300 border border-white/15"
+                            statusColors[project.status] || "bg-white/90 text-[#0F172A] border border-[#E2E8F0]"
                           }`}
                         >
                           {project.status ? project.status.charAt(0).toUpperCase() + project.status.slice(1) : "Completed"}
                         </span>
-                        <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-black/80 backdrop-blur-md rounded-lg text-[11px] font-bold text-amber-400 border border-white/10 shadow-md">
+                        <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-white/90 backdrop-blur-md rounded-lg text-[11px] font-bold text-[#0F172A] border border-[#E2E8F0] shadow-sm">
                           {project.roomType || project.roomAnalysis?.roomType || "Living Room"}
                         </div>
                       </div>
@@ -267,13 +267,13 @@ export default function ProjectsPage() {
                                 type="text"
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
-                                className="flex-1 px-3 py-1.5 text-sm font-semibold bg-black border border-amber-400 text-white rounded-lg outline-none"
+                                className="flex-1 px-3 py-1.5 text-sm font-semibold bg-white border border-[#0F172A] text-[#0F172A] rounded-lg outline-none"
                                 autoFocus
                               />
                               <button
                                 onClick={(e) => handleSaveRename(project._id, e)}
                                 disabled={savingRename}
-                                className="p-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded-lg border border-emerald-500/30"
+                                className="p-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-600 rounded-lg border border-emerald-500/30 cursor-pointer"
                               >
                                 <Check className="w-4 h-4" />
                               </button>
@@ -282,19 +282,19 @@ export default function ProjectsPage() {
                                   e.stopPropagation();
                                   setEditingId(null);
                                 }}
-                                className="p-1.5 bg-white/10 hover:bg-white/20 text-gray-400 rounded-lg"
+                                className="p-1.5 bg-[#F1F3F5] hover:bg-[#E2E8F0] text-[#64748B] rounded-lg cursor-pointer"
                               >
                                 <X className="w-4 h-4" />
                               </button>
                             </div>
                           ) : (
                             <div className="flex items-center justify-between gap-2">
-                              <h3 className="font-bold text-white text-base truncate">
+                              <h3 className="font-bold text-[#0F172A] text-base truncate">
                                 {project.name}
                               </h3>
                               <button
                                 onClick={(e) => handleStartRename(project, e)}
-                                className="p-1 text-gray-400 hover:text-amber-400 rounded-md hover:bg-white/5 transition-colors"
+                                className="p-1 text-[#64748B] hover:text-[#0F172A] rounded-md hover:bg-[#F1F3F5] transition-colors cursor-pointer"
                                 title="Rename project"
                               >
                                 <Pencil className="h-3.5 w-3.5" />
@@ -302,43 +302,43 @@ export default function ProjectsPage() {
                             </div>
                           )}
 
-                          <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
+                          <div className="flex items-center gap-4 mt-2 text-xs text-[#64748B]">
                             <div className="flex items-center gap-1.5">
-                              <Calendar className="h-3.5 w-3.5 text-amber-400" />
+                              <Calendar className="h-3.5 w-3.5 text-[#64748B]" />
                               <span>{formatDate(project.createdAt || project.updatedAt)}</span>
                             </div>
                             <div className="flex items-center gap-1.5">
-                              <ImageIcon className="h-3.5 w-3.5 text-amber-400" />
+                              <ImageIcon className="h-3.5 w-3.5 text-[#64748B]" />
                               <span>{project.designs?.length || 1} design</span>
                             </div>
                           </div>
 
                           {project.furniture && project.furniture.length > 0 && (
-                            <p className="text-xs text-gray-300 mt-2 font-medium">
+                            <p className="text-xs text-[#64748B] mt-2 font-medium">
                               {project.furniture.length} Items · Budget: {formatCurrency(project.budget || project.budgetPlan?.totalBudget || 200000)}
                             </p>
                           )}
                         </div>
 
-                        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-white/10">
+                        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[#E2E8F0]">
                           <Link
                             href={`/dashboard/projects/${project._id}`}
-                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-amber-500/15 text-amber-400 border border-amber-500/30 text-xs font-bold rounded-xl hover:bg-amber-500/25 transition-colors shadow-2xs"
+                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-[#0F172A] text-white border border-[#0F172A] text-xs font-bold rounded-xl hover:bg-[#1E293B] transition-colors shadow-xs"
                           >
-                            <Eye className="h-3.5 w-3.5" />
+                            <Eye className="h-3.5 w-3.5 text-white" />
                             <span>View</span>
                           </Link>
                           <Link
                             href={`/designer?projectId=${project._id}`}
-                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-white/5 text-gray-200 border border-white/15 text-xs font-semibold rounded-xl hover:bg-white/10 hover:text-white transition-colors"
+                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-[#F1F3F5] text-[#0F172A] border border-[#E2E8F0] text-xs font-semibold rounded-xl hover:bg-[#E2E8F0] transition-colors"
                           >
-                            <Wand2 className="h-3.5 w-3.5 text-amber-400" />
+                            <Wand2 className="h-3.5 w-3.5 text-[#64748B]" />
                             <span>Open Studio</span>
                           </Link>
                           <button
                             onClick={(e) => handleDelete(project._id, e)}
                             disabled={deletingId === project._id}
-                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-semibold rounded-xl hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-red-50 text-red-600 border border-red-200 text-xs font-semibold rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50 cursor-pointer"
                             title="Delete project"
                           >
                             {deletingId === project._id ? (
