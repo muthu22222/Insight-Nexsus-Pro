@@ -314,31 +314,31 @@ export default function FurnishedRoomView({
                             : hotspot.x < 30
                             ? 'left-0'
                             : 'left-1/2 -translate-x-1/2'
-                        } w-60 bg-gray-950/95 backdrop-blur-xl border border-white/20 text-white rounded-xl p-3 shadow-2xl`}
+                        } w-60 bg-[#F3F1EE] backdrop-blur-xl border border-[#D5CFC7] text-[#5F5750] rounded-xl p-3 shadow-2xl`}
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div className="flex items-start justify-between gap-2 mb-1">
-                          <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400">
+                          <span className="text-[9px] font-bold uppercase tracking-wider text-[#F5A900]">
                             {hotspot.category || 'Furniture'}
                           </span>
                           {hotspot.match && (
-                            <span className="text-[9px] font-bold text-emerald-400 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-500/30">
+                            <span className="text-[9px] font-bold text-[#00C98D] bg-[#00C98D]/15 px-1.5 py-0.5 rounded border border-[#00C98D]/30">
                               {hotspot.match}% Match
                             </span>
                           )}
                         </div>
 
-                        <h4 className="text-xs font-bold text-white leading-tight mb-1">
+                        <h4 className="text-xs font-bold text-[#5F5750] leading-tight mb-1">
                           {hotspot.label}
                         </h4>
 
-                        <div className="flex items-center justify-between text-[11px] text-gray-300 mt-2 pt-2 border-t border-white/10">
+                        <div className="flex items-center justify-between text-[11px] text-[#8A8178] mt-2 pt-2 border-t border-[#D5CFC7]">
                           <div>
-                            <span className="text-xs font-black text-amber-300">
+                            <span className="text-xs font-black text-[#F5A900]">
                               {hotspot.price}
                             </span>
                             {hotspot.store && (
-                              <p className="text-[9px] text-gray-400 mt-0.5">
+                              <p className="text-[9px] text-[#8A8178] mt-0.5">
                                 Store: {hotspot.store}
                               </p>
                             )}
@@ -351,7 +351,7 @@ export default function FurnishedRoomView({
                             href={getAmazonProductUrl(hotspot.label || 'Furniture', hotspot.amazonUrl)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-full py-1 px-2 bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-[10px] rounded-md transition-colors flex items-center justify-between shadow"
+                            className="w-full py-1 px-2 bg-[#FF9900] hover:bg-[#F3A847] text-[#111111] font-bold text-[10px] rounded-md transition-colors flex items-center justify-between shadow"
                           >
                             <span>Buy on Amazon</span>
                             <ExternalLink className="w-2.5 h-2.5" />
@@ -361,7 +361,7 @@ export default function FurnishedRoomView({
                             href={getFlipkartProductUrl(hotspot.label || 'Furniture', hotspot.flipkartUrl)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-full py-1 px-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] rounded-md transition-colors flex items-center justify-between shadow"
+                            className="w-full py-1 px-2 bg-[#2874F0] hover:bg-[#1C64D9] text-white font-bold text-[10px] rounded-md transition-colors flex items-center justify-between shadow"
                           >
                             <span>Buy on Flipkart</span>
                             <ExternalLink className="w-2.5 h-2.5" />

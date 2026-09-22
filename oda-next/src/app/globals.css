@@ -2,52 +2,83 @@
 @import "leaflet/dist/leaflet.css";
 
 /* -------------------------------------------------------------
-   INSIGHT NEXUS WHITE & LIGHT GREY PALETTE SYSTEM
-   Primary background:    #FFFFFF — pure crisp white
-   Secondary background:  #F8F9FA — soft architectural light grey (cards, sidebar, panels)
-   Secondary surface:     #F1F3F5 — light grey for buttons, badges, chips
-   Borders & dividers:    #E2E8F0 — delicate light grey border
-   Primary text:          #0F172A — deep charcoal slate
-   Secondary text:        #64748B — muted slate grey
-   Primary CTA:           #0F172A — obsidian black with white text
+   INSIGHT NEXUS WARM NEUTRAL GLOBAL COLOR SYSTEM
+   Main Canvas surface:       #FFF9F2 — Warm Ivory
+   Light Card background:     #F3F1EE — Warm Light Card Base
+   Secondary / Section bg:    #E5E1DC — Soft Warm Secondary / Input Base
+   Primary Dark Text:         #5F5750 — Dark Warm Taupe/Charcoal for high contrast
+   Secondary / Label Text:    #8A8178 — Warm Medium Taupe for clear descriptions
+   Borders & Dividers:        #D5CFC7 — Crisp warm light border
+   Price Accent:              #F5A900 — Bright warm gold
+   Success / Match Accent:    #00C98D — Mint emerald match
 ------------------------------------------------------------- */
 
-:root {
+:root,
+.light {
   /* Design Tokens */
-  --color-canvas: #FFFFFF;
-  --color-surface-secondary: #F8F9FA;
-  --color-surface-chip: #F1F3F5;
-  --color-surface-hover: #EAECEF;
-  --color-border-light: #E2E8F0;
-  --color-text-primary: #0F172A;
-  --color-text-secondary: #64748B;
-  --color-primary-cta: #0F172A;
-  --color-primary-cta-hover: #1E293B;
+  --color-canvas: #FFF9F2;
+  --color-surface-card: #F3F1EE;
+  --color-surface-secondary: #E5E1DC;
+  --color-surface-chip: #E5E1DC;
+  --color-surface-hover: #DCD6CF;
+  --color-border-light: #D5CFC7;
+  --color-text-primary: #5F5750;
+  --color-text-secondary: #8A8178;
+  --color-primary-cta: #5F5750;
+  --color-primary-cta-hover: #4A433D;
+  --color-price: #F5A900;
+  --color-success: #00C98D;
 
   /* Global Theme Variables */
-  --background: #FFFFFF;
-  --foreground: #0F172A;
-  --primary: #0F172A;
-  --primary-dark: #1E293B;
-  --accent: #F1F3F5;
-  --muted: #64748B;
-  --border: #E2E8F0;
-  --success: #16a34a;
-  --warning: #f59e0b;
+  --background: #FFF9F2;
+  --foreground: #5F5750;
+  --primary: #5F5750;
+  --primary-dark: #4A433D;
+  --accent: #E5E1DC;
+  --muted: #8A8178;
+  --border: #D5CFC7;
+  --success: #00C98D;
+  --warning: #F5A900;
+  --danger: #ef4444;
+}
+
+.dark {
+  --color-canvas: #1C1917;
+  --color-surface-card: #2A2623;
+  --color-surface-secondary: #36322E;
+  --color-surface-chip: #36322E;
+  --color-surface-hover: #443E38;
+  --color-border-light: #443E38;
+  --color-text-primary: #FFF9F2;
+  --color-text-secondary: #C5BCB3;
+  --color-primary-cta: #FFF9F2;
+  --color-primary-cta-hover: #E5E1DC;
+  --color-price: #F5A900;
+  --color-success: #00C98D;
+
+  --background: #1C1917;
+  --foreground: #FFF9F2;
+  --primary: #FFF9F2;
+  --primary-dark: #E5E1DC;
+  --accent: #36322E;
+  --muted: #C5BCB3;
+  --border: #443E38;
+  --success: #00C98D;
+  --warning: #F5A900;
   --danger: #ef4444;
 }
 
 @theme inline {
-  --color-espresso: #FFFFFF;
-  --color-espresso-card: #F8F9FA;
-  --color-espresso-secondary: #F1F3F5;
-  --color-terracotta: #0F172A;
-  --color-terracotta-hover: #1E293B;
-  --color-gold: #64748B;
-  --color-gold-hover: #0F172A;
-  --color-beige: #E2E8F0;
-  --color-ivory: #0F172A;
-  --color-muted-beige: #64748B;
+  --color-espresso: var(--background);
+  --color-espresso-card: var(--color-surface-card);
+  --color-espresso-secondary: var(--color-surface-secondary);
+  --color-terracotta: var(--color-primary-cta);
+  --color-terracotta-hover: var(--color-primary-cta-hover);
+  --color-gold: var(--color-text-secondary);
+  --color-gold-hover: var(--color-text-primary);
+  --color-beige: var(--color-border-light);
+  --color-ivory: var(--color-text-primary);
+  --color-muted-beige: var(--color-text-secondary);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -81,26 +112,30 @@ body {
 }
 
 /* -------------------------------------------------------------
-   SEMANTIC UTILITIES FOR WHITE & LIGHT GREY SYSTEM
+   SEMANTIC UTILITIES FOR WARM NEUTRAL COLOR SYSTEM
 ------------------------------------------------------------- */
-.bg-espresso          { background-color: #FFFFFF !important; }
-.bg-espresso-card     { background-color: #F8F9FA !important; }
-.bg-espresso-secondary{ background-color: #F1F3F5 !important; }
-.bg-terracotta        { background-color: #0F172A !important; color: #FFFFFF !important; }
-.bg-gold              { background-color: #F1F3F5 !important; color: #0F172A !important; }
-.bg-beige             { background-color: #F1F3F5 !important; }
-.bg-ivory             { background-color: #FFFFFF !important; }
+.bg-canvas            { background-color: var(--background) !important; }
+.bg-espresso          { background-color: var(--background) !important; }
+.bg-espresso-card     { background-color: var(--color-surface-card) !important; }
+.bg-espresso-secondary{ background-color: var(--color-surface-secondary) !important; }
+.bg-terracotta        { background-color: #5F5750 !important; color: #FFF9F2 !important; }
+.bg-gold              { background-color: var(--color-surface-secondary) !important; color: var(--color-text-primary) !important; }
+.bg-beige             { background-color: var(--color-surface-secondary) !important; }
+.bg-ivory             { background-color: var(--background) !important; }
 
-.text-espresso        { color: #0F172A !important; }
-.text-terracotta      { color: #0F172A !important; }
-.text-gold            { color: #64748B !important; }
-.text-beige           { color: #64748B !important; }
-.text-ivory           { color: #0F172A !important; }
-.text-muted-beige     { color: #64748B !important; }
+.text-espresso        { color: var(--color-text-primary) !important; }
+.text-terracotta      { color: var(--color-text-primary) !important; }
+.text-gold            { color: var(--color-text-secondary) !important; }
+.text-beige           { color: var(--color-text-secondary) !important; }
+.text-ivory           { color: var(--color-text-primary) !important; }
+.text-muted-beige     { color: var(--color-text-secondary) !important; }
 
-.border-terracotta    { border-color: #E2E8F0 !important; }
-.border-gold          { border-color: #E2E8F0 !important; }
-.border-beige         { border-color: #E2E8F0 !important; }
+.text-price           { color: #F5A900 !important; }
+.text-match           { color: #00C98D !important; }
+
+.border-terracotta    { border-color: var(--color-border-light) !important; }
+.border-gold          { border-color: var(--color-border-light) !important; }
+.border-beige         { border-color: var(--color-border-light) !important; }
 
 /* Custom Clean Scrollbars */
 ::-webkit-scrollbar {
@@ -109,26 +144,26 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F1F3F5;
+  background: var(--color-surface-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: var(--color-border-light);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: var(--color-text-secondary);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #CBD5E1 #F1F3F5;
+  scrollbar-color: var(--color-border-light) var(--color-surface-secondary);
 }
 
 ::selection {
-  background: #0F172A;
-  color: #FFFFFF;
+  background: #5F5750;
+  color: #FFF9F2;
 }
 
 /* -------------------------------------------------------------
@@ -145,149 +180,102 @@ svg,
 }
 
 /* -------------------------------------------------------------
-   UNIVERSAL WHITE & LIGHT GREY OVERRIDES
-   Ensures any legacy color class in any component displays
-   crisp White background with Light Grey secondary elements.
+   UNIVERSAL LIGHT WARM NEUTRAL OVERRIDES FOR LEGACY CLASSES
+   Ensures legacy dark grey / slate utility classes map to high
+   contrast warm neutral tokens in light mode while preserving dark mode.
 ------------------------------------------------------------- */
-.bg-\[\#561C24\],
-.bg-\[\#2B1B12\],
-.bg-\[\#1C120C\],
-.bg-\[\#0a0a0a\],
-.bg-\[\#121215\],
-.bg-\[\#22150E\] {
-  background-color: #FFFFFF !important;
+:root:not(.dark),
+.light {
+  /* Primary background surface overrides */
+  .bg-white,
+  .bg-\[\#FFFFFF\],
+  .bg-slate-900\/95,
+  .bg-black\/90,
+  .bg-\[\#0a0a0a\],
+  .bg-\[\#121215\] {
+    background-color: #FFF9F2 !important;
+  }
+
+  /* Card background overrides */
+  .bg-gray-50,
+  .bg-slate-50,
+  .bg-gray-100\/50,
+  .bg-\[\#F8F9FA\],
+  .bg-slate-900,
+  .bg-slate-800,
+  .bg-slate-900\/90,
+  .bg-slate-800\/90,
+  .bg-slate-900\/80,
+  .bg-slate-800\/80 {
+    background-color: #F3F1EE !important;
+  }
+
+  /* Secondary / Section / Input overrides */
+  .bg-gray-100,
+  .bg-slate-100,
+  .bg-gray-200,
+  .bg-slate-200,
+  .bg-\[\#F1F3F5\],
+  .bg-slate-800\/50,
+  .bg-slate-700\/50,
+  .bg-slate-700\/30 {
+    background-color: #E5E1DC !important;
+  }
+
+  /* Text color overrides */
+  .text-slate-900,
+  .text-slate-800,
+  .text-slate-700,
+  .text-gray-900,
+  .text-gray-800,
+  .text-gray-700,
+  .text-\[\#0F172A\],
+  .text-white {
+    color: #5F5750 !important;
+  }
+
+  .text-slate-600,
+  .text-slate-500,
+  .text-slate-400,
+  .text-gray-600,
+  .text-gray-500,
+  .text-gray-400,
+  .text-\[\#64748B\],
+  .text-slate-300 {
+    color: #8A8178 !important;
+  }
+
+  /* Border overrides */
+  .border-slate-200,
+  .border-slate-300,
+  .border-gray-200,
+  .border-gray-300,
+  .border-\[\#E2E8F0\],
+  .border-slate-800,
+  .border-slate-700,
+  .border-white\/10,
+  .border-white\/20 {
+    border-color: #D5CFC7 !important;
+  }
 }
 
-.bg-\[\#561C24\]\/95,
-.bg-\[\#2B1B12\]\/95,
-.bg-\[\#2B1B12\]\/90,
-.bg-\[\#561C24\]\/90 {
-  background-color: rgba(255, 255, 255, 0.95) !important;
+/* Ensure CTA button text colors stay high-contrast white */
+.bg-\[\#0F172A\],
+.bg-\[\#5F5750\],
+.bg-black,
+.bg-slate-900,
+button.bg-primary {
+  color: #FFF9F2 !important;
 }
 
-.bg-\[\#45161D\],
-.bg-\[\#63242C\],
-.bg-\[\#37241A\] {
-  background-color: #F8F9FA !important;
+.bg-amazon,
+[data-vendor="amazon"] {
+  background-color: #FF9900 !important;
+  color: #111111 !important;
 }
 
-.bg-\[\#45161D\]\/85,
-.bg-\[\#45161D\]\/80,
-.bg-\[\#45161D\]\/60 {
-  background-color: rgba(248, 249, 250, 0.92) !important;
-}
-
-.bg-\[\#381117\],
-.bg-\[\#381117\]\/80 {
-  background-color: #F1F3F5 !important;
-}
-
-.bg-\[\#6D2932\],
-.bg-\[\#8F5F4A\] {
-  background-color: #0F172A !important;
+.bg-flipkart,
+[data-vendor="flipkart"] {
+  background-color: #2874F0 !important;
   color: #FFFFFF !important;
-}
-
-.bg-\[\#6D2932\]:hover,
-.bg-\[\#8F5F4A\]:hover,
-.hover\:bg-\[\#7F333E\]:hover,
-.hover\:bg-\[\#A26E57\]:hover {
-  background-color: #1E293B !important;
-  color: #FFFFFF !important;
-}
-
-.bg-\[\#6D2932\]\/35,
-.bg-\[\#6D2932\]\/30,
-.bg-\[\#6D2932\]\/25,
-.bg-\[\#6D2932\]\/20,
-.bg-\[\#6D2932\]\/15,
-.bg-\[\#8F5F4A\]\/25,
-.bg-\[\#8F5F4A\]\/20,
-.bg-\[\#8F5F4A\]\/15 {
-  background-color: #F1F3F5 !important;
-}
-
-.hover\:bg-\[\#6D2932\]\/20:hover,
-.hover\:bg-\[\#6D2932\]\/30:hover,
-.hover\:bg-\[\#8F5F4A\]\/20:hover,
-.hover\:bg-\[\#8F5F4A\]\/30:hover {
-  background-color: #E2E8F0 !important;
-}
-
-.bg-\[\#C7B7A3\]\/10,
-.bg-\[\#D8C3A5\]\/10 {
-  background-color: #F1F3F5 !important;
-}
-
-.hover\:bg-\[\#C7B7A3\]\/20:hover,
-.hover\:bg-\[\#D8C3A5\]\/20:hover {
-  background-color: #E2E8F0 !important;
-}
-
-/* Borders */
-.border-\[\#C7B7A3\]\/15,
-.border-\[\#C7B7A3\]\/20,
-.border-\[\#C7B7A3\]\/25,
-.border-\[\#C7B7A3\]\/30,
-.border-\[\#C7B7A3\]\/35,
-.border-\[\#C7B7A3\]\/40,
-.border-\[\#C7B7A3\]\/50,
-.border-\[\#D8C3A5\]\/15,
-.border-\[\#D8C3A5\]\/20,
-.border-\[\#D8C3A5\]\/25,
-.border-\[\#D8C3A5\]\/30,
-.border-\[\#C9A66B\]\/30,
-.border-\[\#C9A66B\]\/40,
-.border-\[\#C9A66B\]\/50,
-.border-\[\#C7B7A3\],
-.border-\[\#6D2932\]\/60,
-.border-\[\#6D2932\]\/70,
-.border-white\/10,
-.border-white\/15,
-.border-white\/20,
-.border-white\/30 {
-  border-color: #E2E8F0 !important;
-}
-
-.divide-\[\#C7B7A3\]\/15 > :not([hidden]) ~ :not([hidden]),
-.divide-white\/10 > :not([hidden]) ~ :not([hidden]) {
-  border-color: #E2E8F0 !important;
-}
-
-/* Text Colors */
-.text-\[\#E8D8C4\],
-.text-\[\#F5EFE7\] {
-  color: #0F172A !important;
-}
-
-/* Keep white text inside primary dark buttons/badges */
-.bg-\[\#6D2932\] .text-\[\#E8D8C4\],
-.bg-\[\#6D2932\] .text-\[\#F5EFE7\],
-.bg-\[\#8F5F4A\] .text-\[\#E8D8C4\],
-.bg-\[\#8F5F4A\] .text-\[\#F5EFE7\],
-.bg-\[\#0F172A\] .text-\[\#E8D8C4\],
-.bg-\[\#0F172A\] .text-\[\#F5EFE7\],
-.bg-black .text-\[\#E8D8C4\],
-.bg-black .text-\[\#F5EFE7\] {
-  color: #FFFFFF !important;
-}
-
-.text-\[\#C7B7A3\],
-.text-\[\#CDBFB2\],
-.text-\[\#D8C3A5\],
-.text-\[\#C9A66B\] {
-  color: #64748B !important;
-}
-
-.text-\[\#C7B7A3\]\/40,
-.text-\[\#C7B7A3\]\/50,
-.text-\[\#CDBFB2\]\/40 {
-  color: #94A3B8 !important;
-}
-
-/* Shadows */
-.shadow-\[\#6D2932\]\/25,
-.shadow-\[\#8F5F4A\]\/25,
-.shadow-\[\#8F5F4A\]\/35 {
-  --tw-shadow-color: rgba(15, 23, 42, 0.08) !important;
 }
