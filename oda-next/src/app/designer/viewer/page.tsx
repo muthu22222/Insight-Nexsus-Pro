@@ -31,6 +31,7 @@ import { getDesignImagesForStyle } from '@/lib/design-assets';
 import BackButton from '@/components/common/BackButton';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
+import { RAW_PROJECTS } from '@/data/raw-projects';
 
 export default function ViewerPage() {
   const router = useRouter();
@@ -48,6 +49,7 @@ export default function ViewerPage() {
     toggleCartItem,
     addAllToCart,
     setActiveProject,
+    loadProjectState,
   } = useDesignerStore();
   const [activeHotspot, setActiveHotspot] = useState<HotspotItem | null>(null);
   const [savedItems, setSavedItems] = useState<(string | number)[]>([]);
@@ -75,9 +77,10 @@ export default function ViewerPage() {
   useEffect(() => {
     if (!hasHydrated) return;
     if (!uploadedImage && !selectedDesign) {
-      router.push('/designer');
+      const defaultProject = RAW_PROJECTS[0];
+      loadProjectState(defaultProject);
     }
-  }, [hasHydrated, uploadedImage, selectedDesign, router]);
+  }, [hasHydrated, uploadedImage, selectedDesign, loadProjectState]);
 
   const activeHotspots: HotspotItem[] = (selectedDesign?.hotspots && selectedDesign.hotspots.length > 0)
     ? selectedDesign.hotspots.map((h: any, idx: number) => ({

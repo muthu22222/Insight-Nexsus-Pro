@@ -30,6 +30,7 @@ import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { getAmazonProductUrl, getFlipkartProductUrl } from "@/lib/store-links";
 import { formatCurrency, formatDate } from "@/utils/helpers";
+import { RAW_PROJECTS } from "@/data/raw-projects";
 import toast, { Toaster } from "react-hot-toast";
 import jsPDF from "jspdf";
 
@@ -77,26 +78,38 @@ export default function ProjectDetailPage() {
   }, [projectId]);
 
   const fetchProject = async () => {
-    const token = await getToken();
-    if (!token) {
-      setLoading(false);
-      return;
-    }
     try {
-      const res = await fetch(`/api/projects/${projectId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      // 1. Instantly display if it's a raw studio project
+      const raw = RAW_PROJECTS.find((p) => p._id === projectId);
+      if (raw) {
+        setProject(raw);
+        setNewName(raw.name);
+        const checked: Record<number, boolean> = {};
+        raw.shoppingList?.forEach((item: any, i: number) => {
+          checked[i] = item.checked || false;
+        });
+        setCheckedItems(checked);
+        setLoading(false);
+        return;
+      }
+
+      // 2. Otherwise fetch from API
+      const token = await getToken().catch(() => null);
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const res = await fetch(`/api/projects/${projectId}`, { headers });
       if (res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
           setProject(data.data);
           setNewName(data.data.name);
           const checked: Record<number, boolean> = {};
-          data.data.shoppingList?.forEach(
-            (item: any, i: number) => {
-              checked[i] = item.checked || false;
-            }
-          );
+          data.data.shoppingList?.forEach((item: any, i: number) => {
+            checked[i] = item.checked || false;
+          });
           setCheckedItems(checked);
         } else {
           toast.error("Project not found");

@@ -10,6 +10,7 @@ import { useDesignerStore } from '@/store/useDesignerStore';
 import { useAuth } from '@/contexts/AuthContext';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
 import BackButton from '@/components/common/BackButton';
+import { RAW_PROJECTS } from '@/data/raw-projects';
 
 import { compressImageFile } from '@/utils/helpers';
 
@@ -40,12 +41,20 @@ function DesignerUploadContent() {
     const loadProject = async () => {
       setIsLoadingProject(true);
       try {
-        const token = await getToken();
-        if (!token) return;
+        // Check raw studio projects first for instant loading
+        const raw = RAW_PROJECTS.find((p) => p._id === projectIdParam);
+        if (raw) {
+          loadProjectState(raw);
+          toast.success(`Loaded studio project "${raw.name}"`);
+          router.push('/designer/generate');
+          return;
+        }
 
-        const res = await fetch(`/api/projects/${projectIdParam}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const token = await getToken().catch(() => null);
+        const headers: Record<string, string> = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch(`/api/projects/${projectIdParam}`, { headers });
 
         if (res.ok) {
           const data = await res.json();

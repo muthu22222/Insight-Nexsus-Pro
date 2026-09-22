@@ -26,6 +26,7 @@ import { ThemeToggle } from '@/components/common/ThemeToggle';
 import FurnishedRoomView from '@/components/designer/FurnishedRoomView';
 import { getDesignImagesForStyle } from '@/lib/design-assets';
 import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
+import { RAW_PROJECTS } from '@/data/raw-projects';
 import type { AIDesign, Hotspot } from '@/types';
 
 const steps = [
@@ -50,6 +51,7 @@ export default function GeneratePage() {
     setGeneratedDesigns,
     setSelectedDesign,
     setActiveProject,
+    loadProjectState,
   } = useDesignerStore();
 
   const [isGenerating, setIsGenerating] = useState(true);
@@ -241,7 +243,8 @@ export default function GeneratePage() {
   useEffect(() => {
     if (!hasHydrated) return;
     if (!uploadedImage) {
-      router.push('/designer');
+      const defaultProject = RAW_PROJECTS[0];
+      loadProjectState(defaultProject);
       return;
     }
 
@@ -251,7 +254,7 @@ export default function GeneratePage() {
     } else {
       setIsGenerating(false);
     }
-  }, [hasHydrated, uploadedImage, imageId, generatedForImageId, generateDesign, router]);
+  }, [hasHydrated, uploadedImage, imageId, generatedForImageId, generateDesign, loadProjectState]);
 
   const handleRegenerate = () => {
     generateDesign();

@@ -15,11 +15,35 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const payload = await authenticate(request);
-    await connectToDatabase();
     const { id } = await params;
 
-    if (!id || !isValidObjectId(id)) {
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: 'Project ID required' },
+        { status: 400 }
+      );
+    }
+
+    // 1. Immediately return if it's a studio raw project
+    const raw = RAW_PROJECTS.find((p) => p._id === id);
+    if (raw) {
+      return NextResponse.json({
+        success: true,
+        data: raw,
+      });
+    }
+
+    // 2. Otherwise authenticate and query MongoDB
+    let payload;
+    try {
+      payload = await authenticate(request, { optional: true });
+    } catch {
+      payload = { userId: 'guest', role: 'user' as const };
+    }
+
+    await connectToDatabase();
+
+    if (!isValidObjectId(id)) {
       return NextResponse.json(
         { success: false, error: 'Project not found' },
         { status: 404 }
@@ -30,24 +54,24 @@ export async function GET(
       new Set([payload.userId, payload.firebaseUid].filter((x): x is string => Boolean(x)))
     );
 
-    const project = await Project.findOne({
-      _id: id,
-      userId: { $in: userIds },
-    }).lean();
+    const query: any = { _id: id };
+    if (userIds.length > 0 && !userIds.includes('guest')) {
+      query.userId = { $in: userIds };
+    }
+
+    const project = await Project.findOne(query).lean();
 
     if (!project) {
-      const raw = RAW_PROJECTS.find((p) => p._id === id);
-      if (raw) {
-        return NextResponse.json({
-          success: true,
-          data: raw,
-        });
-      }
       return NextResponse.json(
         { success: false, error: 'Project not found' },
         { status: 404 }
       );
     }
+
+    return NextResponse.json({
+      success: true,
+      data: project,
+    });
 
     return NextResponse.json({
       success: true,
