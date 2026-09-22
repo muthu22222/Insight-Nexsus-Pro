@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Store from '@/models/Store';
 import { connectToDatabase } from '@/lib/mongodb';
+import { RAW_STORES, CITY_COORDINATES, getRawStores, calculateDistance } from '@/data/raw-stores';
 
 function haversineDistance(
   lat1: number,
@@ -8,17 +9,7 @@ function haversineDistance(
   lat2: number,
   lng2: number
 ): number {
-  const R = 6371;
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLng = ((lng2 - lng1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLng / 2) *
-      Math.sin(dLng / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return parseFloat((R * c).toFixed(2));
+  return calculateDistance(lat1, lng1, lat2, lng2);
 }
 
 // Category mappings for OpenStreetMap tags
@@ -32,12 +23,25 @@ const categoryFilterMap: Record<string, string> = {
 };
 
 async function geocodeLocation(query: string): Promise<{ lat: number; lng: number; displayName: string } | null> {
+  const clean = query.trim().toLowerCase();
+  // Instant lookup for known cities
+  for (const [key, val] of Object.entries(CITY_COORDINATES)) {
+    if (clean.includes(key) || key.includes(clean)) {
+      return {
+        lat: val.lat,
+        lng: val.lng,
+        displayName: val.name,
+      };
+    }
+  }
+
   try {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
     const res = await fetch(url, {
       headers: {
         'User-Agent': 'InsightNexsus/1.0 (Interior Design Studio Platform)',
       },
+      signal: AbortSignal.timeout(3000),
     });
     if (!res.ok) return null;
     const data = await res.json();
@@ -49,7 +53,7 @@ async function geocodeLocation(query: string): Promise<{ lat: number; lng: numbe
       };
     }
   } catch (err) {
-    console.warn('Nominatim geocoding error:', err);
+    console.warn('Nominatim geocoding error or timeout:', err);
   }
   return null;
 }
@@ -59,12 +63,11 @@ async function fetchFromOverpass(lat: number, lng: number, radiusMeters: number,
   const isRegex = filterVal.includes('|');
   const shopFilter = isRegex ? `["shop"~"${filterVal}"]` : `["shop"="${filterVal}"]`;
 
-  const query = `[out:json][timeout:25];(node${shopFilter}(around:${radiusMeters},${lat},${lng});way${shopFilter}(around:${radiusMeters},${lat},${lng});relation${shopFilter}(around:${radiusMeters},${lat},${lng}););out center;`;
+  const query = `[out:json][timeout:10];(node${shopFilter}(around:${radiusMeters},${lat},${lng});way${shopFilter}(around:${radiusMeters},${lat},${lng});relation${shopFilter}(around:${radiusMeters},${lat},${lng}););out center;`;
 
   const endpoints = [
     'https://overpass-api.de/api/interpreter',
     'https://overpass.kumi.systems/api/interpreter',
-    'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
   ];
 
   for (const endpoint of endpoints) {
@@ -75,6 +78,7 @@ async function fetchFromOverpass(lat: number, lng: number, radiusMeters: number,
           'User-Agent': 'InsightNexsus/1.0 (Interior Design Studio Platform)',
           Accept: 'application/json',
         },
+        signal: AbortSignal.timeout(3000), // Strict 3 second timeout so API never hangs
       });
 
       if (res.ok) {
@@ -82,7 +86,7 @@ async function fetchFromOverpass(lat: number, lng: number, radiusMeters: number,
         return data.elements || [];
       }
     } catch (e: any) {
-      console.warn(`Overpass mirror ${endpoint} failed:`, e.message);
+      console.warn(`Overpass mirror ${endpoint} skipped/timeout:`, e.message);
     }
   }
 
@@ -95,7 +99,7 @@ export async function GET(request: NextRequest) {
     let lat = parseFloat(searchParams.get('lat') || '0');
     let lng = parseFloat(searchParams.get('lng') || '0');
     const category = searchParams.get('category') || 'All';
-    const radiusKm = parseFloat(searchParams.get('radius') || '15');
+    const radiusKm = parseFloat(searchParams.get('radius') || '30');
     const queryLocation = searchParams.get('q');
 
     // If text location is provided (e.g. "Coimbatore", "RS Puram", "Bangalore"), geocode it
@@ -108,73 +112,81 @@ export async function GET(request: NextRequest) {
     }
 
     if (!lat || !lng) {
-      // Default to Coimbatore / Mumbai coordinates if none passed
+      // Default to Coimbatore coordinates if none passed (Tamil Nadu design hub)
       lat = 11.0168;
       lng = 76.9558;
     }
 
-    const radiusMeters = Math.min(radiusKm * 1000, 25000);
+    const radiusMeters = Math.min(radiusKm * 1000, 35000);
 
-    // 1. Fetch live OpenStreetMap Overpass data
-    const osmElements = await fetchFromOverpass(lat, lng, radiusMeters, category);
+    // 1. Fetch raw verified stores with distance calculation
+    const rawStores = getRawStores(lat, lng, category, queryLocation || undefined).map((store) => ({
+      ...store,
+      source: 'Verified Showroom Partner',
+    }));
 
-    // Map OSM elements to standardized store records
-    const osmStores = osmElements
-      .map((el: any) => {
-        const tags = el.tags || {};
-        const storeLat = el.lat || el.center?.lat;
-        const storeLng = el.lon || el.center?.lon;
+    // 2. Fetch live OpenStreetMap Overpass data (non-blocking fallback)
+    let osmStores: any[] = [];
+    try {
+      const osmElements = await fetchFromOverpass(lat, lng, radiusMeters, category);
+      osmStores = osmElements
+        .map((el: any) => {
+          const tags = el.tags || {};
+          const storeLat = el.lat || el.center?.lat;
+          const storeLng = el.lon || el.center?.lon;
 
-        if (!storeLat || !storeLng) return null;
+          if (!storeLat || !storeLng) return null;
 
-        const name =
-          tags.name ||
-          tags['name:en'] ||
-          tags.brand ||
-          tags.operator ||
-          (tags.shop ? `${tags.shop.replace(/_/g, ' ').toUpperCase()} Store` : 'Furniture & Decor Shop');
+          const name =
+            tags.name ||
+            tags['name:en'] ||
+            tags.brand ||
+            tags.operator ||
+            (tags.shop ? `${tags.shop.replace(/_/g, ' ').toUpperCase()} Store` : 'Furniture & Decor Shop');
 
-        const addressParts = [
-          tags['addr:housenumber'],
-          tags['addr:street'],
-          tags['addr:suburb'] || tags['addr:neighbourhood'],
-          tags['addr:city'],
-          tags['addr:postcode'],
-        ].filter(Boolean);
+          const addressParts = [
+            tags['addr:housenumber'],
+            tags['addr:street'],
+            tags['addr:suburb'] || tags['addr:neighbourhood'],
+            tags['addr:city'],
+            tags['addr:postcode'],
+          ].filter(Boolean);
 
-        const address = addressParts.length > 0 ? addressParts.join(', ') : `${name}, Local Area`;
+          const address = addressParts.length > 0 ? addressParts.join(', ') : `${name}, Local Area`;
 
-        let storeCategory = 'Furniture';
-        if (tags.shop === 'interior_decoration' || tags.shop === 'houseware') storeCategory = 'Home Decor';
-        if (tags.shop === 'lighting') storeCategory = 'Lighting';
-        if (tags.shop === 'curtain') storeCategory = 'Curtains';
-        if (tags.shop === 'bed') storeCategory = 'Mattress';
+          let storeCategory = 'Furniture';
+          if (tags.shop === 'interior_decoration' || tags.shop === 'houseware') storeCategory = 'Home Decor';
+          if (tags.shop === 'lighting') storeCategory = 'Lighting';
+          if (tags.shop === 'curtain') storeCategory = 'Curtains';
+          if (tags.shop === 'bed') storeCategory = 'Mattress';
 
-        const distance = haversineDistance(lat, lng, storeLat, storeLng);
+          const distance = haversineDistance(lat, lng, storeLat, storeLng);
 
-        // Deterministic realistic rating between 4.2 and 4.9
-        const charCodeSum = (name || '').split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
-        const rating = parseFloat((4.2 + (charCodeSum % 7) * 0.1).toFixed(1));
+          const charCodeSum = (name || '').split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
+          const rating = parseFloat((4.2 + (charCodeSum % 7) * 0.1).toFixed(1));
 
-        return {
-          _id: `osm_${el.type}_${el.id}`,
-          name,
-          address,
-          lat: storeLat,
-          lng: storeLng,
-          phone: tags.phone || tags['contact:phone'] || tags['contact:mobile'] || null,
-          website: tags.website || tags['contact:website'] || null,
-          category: storeCategory,
-          rating,
-          openingHours: tags.opening_hours || 'Mon-Sat 10:00 AM - 8:30 PM',
-          timings: tags.opening_hours || '10:00 AM - 8:30 PM',
-          distance,
-          source: 'OpenStreetMap',
-        };
-      })
-      .filter(Boolean);
+          return {
+            _id: `osm_${el.type}_${el.id}`,
+            name,
+            address,
+            lat: storeLat,
+            lng: storeLng,
+            phone: tags.phone || tags['contact:phone'] || tags['contact:mobile'] || null,
+            website: tags.website || tags['contact:website'] || null,
+            category: storeCategory,
+            rating,
+            openingHours: tags.opening_hours || 'Mon-Sat 10:00 AM - 8:30 PM',
+            timings: tags.opening_hours || '10:00 AM - 8:30 PM',
+            distance,
+            source: 'OpenStreetMap',
+          };
+        })
+        .filter(Boolean);
+    } catch {
+      // Overpass error handled gracefully
+    }
 
-    // 2. Fetch any registered stores from MongoDB (if connected)
+    // 3. Fetch any registered stores from MongoDB (if connected)
     let dbStores: any[] = [];
     try {
       await connectToDatabase();
@@ -195,13 +207,13 @@ export async function GET(request: NextRequest) {
           distance: haversineDistance(lat, lng, store.lat, store.lng),
           source: 'Verified Partner',
         }))
-        .filter((s: any) => s.distance <= radiusKm);
+        .filter((s: any) => (s.distance ?? 0) <= radiusKm);
     } catch {
       // MongoDB fallback handled gracefully
     }
 
-    // Merge and deduplicate by proximity / name
-    const allStores = [...osmStores, ...dbStores];
+    // Priority merge: Verified Raw Stores first, then DB stores, then live OSM
+    const allStores = [...rawStores, ...dbStores, ...osmStores];
     const seen = new Set<string>();
     const uniqueStores = allStores
       .filter((store: any) => {
@@ -210,20 +222,25 @@ export async function GET(request: NextRequest) {
         seen.add(key);
         return true;
       })
-      .sort((a: any, b: any) => a.distance - b.distance);
+      .sort((a: any, b: any) => (a.distance ?? 0) - (b.distance ?? 0));
 
     return NextResponse.json({
       success: true,
       data: uniqueStores,
       center: { lat, lng },
       count: uniqueStores.length,
-      source: 'OpenStreetMap Overpass API + Insight Nexsus Database',
+      rawCount: RAW_STORES.length,
+      source: 'Verified Showrooms + Insight Nexsus Database + OSM',
     });
   } catch (error) {
     console.error('Stores nearby error:', error);
-    return NextResponse.json(
-      { success: false, error: 'Internal server error' },
-      { status: 500 }
-    );
+    // Even in case of unexpected error, return raw stores!
+    const fallbackStores = getRawStores();
+    return NextResponse.json({
+      success: true,
+      data: fallbackStores,
+      count: fallbackStores.length,
+      source: 'Verified Raw Showroom Database',
+    });
   }
 }
