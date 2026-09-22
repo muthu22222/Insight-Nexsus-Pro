@@ -19,6 +19,7 @@ import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import BackButton from "@/components/common/BackButton";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
+import { useSidebar } from "@/contexts/SidebarContext";
 import { getAmazonProductUrl, getFlipkartProductUrl } from "@/lib/store-links";
 import type { FurnitureItem } from "@/types";
 import { formatCurrency } from "@/utils/helpers";
@@ -66,6 +67,7 @@ const item = {
 };
 
 export default function FurniturePage() {
+  const { sidebarWidthClass } = useSidebar();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [products, setProducts] = useState<FurnitureItem[]>([]);
@@ -143,7 +145,7 @@ export default function FurniturePage() {
     <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
-      <div className="lg:pl-64">
+      <div className={`transition-all duration-300 ease-in-out ${sidebarWidthClass}`}>
         <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-[var(--border)] bg-[var(--surface)]/90 backdrop-blur-md px-4 sm:px-6 py-4">
           <div className="flex items-center gap-4">
             <button

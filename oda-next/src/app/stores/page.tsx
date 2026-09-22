@@ -26,6 +26,7 @@ import Sidebar from "@/components/shared/Sidebar";
 import AIAssistant from "@/components/shared/AIAssistant";
 import BackButton from "@/components/common/BackButton";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
+import { useSidebar } from "@/contexts/SidebarContext";
 import type { Store as StoreType } from "@/types";
 import { RAW_STORES, CITY_COORDINATES, getRawStores } from "@/data/raw-stores";
 
@@ -54,6 +55,7 @@ const categoryBadgeColors: Record<string, string> = {
 };
 
 export default function StoresPage() {
+  const { sidebarWidthClass } = useSidebar();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [category, setCategory] = useState("All");
   const [searchLocation, setSearchLocation] = useState("");
@@ -218,7 +220,7 @@ export default function StoresPage() {
     <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
-      <div className="lg:pl-64">
+      <div className={`transition-all duration-300 ease-in-out ${sidebarWidthClass}`}>
         {/* Header */}
         <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md px-4 sm:px-6 py-4 shadow-xs">
           <button

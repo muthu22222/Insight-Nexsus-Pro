@@ -20,6 +20,7 @@ import AIAssistant from "@/components/shared/AIAssistant";
 import BackButton from "@/components/common/BackButton";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSidebar } from "@/contexts/SidebarContext";
 import { getAmazonProductUrl, getFlipkartProductUrl } from "@/lib/store-links";
 import type { FurnitureItem, Project } from "@/types";
 import { formatCurrency } from "@/utils/helpers";
@@ -29,6 +30,7 @@ export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { getToken } = useAuth();
+  const { sidebarWidthClass } = useSidebar();
   const productId = params.id as string;
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -169,7 +171,7 @@ export default function ProductDetailPage() {
     <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
-      <div className="lg:pl-64">
+      <div className={`transition-all duration-300 ease-in-out ${sidebarWidthClass}`}>
         <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md px-4 sm:px-6 py-4">
           <button
             onClick={() => setMobileOpen(true)}

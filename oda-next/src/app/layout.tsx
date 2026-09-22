@@ -4,6 +4,7 @@ import Script from "next/script";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { SidebarProvider } from "@/contexts/SidebarContext";
 import "./globals.css";
 
 const inter = Inter({
@@ -35,7 +36,9 @@ export default function RootLayout({
       <body className="min-h-full antialiased transition-colors duration-200">
         <AuthProvider>
           <ThemeProvider>
-            {children}
+            <SidebarProvider>
+              {children}
+            </SidebarProvider>
           </ThemeProvider>
         </AuthProvider>
         <Toaster

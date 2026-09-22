@@ -33,6 +33,7 @@
 :root,
 .light {
   /* Core Theme Tokens */
+  --sidebar-width: 16rem;
   --background: #FFF9F2;
   --surface: #F3F1EE;
   --surface-secondary: #E5E1DC;
@@ -121,6 +122,19 @@
   --color-price: #F5A900;
   --color-success: #00C98D;
   --foreground: #FFFFFF;
+}
+
+html.sidebar-collapsed {
+  --sidebar-width: 5rem;
+}
+
+.sidebar-content-area {
+  transition: padding-left 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+@media (min-width: 1024px) {
+  .sidebar-content-area {
+    padding-left: var(--sidebar-width, 16rem);
+  }
 }
 
 @theme inline {

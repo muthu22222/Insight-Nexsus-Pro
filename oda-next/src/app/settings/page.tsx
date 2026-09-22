@@ -18,10 +18,12 @@ import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import BackButton from "@/components/common/BackButton";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSidebar } from "@/contexts/SidebarContext";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function SettingsPage() {
   const { userData } = useAuth();
+  const { sidebarWidthClass } = useSidebar();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [name, setName] = useState(userData?.name || "Designer");
   const [emailNotifications, setEmailNotifications] = useState(true);
@@ -42,7 +44,7 @@ export default function SettingsPage() {
         <Toaster position="top-center" />
         <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
-        <div className="lg:pl-64">
+        <div className={`transition-all duration-300 ease-in-out ${sidebarWidthClass}`}>
           <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md px-4 sm:px-6 py-4">
             <div className="flex items-center gap-4">
               <button

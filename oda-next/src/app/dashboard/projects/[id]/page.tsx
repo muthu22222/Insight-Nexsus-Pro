@@ -28,6 +28,7 @@ import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import BackButton from "@/components/common/BackButton";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSidebar } from "@/contexts/SidebarContext";
 import { getAmazonProductUrl, getFlipkartProductUrl } from "@/lib/store-links";
 import { formatCurrency, formatDate } from "@/utils/helpers";
 import { RAW_PROJECTS } from "@/data/raw-projects";
@@ -45,8 +46,8 @@ const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
 ];
 
 const categoryColors: Record<string, string> = {
-  "Main Furniture": "bg-amber-500",
-  "Living Room": "bg-amber-500",
+  "Main Furniture": "bg-blue-500",
+  "Living Room": "bg-blue-500",
   "Bedroom": "bg-violet-500",
   "Kitchen": "bg-emerald-500",
   "Lighting & Decor": "bg-yellow-500",
@@ -61,6 +62,7 @@ export default function ProjectDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { getToken } = useAuth();
+  const { sidebarWidthClass } = useSidebar();
   const projectId = params.id as string;
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -277,7 +279,7 @@ export default function ProjectDetailPage() {
         <Toaster position="top-center" />
         <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
-        <div className="lg:pl-64">
+        <div className={`transition-all duration-300 ease-in-out ${sidebarWidthClass}`}>
           <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md px-4 sm:px-6 py-4">
             <button
               onClick={() => setMobileOpen(true)}

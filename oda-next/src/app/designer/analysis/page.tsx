@@ -249,7 +249,6 @@ export default function AnalysisPage() {
   }
 
   return (
-  return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
       <Toaster position="top-center" />
 
