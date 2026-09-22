@@ -150,7 +150,7 @@ export default function RegisterPage() {
   if (user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center px-4 py-12">
       <Toaster position="top-center" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -161,23 +161,23 @@ export default function RegisterPage() {
         <div className="mb-4">
           <BackButton fallbackHref="/auth/login" label="Back to Login" variant="subtle" />
         </div>
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <div className="bg-[var(--surface)] rounded-2xl shadow-sm border border-[var(--border)] p-8">
           <div className="text-center mb-8">
             <Link href="/" className="inline-block">
-              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
+              <h1 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">
                 Insight <span className="text-[#C9A66B]">Nexsus</span>
               </h1>
             </Link>
-            <p className="text-gray-500 mt-2 text-sm">Create your account to get started</p>
+            <p className="text-[var(--text-secondary)] mt-2 text-sm">Create your account to get started</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="name" className="block text-sm font-semibold text-[var(--text-primary)] mb-1.5">
                 Full Name
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-400" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[var(--text-muted)]" />
                 <input
                   id="name"
                   type="text"
@@ -188,19 +188,19 @@ export default function RegisterPage() {
                   }}
                   placeholder="John Doe"
                   className={`w-full pl-10 pr-4 py-2.5 rounded-lg border ${
-                    errors.name ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-200 focus:ring-amber-500 focus:border-amber-500'
-                  } text-gray-900 text-sm placeholder-gray-400 outline-none transition-all`}
+                    errors.name ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-[var(--border)] focus:border-[var(--text-primary)]'
+                  } bg-[var(--background)] text-[var(--text-primary)] text-sm placeholder-[var(--text-muted)] outline-none transition-all`}
                 />
               </div>
               {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="email" className="block text-sm font-semibold text-[var(--text-primary)] mb-1.5">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[var(--text-muted)]" />
                 <input
                   id="email"
                   type="email"
@@ -211,19 +211,19 @@ export default function RegisterPage() {
                   }}
                   placeholder="you@example.com"
                   className={`w-full pl-10 pr-4 py-2.5 rounded-lg border ${
-                    errors.email ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-200 focus:ring-amber-500 focus:border-amber-500'
-                  } text-gray-900 text-sm placeholder-gray-400 outline-none transition-all`}
+                    errors.email ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-[var(--border)] focus:border-[var(--text-primary)]'
+                  } bg-[var(--background)] text-[var(--text-primary)] text-sm placeholder-[var(--text-muted)] outline-none transition-all`}
                 />
               </div>
               {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="password" className="block text-sm font-semibold text-[var(--text-primary)] mb-1.5">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[var(--text-muted)]" />
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
@@ -234,13 +234,13 @@ export default function RegisterPage() {
                   }}
                   placeholder="Min. 8 characters"
                   className={`w-full pl-10 pr-10 py-2.5 rounded-lg border ${
-                    errors.password ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-200 focus:ring-amber-500 focus:border-amber-500'
-                  } text-gray-900 text-sm placeholder-gray-400 outline-none transition-all`}
+                    errors.password ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-[var(--border)] focus:border-[var(--text-primary)]'
+                  } bg-[var(--background)] text-[var(--text-primary)] text-sm placeholder-[var(--text-muted)] outline-none transition-all`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
                 >
                   {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                 </button>
@@ -249,11 +249,11 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="confirmPassword" className="block text-sm font-semibold text-[var(--text-primary)] mb-1.5">
                 Confirm Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[var(--text-muted)]" />
                 <input
                   id="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
@@ -264,13 +264,15 @@ export default function RegisterPage() {
                   }}
                   placeholder="Re-enter your password"
                   className={`w-full pl-10 pr-10 py-2.5 rounded-lg border ${
-                    errors.confirmPassword ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-200 focus:ring-amber-500 focus:border-amber-500'
-                  } text-gray-900 text-sm placeholder-gray-400 outline-none transition-all`}
+                    errors.confirmPassword
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                      : 'border-[var(--border)] focus:border-[var(--text-primary)]'
+                  } bg-[var(--background)] text-[var(--text-primary)] text-sm placeholder-[var(--text-muted)] outline-none transition-all`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
                 >
                   {showConfirmPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                 </button>
@@ -283,7 +285,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-[#8F5F4A] text-[#F5EFE7] py-2.5 rounded-lg font-semibold text-sm hover:bg-[#A26E57] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2 shadow-md shadow-[#8F5F4A]/20"
+              className="w-full bg-[#2B1B12] text-white py-2.5 rounded-lg font-bold text-sm hover:bg-[#433328] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2 shadow-md shadow-[#2B1B12]/20 cursor-pointer"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -298,17 +300,17 @@ export default function RegisterPage() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200" />
+              <div className="w-full border-t border-[var(--border)]" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-3 text-gray-400">or continue with</span>
+              <span className="bg-[var(--surface)] px-3 text-[var(--text-muted)]">or continue with</span>
             </div>
           </div>
 
           <button
             onClick={handleGoogleLogin}
             disabled={isLoading}
-            className="w-full border border-gray-200 bg-white text-gray-700 py-2.5 rounded-lg font-medium text-sm hover:bg-gray-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-3"
+            className="w-full border border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] py-2.5 rounded-lg font-bold text-sm hover:border-[var(--text-primary)] transition-colors disabled:opacity-50 flex items-center justify-center gap-3 cursor-pointer"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path
@@ -331,9 +333,9 @@ export default function RegisterPage() {
             Sign up with Google
           </button>
 
-          <p className="text-center text-sm text-gray-500 mt-6">
+          <p className="text-center text-sm text-[var(--text-secondary)] mt-6">
             Already have an account?{' '}
-            <Link href="/auth/login" className="text-[#8F5F4A] hover:text-[#A26E57] font-semibold">
+            <Link href="/auth/login" className="text-[var(--text-primary)] hover:underline font-bold">
               Sign In
             </Link>
           </p>

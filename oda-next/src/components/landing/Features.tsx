@@ -67,9 +67,9 @@ export default function Features() {
   const [isPaused, setIsPaused] = useState(false);
 
   return (
-    <section id="features" className="py-24 md:py-32 bg-white overflow-hidden relative">
+    <section id="features" className="py-24 md:py-32 bg-[var(--background)] overflow-hidden relative">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-slate-200/40 blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-stone-200/30 blur-[140px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
         <motion.div
@@ -78,14 +78,14 @@ export default function Features() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-flex items-center gap-1.5 text-[#0F172A] text-xs sm:text-sm font-bold tracking-widest uppercase bg-[#F1F3F5] border border-[#E2E8F0] px-3.5 py-1 rounded-full mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-[#64748B]" />
+          <span className="inline-flex items-center gap-1.5 text-[#2B1B12] dark:text-white text-xs sm:text-sm font-bold tracking-widest uppercase bg-[var(--surface-secondary)] border border-[var(--border)] px-3.5 py-1 rounded-full mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-[#5F5750] dark:text-[#D6CEC5]" />
             Why Insight Nexsus
           </span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#0F172A] mt-2 tracking-tight">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#2B1B12] dark:text-white mt-2 tracking-tight">
             Everything You Need to Design Smarter
           </h2>
-          <p className="text-[#64748B] text-sm sm:text-base max-w-xl mx-auto mt-4">
+          <p className="text-[#5F5750] dark:text-[#D6CEC5] text-sm sm:text-base max-w-xl mx-auto mt-4 font-normal">
             From instant AI room mapping to guaranteed real store products and live budget calculation.
           </p>
         </motion.div>
@@ -119,23 +119,23 @@ export default function Features() {
               return (
                 <div
                   key={`row1-${feature.title}-${idx}`}
-                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-[#F8F9FA] border border-[#E2E8F0] hover:border-[#CBD5E1] rounded-2xl p-7 transition-all duration-300 hover:bg-white hover:-translate-y-1.5 hover:shadow-xl hover:shadow-slate-200/50 backdrop-blur-md"
+                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--text-secondary)] rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl backdrop-blur-md"
                 >
                   {/* Top Badge & Icon */}
                   <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-xl bg-white border border-[#E2E8F0] flex items-center justify-center group-hover:bg-[#F1F3F5] group-hover:scale-110 transition-all duration-300 shadow-xs">
-                      <Icon size={22} className="text-[#0F172A]" />
+                    <div className="w-12 h-12 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)] flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-xs">
+                      <Icon size={22} className="text-[#2B1B12] dark:text-white" />
                     </div>
-                    <span className="text-[11px] font-bold text-[#64748B] bg-white border border-[#E2E8F0] px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold text-[#5F5750] dark:text-[#D6CEC5] bg-[var(--surface-secondary)] border border-[var(--border)] px-2.5 py-0.5 rounded-full">
                       {feature.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-[#0F172A] text-lg font-bold mb-2.5 transition-colors">
+                  <h3 className="text-[#2B1B12] dark:text-white text-lg font-bold mb-2.5 transition-colors">
                     {feature.title}
                   </h3>
 
-                  <p className="text-[#64748B] text-sm leading-relaxed">
+                  <p className="text-[#5F5750] dark:text-[#D6CEC5] text-sm leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
@@ -165,22 +165,22 @@ export default function Features() {
               return (
                 <div
                   key={`row2-${feature.title}-${idx}`}
-                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-[#F8F9FA] border border-[#E2E8F0] hover:border-[#CBD5E1] rounded-2xl p-7 transition-all duration-300 hover:bg-white hover:-translate-y-1.5 hover:shadow-xl hover:shadow-slate-200/50 backdrop-blur-md"
+                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--text-secondary)] rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl backdrop-blur-md"
                 >
                   <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-xl bg-white border border-[#E2E8F0] flex items-center justify-center group-hover:bg-[#F1F3F5] group-hover:scale-110 transition-all duration-300 shadow-xs">
-                      <Icon size={22} className="text-[#0F172A]" />
+                    <div className="w-12 h-12 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)] flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-xs">
+                      <Icon size={22} className="text-[#2B1B12] dark:text-white" />
                     </div>
-                    <span className="text-[11px] font-bold text-[#64748B] bg-white border border-[#E2E8F0] px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold text-[#5F5750] dark:text-[#D6CEC5] bg-[var(--surface-secondary)] border border-[var(--border)] px-2.5 py-0.5 rounded-full">
                       {feature.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-[#0F172A] text-lg font-bold mb-2.5 transition-colors">
+                  <h3 className="text-[#2B1B12] dark:text-white text-lg font-bold mb-2.5 transition-colors">
                     {feature.title}
                   </h3>
 
-                  <p className="text-[#64748B] text-sm leading-relaxed">
+                  <p className="text-[#5F5750] dark:text-[#D6CEC5] text-sm leading-relaxed">
                     {feature.description}
                   </p>
                 </div>

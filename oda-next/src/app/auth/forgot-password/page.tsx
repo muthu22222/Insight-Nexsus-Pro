@@ -49,7 +49,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center px-4">
       <Toaster position="top-center" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -57,10 +57,10 @@ export default function ForgotPasswordPage() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <div className="bg-[var(--surface)] rounded-2xl shadow-sm border border-[var(--border)] p-8">
           <div className="text-center mb-8">
             <Link href="/" className="inline-block">
-              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
+              <h1 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">
                 Insight <span className="text-[#C9A66B]">Nexsus</span>
               </h1>
             </Link>
@@ -72,15 +72,15 @@ export default function ForgotPasswordPage() {
               animate={{ opacity: 1, scale: 1 }}
               className="text-center py-4"
             >
-              <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="w-8 h-8 text-green-500" />
+              <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/20">
+                <CheckCircle className="w-8 h-8 text-emerald-500" />
               </div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Check your email</h2>
-              <p className="text-sm text-gray-500 mb-6">
+              <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">Check your email</h2>
+              <p className="text-sm text-[var(--text-secondary)] mb-6">
                 We&apos;ve sent a password reset link to{' '}
-                <span className="font-medium text-gray-700">{email}</span>
+                <span className="font-semibold text-[var(--text-primary)]">{email}</span>
               </p>
-              <p className="text-xs text-gray-400 mb-6">
+              <p className="text-xs text-[var(--text-muted)] mb-6">
                 Didn&apos;t receive the email? Check your spam folder or try again.
               </p>
               <button
@@ -88,7 +88,7 @@ export default function ForgotPasswordPage() {
                   setIsSent(false);
                   setEmail('');
                 }}
-                className="w-full border border-gray-200 text-gray-700 py-2.5 rounded-lg font-medium text-sm hover:bg-gray-50 transition-colors"
+                className="w-full border border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] py-2.5 rounded-lg font-bold text-sm hover:border-[var(--text-primary)] transition-colors cursor-pointer"
               >
                 Try another email
               </button>
@@ -96,19 +96,19 @@ export default function ForgotPasswordPage() {
           ) : (
             <>
               <div className="mb-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-1">Forgot password?</h2>
-                <p className="text-sm text-gray-500">
+                <h2 className="text-lg font-bold text-[var(--text-primary)] mb-1">Forgot password?</h2>
+                <p className="text-sm text-[var(--text-secondary)]">
                   No worries, we&apos;ll send you reset instructions.
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label htmlFor="email" className="block text-sm font-semibold text-[var(--text-primary)] mb-1.5">
                     Email address
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-400" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[var(--text-muted)]" />
                     <input
                       id="email"
                       type="email"
@@ -119,8 +119,8 @@ export default function ForgotPasswordPage() {
                       }}
                       placeholder="you@example.com"
                       className={`w-full pl-10 pr-4 py-2.5 rounded-lg border ${
-                        error ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-200 focus:ring-[#8F5F4A] focus:border-[#8F5F4A]'
-                      } text-gray-900 text-sm placeholder-gray-400 outline-none transition-all`}
+                        error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-[var(--border)] focus:border-[var(--text-primary)]'
+                      } bg-[var(--background)] text-[var(--text-primary)] text-sm placeholder-[var(--text-muted)] outline-none transition-all`}
                     />
                   </div>
                   {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
@@ -129,7 +129,7 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-[#8F5F4A] text-[#F5EFE7] py-2.5 rounded-lg font-semibold text-sm hover:bg-[#A26E57] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md shadow-[#8F5F4A]/20"
+                  className="w-full bg-[#2B1B12] text-white py-2.5 rounded-lg font-bold text-sm hover:bg-[#433328] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md shadow-[#2B1B12]/20 cursor-pointer"
                 >
                   {isLoading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -141,10 +141,10 @@ export default function ForgotPasswordPage() {
             </>
           )}
 
-          <div className="mt-6 pt-6 border-t border-gray-100">
+          <div className="mt-6 pt-6 border-t border-[var(--border)]">
             <Link
               href="/auth/login"
-              className="flex items-center justify-center gap-2 text-sm text-[#8F5F4A] hover:text-[#A26E57] font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 text-sm text-[var(--text-primary)] hover:underline font-bold transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Sign In

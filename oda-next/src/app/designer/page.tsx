@@ -183,7 +183,7 @@ function DesignerUploadContent() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-[#0F172A]">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
       <Toaster position="top-center" />
 
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -194,14 +194,14 @@ function DesignerUploadContent() {
         </div>
 
         <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F172A] uppercase tracking-widest bg-[#F1F3F5] border border-[#E2E8F0] px-3.5 py-1 rounded-full mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-[#64748B]" />
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--text-primary)] uppercase tracking-widest bg-[var(--surface-secondary)] border border-[var(--border)] px-3.5 py-1 rounded-full mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
             AI Designer Studio
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] mb-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] mb-1">
             Upload Your Room
           </h1>
-          <p className="text-xs sm:text-sm text-[#64748B]">
+          <p className="text-xs sm:text-sm text-[var(--text-secondary)]">
             Upload a photo of your empty or furnished room to begin AI generation
           </p>
         </div>
@@ -215,22 +215,22 @@ function DesignerUploadContent() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
                       index === 0
-                        ? 'bg-[#0F172A] text-white border border-[#0F172A] shadow-xs'
-                        : 'bg-[#F1F3F5] text-[#64748B] border border-[#E2E8F0]'
+                        ? 'bg-[#2B1B12] text-white border border-[#2B1B12] shadow-xs'
+                        : 'bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]'
                     }`}
                   >
                     {index + 1}
                   </div>
                   <span
                     className={`text-[10px] mt-1 font-semibold ${
-                      index === 0 ? 'text-[#0F172A]' : 'text-[#64748B]'
+                      index === 0 ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'
                     }`}
                   >
                     {step.label}
                   </span>
                 </div>
                 {index < steps.length - 1 && (
-                  <div className="w-10 sm:w-12 h-0.5 bg-[#E2E8F0] mx-1 mb-5" />
+                  <div className="w-10 sm:w-12 h-0.5 bg-[var(--border)] mx-1 mb-5" />
                 )}
               </div>
             ))}
@@ -240,7 +240,7 @@ function DesignerUploadContent() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#F8F9FA] rounded-2xl shadow-sm border border-[#E2E8F0] p-6 sm:p-8"
+          className="bg-[var(--surface)] rounded-2xl shadow-sm border border-[var(--border)] p-6 sm:p-8"
         >
           <AnimatePresence mode="wait">
             {!preview ? (
@@ -252,25 +252,25 @@ function DesignerUploadContent() {
               >
                 <div
                   {...getRootProps()}
-                  className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all bg-white ${
+                  className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all bg-[var(--background)] ${
                     isDragActive
-                      ? 'border-[#0F172A] bg-slate-50'
-                      : 'border-[#CBD5E1] hover:border-[#0F172A] hover:bg-slate-50'
+                      ? 'border-[var(--text-primary)] bg-[var(--surface-secondary)]'
+                      : 'border-[var(--border)] hover:border-[var(--text-primary)] hover:bg-[var(--surface-secondary)]'
                   }`}
                 >
                   <input {...getInputProps()} />
                   <div className="flex flex-col items-center">
-                    <div className="w-16 h-16 bg-[#F1F3F5] border border-[#E2E8F0] rounded-2xl flex items-center justify-center mb-4 text-[#0F172A] shadow-xs">
+                    <div className="w-16 h-16 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-2xl flex items-center justify-center mb-4 text-[var(--text-primary)] shadow-xs">
                       <Upload className="w-7 h-7" />
                     </div>
-                    <p className="text-base font-bold text-[#0F172A] mb-1">
+                    <p className="text-base font-bold text-[var(--text-primary)] mb-1">
                       {isDragActive ? 'Drop your image here' : 'Drag & drop your room photo'}
                     </p>
-                    <p className="text-xs text-[#64748B] mb-4">
+                    <p className="text-xs text-[var(--text-secondary)] mb-4">
                       or click to browse from device
                     </p>
-                    <div className="flex items-center gap-2 text-xs text-[#64748B] bg-[#F1F3F5] border border-[#E2E8F0] px-3 py-1.5 rounded-lg">
-                      <ImageIcon className="w-3.5 h-3.5 text-[#64748B]" />
+                    <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)] bg-[var(--surface-secondary)] border border-[var(--border)] px-3 py-1.5 rounded-lg">
+                      <ImageIcon className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
                       <span>JPG, PNG, WEBP • Max 10MB</span>
                     </div>
                   </div>
@@ -283,7 +283,7 @@ function DesignerUploadContent() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
               >
-                <div className="relative rounded-2xl overflow-hidden bg-slate-100 border border-[#E2E8F0]">
+                <div className="relative rounded-2xl overflow-hidden bg-[var(--surface-secondary)] border border-[var(--border)]">
                   <img
                     src={preview}
                     alt="Room preview"
@@ -309,9 +309,9 @@ function DesignerUploadContent() {
 
                 {isUploading && (
                   <div className="mt-4">
-                    <div className="w-full bg-[#E2E8F0] rounded-full h-1.5 overflow-hidden">
+                    <div className="w-full bg-[var(--surface-secondary)] rounded-full h-1.5 overflow-hidden">
                       <motion.div
-                        className="bg-[#0F172A] h-1.5 rounded-full"
+                        className="bg-[#2B1B12] dark:bg-white h-1.5 rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${uploadProgress}%` }}
                         transition={{ duration: 0.3 }}
@@ -324,14 +324,14 @@ function DesignerUploadContent() {
                   <button
                     onClick={handleRetake}
                     disabled={isUploading}
-                    className="flex-1 border border-[#E2E8F0] text-[#0F172A] py-3 rounded-xl font-semibold text-sm hover:bg-[#F1F3F5] transition-colors disabled:opacity-50 cursor-pointer bg-white"
+                    className="flex-1 border border-[var(--border)] text-[var(--text-primary)] py-3 rounded-xl font-semibold text-sm hover:bg-[var(--surface-secondary)] transition-colors disabled:opacity-50 cursor-pointer bg-[var(--surface)]"
                   >
                     Retake
                   </button>
                   <button
                     onClick={handleContinue}
                     disabled={isUploading}
-                    className="flex-1 bg-[#0F172A] hover:bg-[#1E293B] text-white py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-[#0F172A]/15 hover:scale-[1.01] disabled:opacity-50 flex items-center justify-center gap-2 border border-[#0F172A] cursor-pointer"
+                    className="flex-1 bg-[#2B1B12] hover:bg-[#433328] text-white py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-[#2B1B12]/15 hover:scale-[1.01] disabled:opacity-50 flex items-center justify-center gap-2 border border-[#2B1B12] cursor-pointer"
                   >
                     {isUploading ? (
                       <Loader2 className="w-4 h-4 animate-spin" />

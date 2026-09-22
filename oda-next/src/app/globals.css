@@ -2,95 +2,151 @@
 @import "leaflet/dist/leaflet.css";
 
 /* -------------------------------------------------------------
-   INSIGHT NEXUS WARM NEUTRAL GLOBAL COLOR SYSTEM
-   Main Canvas surface:       #FFF9F2 — Warm Ivory
-   Light Card background:     #F3F1EE — Warm Light Card Base
-   Secondary / Section bg:    #E5E1DC — Soft Warm Secondary / Input Base
-   Primary Dark Text:         #5F5750 — Dark Warm Taupe/Charcoal for high contrast
-   Secondary / Label Text:    #8A8178 — Warm Medium Taupe for clear descriptions
-   Borders & Dividers:        #D5CFC7 — Crisp warm light border
-   Price Accent:              #F5A900 — Bright warm gold
-   Success / Match Accent:    #00C98D — Mint emerald match
+   INSIGHT NEXUS PRO — GLOBAL COLOR CONTRAST & READABILITY SYSTEM
+   Light Mode (Warm Neutral):
+     Canvas / Base:          #FFF9F2 (Warm Ivory)
+     Card Surface:           #F3F1EE (Warm Light Card Base)
+     Secondary Surface:      #E5E1DC (Soft Warm Neutral / Input Base)
+     Primary Dark Text:      #2B1B12 (Deep Warm Charcoal — WCAG AAA contrast > 11:1)
+     Secondary Text:         #5F5750 (Warm Medium Taupe)
+     Muted / Label Text:     #8A8178 (Warm Muted Neutral)
+     Borders & Dividers:     #E5E1DC / #D5CFC7 (Crisp Warm Border)
+
+   Dark Mode:
+     Canvas / Base:          #141210 (Deep Warm Black)
+     Card Surface:           #1E1A17 (Warm Charcoal Card)
+     Secondary Surface:      #2B2521 (Muted Warm Surface)
+     Primary Bright Text:    #FFFFFF (Pure White — maximum contrast)
+     Secondary Text:         #F5EFE7 (Soft Ivory)
+     Muted Text:             #D6CEC5 (Light Warm Grey)
+     Borders & Dividers:     #3A322C (Visible Warm Dark Border)
+
+   Semantic Accents:
+     Price:                  #F5A900 (Bold Bright Gold)
+     Success / Match:        #00C98D (Mint Emerald)
+     Amazon CTA:             #FF9900 (Amazon signature yellow with #111111 dark text)
+     Flipkart CTA:           #2874F0 (Flipkart royal blue with #FFFFFF text)
+     Warning:                #F5A900 (Accessible Warm Amber)
+     Error / Danger:         #ef4444 (Accessible Vivid Red)
 ------------------------------------------------------------- */
 
 :root,
 .light {
-  /* Design Tokens */
+  /* Core Theme Tokens */
+  --background: #FFF9F2;
+  --surface: #F3F1EE;
+  --surface-secondary: #E5E1DC;
+  --surface-hover: #DCD6CF;
+  --text-primary: #2B1B12;
+  --text-secondary: #5F5750;
+  --text-muted: #8A8178;
+  --border: #E5E1DC;
+  --border-light: #D5CFC7;
+
+  /* Primary Action / CTA */
+  --primary: #2B1B12;
+  --primary-hover: #433328;
+  --primary-foreground: #FFFFFF;
+
+  /* Secondary Action */
+  --secondary: #E5E1DC;
+  --secondary-hover: #DCD6CF;
+  --secondary-foreground: #2B1B12;
+
+  /* Accents */
+  --accent: #E5E1DC;
+  --price: #F5A900;
+  --success: #00C98D;
+  --warning: #F5A900;
+  --error: #ef4444;
+  --danger: #ef4444;
+
+  /* Legacy compatibility aliases */
   --color-canvas: #FFF9F2;
   --color-surface-card: #F3F1EE;
   --color-surface-secondary: #E5E1DC;
   --color-surface-chip: #E5E1DC;
   --color-surface-hover: #DCD6CF;
   --color-border-light: #D5CFC7;
-  --color-text-primary: #5F5750;
-  --color-text-secondary: #8A8178;
-  --color-primary-cta: #5F5750;
-  --color-primary-cta-hover: #4A433D;
+  --color-text-primary: #2B1B12;
+  --color-text-secondary: #5F5750;
+  --color-primary-cta: #2B1B12;
+  --color-primary-cta-hover: #433328;
   --color-price: #F5A900;
   --color-success: #00C98D;
-
-  /* Global Theme Variables */
-  --background: #FFF9F2;
-  --foreground: #5F5750;
-  --primary: #5F5750;
-  --primary-dark: #4A433D;
-  --accent: #E5E1DC;
-  --muted: #8A8178;
-  --border: #D5CFC7;
-  --success: #00C98D;
-  --warning: #F5A900;
-  --danger: #ef4444;
+  --foreground: #2B1B12;
 }
 
 .dark {
-  --color-canvas: #1C1917;
-  --color-surface-card: #2A2623;
-  --color-surface-secondary: #36322E;
-  --color-surface-chip: #36322E;
-  --color-surface-hover: #443E38;
-  --color-border-light: #443E38;
-  --color-text-primary: #FFF9F2;
-  --color-text-secondary: #C5BCB3;
-  --color-primary-cta: #FFF9F2;
-  --color-primary-cta-hover: #E5E1DC;
-  --color-price: #F5A900;
-  --color-success: #00C98D;
+  /* Core Theme Tokens */
+  --background: #141210;
+  --surface: #1E1A17;
+  --surface-secondary: #2B2521;
+  --surface-hover: #38302A;
+  --text-primary: #FFFFFF;
+  --text-secondary: #F5EFE7;
+  --text-muted: #D6CEC5;
+  --border: #3A322C;
+  --border-light: #3A322C;
 
-  --background: #1C1917;
-  --foreground: #FFF9F2;
-  --primary: #FFF9F2;
-  --primary-dark: #E5E1DC;
-  --accent: #36322E;
-  --muted: #C5BCB3;
-  --border: #443E38;
+  /* Primary Action / CTA */
+  --primary: #FFFFFF;
+  --primary-hover: #F5EFE7;
+  --primary-foreground: #141210;
+
+  /* Secondary Action */
+  --secondary: #2B2521;
+  --secondary-hover: #38302A;
+  --secondary-foreground: #FFFFFF;
+
+  /* Accents */
+  --accent: #2B2521;
+  --price: #F5A900;
   --success: #00C98D;
   --warning: #F5A900;
+  --error: #ef4444;
   --danger: #ef4444;
+
+  /* Legacy compatibility aliases */
+  --color-canvas: #141210;
+  --color-surface-card: #1E1A17;
+  --color-surface-secondary: #2B2521;
+  --color-surface-chip: #2B2521;
+  --color-surface-hover: #38302A;
+  --color-border-light: #3A322C;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #F5EFE7;
+  --color-primary-cta: #FFFFFF;
+  --color-primary-cta-hover: #F5EFE7;
+  --color-price: #F5A900;
+  --color-success: #00C98D;
+  --foreground: #FFFFFF;
 }
 
 @theme inline {
-  --color-espresso: var(--background);
-  --color-espresso-card: var(--color-surface-card);
-  --color-espresso-secondary: var(--color-surface-secondary);
-  --color-terracotta: var(--color-primary-cta);
-  --color-terracotta-hover: var(--color-primary-cta-hover);
-  --color-gold: var(--color-text-secondary);
-  --color-gold-hover: var(--color-text-primary);
-  --color-beige: var(--color-border-light);
-  --color-ivory: var(--color-text-primary);
-  --color-muted-beige: var(--color-text-secondary);
-
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-dark: var(--primary-dark);
-  --color-accent: var(--accent);
-  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-hover: var(--surface-hover);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
   --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-price: var(--price);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-error: var(--error);
   --color-danger: var(--danger);
-  --font-sans: "Inter", var(--font-geist-sans);
+
+  --font-sans: "Inter", var(--font-inter), Arial, Helvetica, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
@@ -101,14 +157,193 @@
 html {
   scroll-behavior: smooth;
   background-color: var(--background);
+  color: var(--text-primary);
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: "Inter", Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
+  font-family: "Inter", var(--font-inter), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* -------------------------------------------------------------
+   ACCESSIBILITY & CONTRAST FOUNDATION
+------------------------------------------------------------- */
+
+/* Never force white text to dark brown! Pure white text must stay white */
+.text-white {
+  color: #FFFFFF !important;
+}
+
+/* Form Placeholders */
+::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.9;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.9;
+}
+
+/* High Contrast Selection */
+::selection {
+  background: #2B1B12;
+  color: #FFFFFF;
+}
+
+.dark ::selection {
+  background: #F5EFE7;
+  color: #141210;
+}
+
+/* Custom Clean Accessible Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-light) var(--surface-secondary);
+}
+
+/* -------------------------------------------------------------
+   BUTTON CONTRAST ENFORCEMENT
+------------------------------------------------------------- */
+
+/* 1. Dark buttons: Must ALWAYS have bright white/ivory text and bright icons */
+button.bg-black,
+button.bg-slate-900,
+button.bg-\[\#0F172A\],
+button.bg-\[\#2B1B12\],
+button.bg-\[\#1E293B\],
+button.bg-\[\#5F5750\],
+a.bg-black,
+a.bg-slate-900,
+a.bg-\[\#0F172A\],
+a.bg-\[\#2B1B12\],
+a.bg-\[\#1E293B\],
+a.bg-\[\#5F5750\],
+.btn-dark {
+  color: #FFFFFF !important;
+  font-weight: 600;
+}
+
+button.bg-black *,
+button.bg-slate-900 *,
+button.bg-\[\#0F172A\] *,
+button.bg-\[\#2B1B12\] *,
+button.bg-\[\#1E293B\] *,
+button.bg-\[\#5F5750\] *,
+a.bg-black *,
+a.bg-slate-900 *,
+a.bg-\[\#0F172A\] *,
+a.bg-\[\#2B1B12\] *,
+a.bg-\[\#1E293B\] *,
+a.bg-\[\#5F5750\] *,
+.btn-dark * {
+  color: inherit;
+}
+
+button.bg-black svg,
+button.bg-slate-900 svg,
+button.bg-\[\#0F172A\] svg,
+button.bg-\[\#2B1B12\] svg,
+button.bg-\[\#1E293B\] svg,
+button.bg-\[\#5F5750\] svg,
+a.bg-black svg,
+a.bg-slate-900 svg,
+a.bg-\[\#0F172A\] svg,
+a.bg-\[\#2B1B12\] svg,
+a.bg-\[\#1E293B\] svg,
+a.bg-\[\#5F5750\] svg,
+.btn-dark svg {
+  color: #FFFFFF !important;
+}
+
+/* 2. Light buttons: Must have dark readable text */
+:root:not(.dark) {
+  button.bg-white,
+  button.bg-\[\#F8F9FA\],
+  button.bg-\[\#F1F3F5\],
+  button.bg-\[\#E5E1DC\],
+  button.bg-\[\#F3F1EE\],
+  a.bg-white,
+  a.bg-\[\#F8F9FA\],
+  a.bg-\[\#F1F3F5\],
+  a.bg-\[\#E5E1DC\],
+  a.bg-\[\#F3F1EE\],
+  .btn-light {
+    color: #2B1B12 !important;
+  }
+
+  button.bg-white svg,
+  button.bg-\[\#F8F9FA\] svg,
+  button.bg-\[\#F1F3F5\] svg,
+  button.bg-\[\#E5E1DC\] svg,
+  button.bg-\[\#F3F1EE\] svg,
+  a.bg-white svg,
+  a.bg-\[\#F8F9FA\] svg,
+  a.bg-\[\#F1F3F5\] svg,
+  a.bg-\[\#E5E1DC\] svg,
+  a.bg-\[\#F3F1EE\] svg,
+  .btn-light svg {
+    color: #2B1B12 !important;
+  }
+}
+
+/* 3. Retail CTAs (Amazon & Flipkart) */
+.bg-amazon,
+[data-vendor="amazon"],
+a[href*="amazon"] {
+  background-color: #FF9900 !important;
+  color: #111111 !important;
+  font-weight: 700 !important;
+}
+
+.bg-amazon *,
+[data-vendor="amazon"] *,
+a[href*="amazon"] * {
+  color: #111111 !important;
+}
+
+.bg-flipkart,
+[data-vendor="flipkart"],
+a[href*="flipkart"] {
+  background-color: #2874F0 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+.bg-flipkart *,
+[data-vendor="flipkart"] *,
+a[href*="flipkart"] * {
+  color: #FFFFFF !important;
+}
+
+/* 4. Disabled states: Never washed out to invisibility */
+button:disabled,
+button[disabled],
+a[aria-disabled="true"] {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
 }
 
 /* -------------------------------------------------------------
@@ -116,55 +351,26 @@ body {
 ------------------------------------------------------------- */
 .bg-canvas            { background-color: var(--background) !important; }
 .bg-espresso          { background-color: var(--background) !important; }
-.bg-espresso-card     { background-color: var(--color-surface-card) !important; }
-.bg-espresso-secondary{ background-color: var(--color-surface-secondary) !important; }
-.bg-terracotta        { background-color: #5F5750 !important; color: #FFF9F2 !important; }
-.bg-gold              { background-color: var(--color-surface-secondary) !important; color: var(--color-text-primary) !important; }
-.bg-beige             { background-color: var(--color-surface-secondary) !important; }
+.bg-espresso-card     { background-color: var(--surface) !important; }
+.bg-espresso-secondary{ background-color: var(--surface-secondary) !important; }
+.bg-terracotta        { background-color: var(--primary) !important; color: var(--primary-foreground) !important; }
+.bg-gold              { background-color: var(--surface-secondary) !important; color: var(--text-primary) !important; }
+.bg-beige             { background-color: var(--surface-secondary) !important; }
 .bg-ivory             { background-color: var(--background) !important; }
 
-.text-espresso        { color: var(--color-text-primary) !important; }
-.text-terracotta      { color: var(--color-text-primary) !important; }
-.text-gold            { color: var(--color-text-secondary) !important; }
-.text-beige           { color: var(--color-text-secondary) !important; }
-.text-ivory           { color: var(--color-text-primary) !important; }
-.text-muted-beige     { color: var(--color-text-secondary) !important; }
+.text-espresso        { color: var(--text-primary) !important; }
+.text-terracotta      { color: var(--text-primary) !important; }
+.text-gold            { color: var(--text-secondary) !important; }
+.text-beige           { color: var(--text-secondary) !important; }
+.text-ivory           { color: var(--text-primary) !important; }
+.text-muted-beige     { color: var(--text-muted) !important; }
 
-.text-price           { color: #F5A900 !important; }
-.text-match           { color: #00C98D !important; }
+.text-price           { color: #F5A900 !important; font-weight: 800 !important; }
+.text-match           { color: #00C98D !important; font-weight: 700 !important; }
 
-.border-terracotta    { border-color: var(--color-border-light) !important; }
-.border-gold          { border-color: var(--color-border-light) !important; }
-.border-beige         { border-color: var(--color-border-light) !important; }
-
-/* Custom Clean Scrollbars */
-::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-surface-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-border-light);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-secondary);
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-border-light) var(--color-surface-secondary);
-}
-
-::selection {
-  background: #5F5750;
-  color: #FFF9F2;
-}
+.border-terracotta    { border-color: var(--border-light) !important; }
+.border-gold          { border-color: var(--border-light) !important; }
+.border-beige         { border-color: var(--border-light) !important; }
 
 /* -------------------------------------------------------------
    IMAGE INTEGRITY: Never apply filters to images or canvases
@@ -180,102 +386,112 @@ svg,
 }
 
 /* -------------------------------------------------------------
-   UNIVERSAL LIGHT WARM NEUTRAL OVERRIDES FOR LEGACY CLASSES
-   Ensures legacy dark grey / slate utility classes map to high
-   contrast warm neutral tokens in light mode while preserving dark mode.
+   WARM NEUTRAL MAPPINGS IN LIGHT MODE
+   Ensures legacy neutral classes resolve to the curated warm neutral system.
 ------------------------------------------------------------- */
 :root:not(.dark),
 .light {
-  /* Primary background surface overrides */
+  /* Surfaces */
   .bg-white,
-  .bg-\[\#FFFFFF\],
-  .bg-slate-900\/95,
-  .bg-black\/90,
-  .bg-\[\#0a0a0a\],
-  .bg-\[\#121215\] {
-    background-color: #FFF9F2 !important;
+  .bg-\[\#FFFFFF\] {
+    background-color: #FFF9F2;
   }
 
-  /* Card background overrides */
   .bg-gray-50,
   .bg-slate-50,
   .bg-gray-100\/50,
-  .bg-\[\#F8F9FA\],
-  .bg-slate-900,
-  .bg-slate-800,
-  .bg-slate-900\/90,
-  .bg-slate-800\/90,
-  .bg-slate-900\/80,
-  .bg-slate-800\/80 {
-    background-color: #F3F1EE !important;
+  .bg-\[\#F8F9FA\] {
+    background-color: #F3F1EE;
   }
 
-  /* Secondary / Section / Input overrides */
   .bg-gray-100,
   .bg-slate-100,
   .bg-gray-200,
   .bg-slate-200,
-  .bg-\[\#F1F3F5\],
-  .bg-slate-800\/50,
-  .bg-slate-700\/50,
-  .bg-slate-700\/30 {
-    background-color: #E5E1DC !important;
+  .bg-\[\#F1F3F5\] {
+    background-color: #E5E1DC;
   }
 
-  /* Text color overrides */
+  /* Text Contrast Mappings */
   .text-slate-900,
   .text-slate-800,
-  .text-slate-700,
   .text-gray-900,
   .text-gray-800,
-  .text-gray-700,
-  .text-\[\#0F172A\],
-  .text-white {
-    color: #5F5750 !important;
+  .text-\[\#0F172A\] {
+    color: #2B1B12;
   }
 
+  .text-slate-700,
+  .text-gray-700,
   .text-slate-600,
+  .text-gray-600,
+  .text-\[\#64748B\] {
+    color: #5F5750;
+  }
+
   .text-slate-500,
   .text-slate-400,
-  .text-gray-600,
   .text-gray-500,
   .text-gray-400,
-  .text-\[\#64748B\],
-  .text-slate-300 {
-    color: #8A8178 !important;
+  .text-\[\#94A3B8\] {
+    color: #8A8178;
   }
 
-  /* Border overrides */
+  /* Borders */
   .border-slate-200,
   .border-slate-300,
   .border-gray-200,
   .border-gray-300,
   .border-\[\#E2E8F0\],
-  .border-slate-800,
-  .border-slate-700,
-  .border-white\/10,
-  .border-white\/20 {
-    border-color: #D5CFC7 !important;
+  .border-\[\#D5CFC7\] {
+    border-color: #E5E1DC;
   }
 }
 
-/* Ensure CTA button text colors stay high-contrast white */
-.bg-\[\#0F172A\],
-.bg-\[\#5F5750\],
-.bg-black,
-.bg-slate-900,
-button.bg-primary {
-  color: #FFF9F2 !important;
-}
+/* -------------------------------------------------------------
+   DARK MODE TEXT & SURFACE HARMONIZATION
+------------------------------------------------------------- */
+.dark {
+  .bg-white,
+  .bg-\[\#F8F9FA\] {
+    background-color: #1E1A17;
+  }
 
-.bg-amazon,
-[data-vendor="amazon"] {
-  background-color: #FF9900 !important;
-  color: #111111 !important;
-}
+  .bg-\[\#F1F3F5\],
+  .bg-slate-100,
+  .bg-gray-100 {
+    background-color: #2B2521;
+  }
 
-.bg-flipkart,
-[data-vendor="flipkart"] {
-  background-color: #2874F0 !important;
-  color: #FFFFFF !important;
+  .text-slate-900,
+  .text-slate-800,
+  .text-gray-900,
+  .text-gray-800,
+  .text-\[\#0F172A\] {
+    color: #FFFFFF;
+  }
+
+  .text-slate-700,
+  .text-gray-700,
+  .text-slate-600,
+  .text-gray-600,
+  .text-\[\#64748B\] {
+    color: #F5EFE7;
+  }
+
+  .text-slate-500,
+  .text-slate-400,
+  .text-gray-500,
+  .text-gray-400,
+  .text-\[\#94A3B8\] {
+    color: #D6CEC5;
+  }
+
+  .border-slate-200,
+  .border-slate-300,
+  .border-gray-200,
+  .border-gray-300,
+  .border-\[\#E2E8F0\] {
+    border-color: #3A322C;
+  }
 }

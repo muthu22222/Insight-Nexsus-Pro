@@ -43,12 +43,12 @@ const furnitureStyles = [
 ];
 
 const moods = [
-  { id: 'warm', label: 'Warm & Cozy', color: 'from-orange-900/60 to-amber-800/40', accent: 'bg-amber-500/20 text-amber-300' },
-  { id: 'bright', label: 'Bright & Fresh', color: 'from-yellow-900/50 to-emerald-900/40', accent: 'bg-emerald-500/20 text-emerald-300' },
-  { id: 'calm', label: 'Calm & Serene', color: 'from-blue-900/60 to-indigo-900/40', accent: 'bg-blue-500/20 text-blue-300' },
-  { id: 'elegant', label: 'Elegant & Luxe', color: 'from-purple-900/60 to-pink-900/40', accent: 'bg-purple-500/20 text-purple-300' },
-  { id: 'bold', label: 'Bold & Dramatic', color: 'from-red-900/60 to-orange-900/40', accent: 'bg-orange-500/20 text-orange-300' },
-  { id: 'natural', label: 'Natural & Organic', color: 'from-emerald-900/60 to-teal-900/40', accent: 'bg-teal-500/20 text-teal-300' },
+  { id: 'warm', label: 'Warm & Cozy', color: 'from-orange-900/60 to-amber-800/40', accent: 'bg-amber-500/20 text-amber-900 dark:text-amber-300 border border-amber-500/30' },
+  { id: 'bright', label: 'Bright & Fresh', color: 'from-yellow-900/50 to-emerald-900/40', accent: 'bg-emerald-500/20 text-emerald-900 dark:text-emerald-300 border border-emerald-500/30' },
+  { id: 'calm', label: 'Calm & Serene', color: 'from-blue-900/60 to-indigo-900/40', accent: 'bg-blue-500/20 text-blue-900 dark:text-blue-300 border border-blue-500/30' },
+  { id: 'elegant', label: 'Elegant & Luxe', color: 'from-purple-900/60 to-pink-900/40', accent: 'bg-purple-500/20 text-purple-900 dark:text-purple-300 border border-purple-500/30' },
+  { id: 'bold', label: 'Bold & Dramatic', color: 'from-red-900/60 to-orange-900/40', accent: 'bg-orange-500/20 text-orange-900 dark:text-orange-300 border border-orange-500/30' },
+  { id: 'natural', label: 'Natural & Organic', color: 'from-emerald-900/60 to-teal-900/40', accent: 'bg-teal-500/20 text-teal-900 dark:text-teal-300 border border-teal-500/30' },
 ];
 
 const colors = [
@@ -128,7 +128,7 @@ export default function PreferencesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)] transition-colors duration-200">
       <Toaster position="top-center" />
 
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -138,14 +138,14 @@ export default function PreferencesPage() {
         </div>
 
         <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 rounded-full mb-3">
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/30 px-3.5 py-1 rounded-full mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             Step 3 of 5
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] mb-1">
             Design & Furniture Preferences
           </h1>
-          <p className="text-xs sm:text-sm text-gray-400">
+          <p className="text-xs sm:text-sm text-[var(--text-secondary)]">
             Tailor your aesthetic, catalog furniture suite, and budget targets
           </p>
         </div>
@@ -160,14 +160,14 @@ export default function PreferencesPage() {
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
                       index <= 2
                         ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black shadow-lg shadow-amber-500/20'
-                        : 'bg-white/10 text-gray-500 border border-white/10'
+                        : 'bg-[var(--surface-secondary)] text-[var(--text-muted)] border border-[var(--border)]'
                     }`}
                   >
                     {index + 1}
                   </div>
                   <span
                     className={`text-[10px] mt-1 font-semibold ${
-                      index <= 2 ? 'text-amber-400' : 'text-gray-500'
+                      index <= 2 ? 'text-amber-600 dark:text-amber-400' : 'text-[var(--text-muted)]'
                     }`}
                   >
                     {step.label}
@@ -176,7 +176,7 @@ export default function PreferencesPage() {
                 {index < steps.length - 1 && (
                   <div
                     className={`w-10 sm:w-12 h-0.5 mx-1 mb-5 ${
-                      index < 2 ? 'bg-amber-500/80' : 'bg-white/10'
+                      index < 2 ? 'bg-amber-500' : 'bg-[var(--border)]'
                     }`}
                   />
                 )}
@@ -186,17 +186,17 @@ export default function PreferencesPage() {
         </div>
 
         {/* Preferences Container */}
-        <div className="bg-[#121215] rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
+        <div className="bg-[var(--surface)] rounded-2xl shadow-xl border border-[var(--border)] overflow-hidden">
           {/* Section Tabs */}
-          <div className="flex border-b border-white/10 overflow-x-auto bg-black/40">
+          <div className="flex border-b border-[var(--border)] overflow-x-auto bg-[var(--surface-secondary)]/50">
             {sections.map((section, index) => (
               <button
                 key={section}
                 onClick={() => setCurrentSection(index)}
                 className={`flex-1 min-w-[120px] py-3.5 px-4 text-xs font-bold text-center transition-colors border-b-2 cursor-pointer ${
                   currentSection === index
-                    ? 'border-amber-500 text-amber-400 bg-amber-500/10'
-                    : 'border-transparent text-gray-400 hover:text-white hover:bg-white/5'
+                    ? 'border-amber-500 text-amber-700 dark:text-amber-400 bg-amber-500/10'
+                    : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]'
                 }`}
               >
                 {section}
@@ -216,8 +216,8 @@ export default function PreferencesPage() {
                   className="space-y-4"
                 >
                   <div className="mb-2">
-                    <h3 className="text-sm font-bold text-white">Select Interior Design Aesthetic</h3>
-                    <p className="text-xs text-gray-400">Controls overall spatial theme and finishes</p>
+                    <h3 className="text-sm font-bold text-[var(--text-primary)]">Select Interior Design Aesthetic</h3>
+                    <p className="text-xs text-[var(--text-secondary)]">Controls overall spatial theme and finishes</p>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                     {styles.map((style) => (
@@ -227,7 +227,7 @@ export default function PreferencesPage() {
                         className={`relative p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
                           selectedStyle === style.id
                             ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                            : 'border-white/10 hover:border-amber-500/30 bg-black/50'
+                            : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
                         }`}
                       >
                         {selectedStyle === style.id && (
@@ -235,9 +235,9 @@ export default function PreferencesPage() {
                             <Check className="w-3 h-3 text-black stroke-[3]" />
                           </div>
                         )}
-                        <div className="text-2xl mb-2 text-amber-400">{style.icon}</div>
-                        <h3 className="text-sm font-bold text-white">{style.label}</h3>
-                        <p className="text-[11px] text-gray-400 mt-0.5">{style.desc}</p>
+                        <div className="text-2xl mb-2 text-amber-500">{style.icon}</div>
+                        <h3 className="text-sm font-bold text-[var(--text-primary)]">{style.label}</h3>
+                        <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">{style.desc}</p>
                       </button>
                     ))}
                   </div>
@@ -255,10 +255,10 @@ export default function PreferencesPage() {
                 >
                   <div className="mb-2">
                     <div className="flex items-center gap-2">
-                      <Armchair className="w-4 h-4 text-amber-400" />
-                      <h3 className="text-sm font-bold text-white">Select Furniture & Product Aesthetic</h3>
+                      <Armchair className="w-4 h-4 text-amber-500" />
+                      <h3 className="text-sm font-bold text-[var(--text-primary)]">Select Furniture & Product Aesthetic</h3>
                     </div>
-                    <p className="text-xs text-gray-400">Directly dictates materials, silhouettes, and catalog product matching</p>
+                    <p className="text-xs text-[var(--text-secondary)]">Directly dictates materials, silhouettes, and catalog product matching</p>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 max-h-[380px] overflow-y-auto pr-1">
                     {furnitureStyles.map((fStyle) => (
@@ -268,7 +268,7 @@ export default function PreferencesPage() {
                         className={`relative p-3.5 rounded-xl border-2 text-left transition-all flex flex-col justify-between cursor-pointer ${
                           selectedFurnitureStyle === fStyle.id
                             ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                            : 'border-white/10 hover:border-amber-500/30 bg-black/50'
+                            : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
                         }`}
                       >
                         {selectedFurnitureStyle === fStyle.id && (
@@ -277,8 +277,8 @@ export default function PreferencesPage() {
                           </div>
                         )}
                         <div>
-                          <h4 className="text-xs font-bold text-white">{fStyle.label}</h4>
-                          <p className="text-[10px] text-gray-400 mt-1 leading-snug">{fStyle.desc}</p>
+                          <h4 className="text-xs font-bold text-[var(--text-primary)]">{fStyle.label}</h4>
+                          <p className="text-[10px] text-[var(--text-secondary)] mt-1 leading-snug">{fStyle.desc}</p>
                         </div>
                       </button>
                     ))}
@@ -296,8 +296,8 @@ export default function PreferencesPage() {
                   className="space-y-4"
                 >
                   <div className="mb-2">
-                    <h3 className="text-sm font-bold text-white">Select Lighting & Atmosphere Mood</h3>
-                    <p className="text-xs text-gray-400">Controls ambient illumination and emotional resonance</p>
+                    <h3 className="text-sm font-bold text-[var(--text-primary)]">Select Lighting & Atmosphere Mood</h3>
+                    <p className="text-xs text-[var(--text-secondary)]">Controls ambient illumination and emotional resonance</p>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {moods.map((mood) => (
@@ -307,7 +307,7 @@ export default function PreferencesPage() {
                         className={`relative p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
                           selectedMood === mood.id
                             ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                            : 'border-white/10 hover:border-amber-500/30 bg-black/50'
+                            : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
                         }`}
                       >
                         {selectedMood === mood.id && (
@@ -315,7 +315,7 @@ export default function PreferencesPage() {
                             <Check className="w-3 h-3 text-black stroke-[3]" />
                           </div>
                         )}
-                        <div className={`w-full h-14 rounded-lg bg-gradient-to-br ${mood.color} mb-3 border border-white/10`} />
+                        <div className={`w-full h-14 rounded-lg bg-gradient-to-br ${mood.color} mb-3 border border-[var(--border)]`} />
                         <span className={`inline-block px-2.5 py-0.5 rounded text-[11px] font-bold ${mood.accent}`}>
                           {mood.label}
                         </span>
@@ -335,8 +335,8 @@ export default function PreferencesPage() {
                   className="space-y-4"
                 >
                   <div className="mb-2">
-                    <h3 className="text-sm font-bold text-white">Select Color Harmony</h3>
-                    <p className="text-xs text-gray-400">Coordinates fabrics, rug tones, wall accents, and textures</p>
+                    <h3 className="text-sm font-bold text-[var(--text-primary)]">Select Color Harmony</h3>
+                    <p className="text-xs text-[var(--text-secondary)]">Coordinates fabrics, rug tones, wall accents, and textures</p>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     {colors.map((color) => (
@@ -346,7 +346,7 @@ export default function PreferencesPage() {
                         className={`relative p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
                           selectedColor === color.id
                             ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                            : 'border-white/10 hover:border-amber-500/30 bg-black/50'
+                            : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
                         }`}
                       >
                         {selectedColor === color.id && (
@@ -357,7 +357,7 @@ export default function PreferencesPage() {
                         <div
                           className={`w-full h-16 rounded-lg bg-gradient-to-br ${color.gradient} ring-1 ${color.ring} mb-2 shadow-sm`}
                         />
-                        <h3 className="text-xs font-bold text-white">{color.label}</h3>
+                        <h3 className="text-xs font-bold text-[var(--text-primary)]">{color.label}</h3>
                       </button>
                     ))}
                   </div>
@@ -374,8 +374,8 @@ export default function PreferencesPage() {
                   className="space-y-3"
                 >
                   <div className="mb-2">
-                    <h3 className="text-sm font-bold text-white">Set Redesign Budget Target</h3>
-                    <p className="text-xs text-gray-400">The system calculates live item prices against this target</p>
+                    <h3 className="text-sm font-bold text-[var(--text-primary)]">Set Redesign Budget Target</h3>
+                    <p className="text-xs text-[var(--text-secondary)]">The system calculates live item prices against this target</p>
                   </div>
                   {budgets.map((budget) => (
                     <button
@@ -387,18 +387,18 @@ export default function PreferencesPage() {
                       className={`w-full p-4 rounded-xl border-2 text-left transition-all flex items-center justify-between cursor-pointer ${
                         !isCustomBudget && selectedBudget === budget.id
                           ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                          : 'border-white/10 hover:border-amber-500/30 bg-black/50'
+                          : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
                       }`}
                     >
                       <div>
-                        <h3 className="text-sm font-bold text-white">{budget.label}</h3>
-                        <p className="text-xs text-gray-400">{budget.desc}</p>
+                        <h3 className="text-sm font-bold text-[var(--text-primary)]">{budget.label}</h3>
+                        <p className="text-xs text-[var(--text-secondary)]">{budget.desc}</p>
                       </div>
                       <div
                         className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                           !isCustomBudget && selectedBudget === budget.id
                             ? 'border-amber-400'
-                            : 'border-white/30'
+                            : 'border-[var(--border)]'
                         }`}
                       >
                         {!isCustomBudget && selectedBudget === budget.id && (
@@ -413,14 +413,14 @@ export default function PreferencesPage() {
                     className={`w-full p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
                       isCustomBudget
                         ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                        : 'border-white/10 hover:border-amber-500/30 bg-black/50'
+                        : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-bold text-white">Custom Budget</h3>
+                      <h3 className="text-sm font-bold text-[var(--text-primary)]">Custom Budget</h3>
                       <div
                         className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                          isCustomBudget ? 'border-amber-400' : 'border-white/30'
+                          isCustomBudget ? 'border-amber-400' : 'border-[var(--border)]'
                         }`}
                       >
                         {isCustomBudget && (
@@ -431,7 +431,7 @@ export default function PreferencesPage() {
                     {isCustomBudget && (
                       <div className="mt-3">
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400 font-bold">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-[var(--text-muted)] font-bold">
                             ₹
                           </span>
                           <input
@@ -439,7 +439,7 @@ export default function PreferencesPage() {
                             value={customBudget}
                             onChange={(e) => setCustomBudget(e.target.value)}
                             placeholder="Enter custom budget in ₹"
-                            className="w-full pl-8 pr-4 py-2 border border-white/15 rounded-lg text-sm text-white bg-black placeholder-gray-500 outline-none focus:border-amber-400"
+                            className="w-full pl-8 pr-4 py-2 border border-[var(--border)] rounded-lg text-sm text-[var(--text-primary)] bg-[var(--surface)] placeholder-[var(--text-muted)] outline-none focus:border-amber-500"
                             autoFocus
                           />
                         </div>
@@ -452,11 +452,11 @@ export default function PreferencesPage() {
           </div>
 
           {/* Action Footer */}
-          <div className="p-6 border-t border-white/10 flex gap-3 bg-black/40">
+          <div className="p-6 border-t border-[var(--border)] flex gap-3 bg-[var(--surface-secondary)]/50">
             {currentSection > 0 && (
               <button
                 onClick={handleBack}
-                className="flex items-center gap-2 border border-white/15 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-white/10 transition-colors"
+                className="flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back
@@ -465,7 +465,7 @@ export default function PreferencesPage() {
             {currentSection < sections.length - 1 ? (
               <button
                 onClick={handleNext}
-                className="flex-1 bg-white/10 hover:bg-white/15 text-white py-3 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-[var(--surface-secondary)] hover:bg-[var(--border)] text-[var(--text-primary)] py-3 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 Next
                 <ArrowRight className="w-4 h-4" />
@@ -473,7 +473,7 @@ export default function PreferencesPage() {
             ) : (
               <button
                 onClick={handleGenerate}
-                className="flex-1 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black py-3 rounded-xl font-extrabold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 hover:scale-[1.01]"
+                className="flex-1 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black py-3 rounded-xl font-extrabold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 hover:scale-[1.01] cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 stroke-[2.5]" />
                 GENERATE MY DESIGN →

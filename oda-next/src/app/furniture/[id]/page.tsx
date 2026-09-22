@@ -151,35 +151,35 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white">
-        <Loader2 className="h-8 w-8 animate-spin text-[#0F172A]" />
+      <div className="flex h-screen items-center justify-center bg-[var(--background)]">
+        <Loader2 className="h-8 w-8 animate-spin text-[var(--text-primary)]" />
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white text-[#64748B]">
+      <div className="flex h-screen items-center justify-center bg-[var(--background)] text-[var(--text-secondary)]">
         <p>Product not found</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white text-[#0F172A]">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[#E2E8F0] bg-white/95 backdrop-blur-md px-4 sm:px-6 py-4">
+        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md px-4 sm:px-6 py-4">
           <button
             onClick={() => setMobileOpen(true)}
-            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[#F1F3F5] transition-colors cursor-pointer"
+            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
           >
-            <Menu className="h-5 w-5 text-[#0F172A]" />
+            <Menu className="h-5 w-5 text-[var(--text-primary)]" />
           </button>
           <BackButton fallbackHref="/furniture" label="Back to Catalog" variant="subtle" />
           <div className="flex-1">
-            <h1 className="text-lg font-bold text-[#0F172A] tracking-tight truncate">
+            <h1 className="text-lg font-bold text-[var(--text-primary)] tracking-tight truncate">
               Product Details
             </h1>
           </div>
@@ -191,9 +191,9 @@ export default function ProductDetailPage() {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-[#F8F9FA] rounded-2xl border border-[#E2E8F0] overflow-hidden shadow-xs"
+              className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] overflow-hidden shadow-xs"
             >
-              <div className="aspect-square bg-slate-100 flex items-center justify-center">
+              <div className="aspect-square bg-[var(--surface-secondary)] flex items-center justify-center">
                 {product.image ? (
                   <img
                     src={product.image}
@@ -202,7 +202,7 @@ export default function ProductDetailPage() {
                   />
                 ) : (
                   <div className="h-full w-full flex items-center justify-center">
-                    <Sofa className="h-16 w-16 text-[#94A3B8]" />
+                    <Sofa className="h-16 w-16 text-[var(--text-muted)]" />
                   </div>
                 )}
               </div>
@@ -214,37 +214,37 @@ export default function ProductDetailPage() {
               className="space-y-6"
             >
               <div>
-                <span className="text-xs font-bold text-[#0F172A] uppercase tracking-widest bg-[#F1F3F5] border border-[#E2E8F0] px-2.5 py-0.5 rounded-md">
+                <span className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-widest bg-[var(--surface-secondary)] border border-[var(--border)] px-2.5 py-0.5 rounded-md">
                   {product.brand}
                 </span>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] mt-2">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] mt-2">
                   {product.productName}
                 </h1>
                 <div className="flex items-center gap-2 mt-3">
                   <div className="flex items-center gap-0.5">
                     {renderStars(product.rating)}
                   </div>
-                  <span className="text-xs text-[#64748B]">
+                  <span className="text-xs text-[var(--text-secondary)]">
                     ({product.rating} rating)
                   </span>
                 </div>
               </div>
 
               <div>
-                <p className="text-3xl font-black text-[#0F172A]">
+                <p className="text-3xl font-black text-[#F5A900]">
                   {formatCurrency(product.price)}
                 </p>
-                <p className="text-xs text-[#64748B] mt-1">
-                  Sold by <span className="font-semibold text-[#0F172A]">{product.storeName}</span>
+                <p className="text-xs text-[var(--text-secondary)] mt-1">
+                  Sold by <span className="font-semibold text-[var(--text-primary)]">{product.storeName}</span>
                 </p>
               </div>
 
               {product.description && (
-                <div className="bg-[#F8F9FA] p-4 rounded-xl border border-[#E2E8F0]">
-                  <h3 className="text-xs font-bold text-[#64748B] uppercase tracking-wider mb-2">
+                <div className="bg-[var(--surface)] p-4 rounded-xl border border-[var(--border)]">
+                  <h3 className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider mb-2">
                     Description & Specifications
                   </h3>
-                  <p className="text-sm text-[#0F172A] leading-relaxed">
+                  <p className="text-sm text-[var(--text-primary)] leading-relaxed">
                     {product.description}
                   </p>
                 </div>
@@ -252,13 +252,13 @@ export default function ProductDetailPage() {
 
               {/* Purchase Options */}
               <div className="space-y-3 pt-2">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#64748B]">Direct Retail Purchase Links</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Direct Retail Purchase Links</p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href={getAmazonProductUrl(product.productName, product.amazonUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-[#0F172A] hover:bg-[#1E293B] text-white font-extrabold text-sm rounded-xl border border-[#0F172A] shadow-md shadow-[#0F172A]/15 hover:scale-[1.02] transition-all"
+                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-[#FF9900] hover:bg-[#F08E00] text-[#111111] font-extrabold text-sm rounded-xl border border-[#FF9900] shadow-xs hover:scale-[1.02] transition-all"
                   >
                     <span>Buy on Amazon</span>
                     <span>→</span>
@@ -268,7 +268,7 @@ export default function ProductDetailPage() {
                     href={getFlipkartProductUrl(product.productName, product.flipkartUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-white hover:bg-[#F1F3F5] text-[#0F172A] border border-[#E2E8F0] font-bold text-sm rounded-xl shadow-xs hover:scale-[1.02] transition-all"
+                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-[#2874F0] hover:bg-[#1A65DC] text-white border border-[#2874F0] font-bold text-sm rounded-xl shadow-xs hover:scale-[1.02] transition-all"
                   >
                     <span>Buy on Flipkart</span>
                     <span>→</span>
@@ -279,7 +279,7 @@ export default function ProductDetailPage() {
                       href={product.productUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="sm:w-auto px-5 flex items-center justify-center gap-2 py-3.5 bg-white hover:bg-[#F1F3F5] border border-[#E2E8F0] text-[#0F172A] font-bold text-sm rounded-xl transition-all"
+                      className="sm:w-auto px-5 flex items-center justify-center gap-2 py-3.5 bg-[var(--surface-secondary)] hover:bg-[var(--border)] border border-[var(--border)] text-[var(--text-primary)] font-bold text-sm rounded-xl transition-all"
                     >
                       <span>Store</span>
                       <ExternalLink className="h-4 w-4" />
@@ -292,9 +292,9 @@ export default function ProductDetailPage() {
                 <div className="relative flex-1">
                   <button
                     onClick={() => setShowProjectDropdown(!showProjectDropdown)}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[#45161D] border border-[#C7B7A3]/25 text-[#E8D8C4] font-bold text-sm rounded-xl hover:bg-[#6D2932]/20 transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] font-bold text-sm rounded-xl hover:border-[var(--text-primary)] transition-colors cursor-pointer"
                   >
-                    <Bookmark className="h-4 w-4 text-[#C7B7A3]" />
+                    <Bookmark className="h-4 w-4 text-[var(--text-secondary)]" />
                     Save to Project
                     <ChevronDown className="h-4 w-4" />
                   </button>
@@ -303,11 +303,11 @@ export default function ProductDetailPage() {
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="absolute top-full mt-2 left-0 right-0 sm:left-auto sm:right-auto sm:w-72 bg-[#63242C] border border-[#C7B7A3]/20 rounded-xl shadow-2xl z-10 overflow-hidden"
+                      className="absolute top-full mt-2 left-0 right-0 sm:left-auto sm:right-auto sm:w-72 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-2xl z-10 overflow-hidden"
                     >
                       <div className="p-2 max-h-64 overflow-y-auto">
                         {projects.length === 0 ? (
-                          <p className="text-xs text-[#C7B7A3] p-3 text-center">
+                          <p className="text-xs text-[var(--text-secondary)] p-3 text-center">
                             No projects yet. Create one in Designer.
                           </p>
                         ) : (
@@ -316,20 +316,20 @@ export default function ProductDetailPage() {
                               key={p._id}
                               onClick={() => handleSaveToProject(p._id)}
                               disabled={savingToProject === p._id}
-                              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#6D2932]/30 transition-colors text-left"
+                              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[var(--surface-secondary)] transition-colors text-left"
                             >
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-semibold text-[#E8D8C4] truncate">
+                                <p className="text-sm font-semibold text-[var(--text-primary)] truncate">
                                   {p.name}
                                 </p>
-                                <p className="text-xs text-[#C7B7A3]">
+                                <p className="text-xs text-[var(--text-secondary)]">
                                   {p.designs?.length || 0} designs
                                 </p>
                               </div>
                               {saved === p._id ? (
-                                <Check className="h-4 w-4 text-emerald-400" />
+                                <Check className="h-4 w-4 text-emerald-500" />
                               ) : savingToProject === p._id ? (
-                                <Loader2 className="h-4 w-4 animate-spin text-[#C7B7A3]" />
+                                <Loader2 className="h-4 w-4 animate-spin text-[var(--text-secondary)]" />
                               ) : null}
                             </button>
                           ))
@@ -340,32 +340,32 @@ export default function ProductDetailPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[#C7B7A3]/15">
-                <div className="bg-[#45161D] p-3 rounded-xl border border-[#C7B7A3]/15">
-                  <p className="text-xs text-[#C7B7A3]">Category</p>
-                  <p className="text-sm font-semibold text-[#E8D8C4] mt-0.5">
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--border)]">
+                <div className="bg-[var(--surface)] p-3 rounded-xl border border-[var(--border)]">
+                  <p className="text-xs text-[var(--text-secondary)]">Category</p>
+                  <p className="text-sm font-semibold text-[var(--text-primary)] mt-0.5">
                     {product.category}
                   </p>
                 </div>
-                <div className="bg-[#45161D] p-3 rounded-xl border border-[#C7B7A3]/15">
-                  <p className="text-xs text-[#C7B7A3]">Style</p>
-                  <p className="text-sm font-semibold text-[#E8D8C4] mt-0.5">
+                <div className="bg-[var(--surface)] p-3 rounded-xl border border-[var(--border)]">
+                  <p className="text-xs text-[var(--text-secondary)]">Style</p>
+                  <p className="text-sm font-semibold text-[var(--text-primary)] mt-0.5">
                     {product.style}
                   </p>
                 </div>
-                <div className="bg-[#45161D] p-3 rounded-xl border border-[#C7B7A3]/15">
-                  <p className="text-xs text-[#C7B7A3]">Availability</p>
+                <div className="bg-[var(--surface)] p-3 rounded-xl border border-[var(--border)]">
+                  <p className="text-xs text-[var(--text-secondary)]">Availability</p>
                   <p
                     className={`text-sm font-bold mt-0.5 ${
-                      product.inStock ? "text-emerald-400" : "text-red-400"
+                      product.inStock ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"
                     }`}
                   >
                     {product.inStock ? "In Stock" : "Out of Stock"}
                   </p>
                 </div>
-                <div className="bg-[#45161D] p-3 rounded-xl border border-[#C7B7A3]/15">
-                  <p className="text-xs text-[#C7B7A3]">Store</p>
-                  <p className="text-sm font-semibold text-[#E8D8C4] mt-0.5">
+                <div className="bg-[var(--surface)] p-3 rounded-xl border border-[var(--border)]">
+                  <p className="text-xs text-[var(--text-secondary)]">Store</p>
+                  <p className="text-sm font-semibold text-[var(--text-primary)] mt-0.5">
                     {product.storeName}
                   </p>
                 </div>
@@ -375,8 +375,8 @@ export default function ProductDetailPage() {
 
           {relatedProducts.length > 0 && (
             <div className="mt-12">
-              <h2 className="text-lg font-bold text-[#E8D8C4] mb-5 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#C7B7A3]" />
+              <h2 className="text-lg font-bold text-[var(--text-primary)] mb-5 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[var(--text-secondary)]" />
                 Related Products
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -384,9 +384,9 @@ export default function ProductDetailPage() {
                   <Link
                     key={rp._id}
                     href={`/furniture/${rp._id}`}
-                    className="bg-[#63242C] rounded-2xl border border-[#C7B7A3]/20 overflow-hidden hover:border-[#C7B7A3]/50 hover:shadow-xl transition-all group"
+                    className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] overflow-hidden hover:border-[var(--text-secondary)] hover:shadow-xl transition-all group"
                   >
-                    <div className="aspect-square bg-[#45161D] overflow-hidden">
+                    <div className="aspect-square bg-[var(--surface-secondary)] overflow-hidden">
                       {rp.image ? (
                         <img
                           src={rp.image}
@@ -395,16 +395,16 @@ export default function ProductDetailPage() {
                         />
                       ) : (
                         <div className="h-full w-full flex items-center justify-center">
-                          <Sofa className="h-8 w-8 text-[#C7B7A3]/40" />
+                          <Sofa className="h-8 w-8 text-[var(--text-muted)]" />
                         </div>
                       )}
                     </div>
                     <div className="p-3.5">
-                      <p className="text-[10px] font-bold text-[#C7B7A3] uppercase tracking-wider">{rp.brand}</p>
-                      <p className="text-sm font-semibold text-[#E8D8C4] truncate mt-0.5">
+                      <p className="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">{rp.brand}</p>
+                      <p className="text-sm font-semibold text-[var(--text-primary)] truncate mt-0.5">
                         {rp.productName}
                       </p>
-                      <p className="text-sm font-extrabold text-[#E8D8C4] mt-1">
+                      <p className="text-sm font-extrabold text-[#F5A900] mt-1">
                         {formatCurrency(rp.price)}
                       </p>
                     </div>

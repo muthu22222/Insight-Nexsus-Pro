@@ -314,7 +314,7 @@ export default function FurnishedRoomView({
                             : hotspot.x < 30
                             ? 'left-0'
                             : 'left-1/2 -translate-x-1/2'
-                        } w-60 bg-[#F3F1EE] backdrop-blur-xl border border-[#D5CFC7] text-[#5F5750] rounded-xl p-3 shadow-2xl`}
+                        } w-60 bg-[var(--surface)] backdrop-blur-xl border border-[var(--border)] text-[var(--text-primary)] rounded-xl p-3 shadow-2xl`}
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div className="flex items-start justify-between gap-2 mb-1">
@@ -328,17 +328,17 @@ export default function FurnishedRoomView({
                           )}
                         </div>
 
-                        <h4 className="text-xs font-bold text-[#5F5750] leading-tight mb-1">
+                        <h4 className="text-xs font-bold text-[#2B1B12] dark:text-white leading-tight mb-1">
                           {hotspot.label}
                         </h4>
 
-                        <div className="flex items-center justify-between text-[11px] text-[#8A8178] mt-2 pt-2 border-t border-[#D5CFC7]">
+                        <div className="flex items-center justify-between text-[11px] text-[var(--text-secondary)] mt-2 pt-2 border-t border-[var(--border)]">
                           <div>
                             <span className="text-xs font-black text-[#F5A900]">
                               {hotspot.price}
                             </span>
                             {hotspot.store && (
-                              <p className="text-[9px] text-[#8A8178] mt-0.5">
+                              <p className="text-[9px] text-[var(--text-secondary)] mt-0.5 font-medium">
                                 Store: {hotspot.store}
                               </p>
                             )}

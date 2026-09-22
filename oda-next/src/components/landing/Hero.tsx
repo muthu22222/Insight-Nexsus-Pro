@@ -100,9 +100,9 @@ const slideVariants: Variants = {
     opacity: 1,
     scale: 1,
     transition: {
-      x: { type: "spring", stiffness: 300, damping: 30 },
+      x: { type: "spring", stiffness: 280, damping: 30 },
       opacity: { duration: 0.35 },
-      scale: { duration: 0.35 },
+      scale: { duration: 0.4 },
     },
   },
   exit: (direction: number) => ({
@@ -111,7 +111,7 @@ const slideVariants: Variants = {
     opacity: 0,
     scale: 0.95,
     transition: {
-      x: { type: "spring", stiffness: 300, damping: 30 },
+      x: { type: "spring", stiffness: 280, damping: 30 },
       opacity: { duration: 0.3 },
     },
   }),
@@ -120,7 +120,7 @@ const slideVariants: Variants = {
 export default function Hero() {
   const { user } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [direction, setDirection] = useState(1);
+  const [direction, setDirection] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
   const nextSlide = () => {
@@ -138,6 +138,16 @@ export default function Hero() {
     setCurrentSlide(index);
   };
 
+  // Keyboard navigation for carousel
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") prevSlide();
+      if (e.key === "ArrowRight") nextSlide();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentSlide]);
+
   // Automatic sliding timer (pauses on mouse hover)
   useEffect(() => {
     if (isPaused) return;
@@ -152,13 +162,13 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center overflow-hidden py-16 lg:py-24"
+      className="relative min-h-screen flex items-center overflow-hidden py-16 lg:py-24 bg-[var(--background)]"
     >
-      {/* 1. Pure White Base Background */}
-      <div className="absolute inset-0 bg-white" />
+      {/* 1. Base Background */}
+      <div className="absolute inset-0 bg-[var(--background)]" />
 
       {/* 2. Blueprint Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a08_1px,transparent_1px),linear-gradient(to_bottom,#0f172a08_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#2B1B120a_1px,transparent_1px),linear-gradient(to_bottom,#2B1B120a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none" />
 
       {/* 3. Subtle Ambient Light Orbs */}
       <motion.div
@@ -173,7 +183,7 @@ export default function Hero() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full bg-gradient-to-br from-slate-200/40 via-slate-100/20 to-transparent blur-[110px] pointer-events-none"
+        className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full bg-gradient-to-br from-amber-200/30 via-stone-200/20 to-transparent blur-[110px] pointer-events-none"
       />
       <motion.div
         animate={{
@@ -187,7 +197,7 @@ export default function Hero() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-slate-100/30 via-slate-200/30 to-transparent blur-[120px] pointer-events-none"
+        className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-stone-200/30 via-amber-100/30 to-transparent blur-[120px] pointer-events-none"
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-12">
@@ -201,8 +211,8 @@ export default function Hero() {
           >
             {/* Pill Badge */}
             <motion.div variants={itemVariants} className="mb-6">
-              <span className="inline-flex items-center gap-2 text-[#0F172A] text-xs sm:text-sm font-semibold bg-[#F1F3F5] border border-[#E2E8F0] rounded-full px-4 py-1.5 shadow-2xs backdrop-blur-md">
-                <Sparkles size={14} className="text-[#64748B] animate-spin" style={{ animationDuration: "6s" }} />
+              <span className="inline-flex items-center gap-2 text-[#2B1B12] dark:text-[#FFFFFF] text-xs sm:text-sm font-bold bg-[var(--surface-secondary)] border border-[var(--border)] rounded-full px-4 py-1.5 shadow-2xs backdrop-blur-md">
+                <Sparkles size={14} className="text-[#8A8178] dark:text-[#D6CEC5] animate-spin" style={{ animationDuration: "6s" }} />
                 AI-Powered Interior Design & Instant Room Staging
               </span>
             </motion.div>
@@ -212,9 +222,9 @@ export default function Hero() {
               variants={itemVariants}
               className="text-4xl sm:text-6xl md:text-7xl lg:text-7xl font-black leading-[0.93] tracking-tight mb-6"
             >
-              <span className="block text-[#0F172A]">DESIGN</span>
-              <span className="block text-[#0F172A]">YOUR</span>
-              <span className="block bg-gradient-to-r from-[#0F172A] via-[#334155] to-[#0F172A] bg-clip-text text-transparent drop-shadow-xs">
+              <span className="block text-[#2B1B12] dark:text-white">DESIGN</span>
+              <span className="block text-[#2B1B12] dark:text-white">YOUR</span>
+              <span className="block bg-gradient-to-r from-[#2B1B12] via-[#5F5750] to-[#2B1B12] dark:from-white dark:via-[#F5EFE7] dark:to-white bg-clip-text text-transparent drop-shadow-xs">
                 SPACE.
               </span>
             </motion.h1>
@@ -222,7 +232,7 @@ export default function Hero() {
             {/* Animated Room Type Subtitle */}
             <motion.div
               variants={itemVariants}
-              className="flex items-center gap-2 text-base sm:text-lg md:text-xl font-semibold mb-4 text-[#64748B]"
+              className="flex items-center gap-2 text-base sm:text-lg md:text-xl font-semibold mb-4 text-[#5F5750] dark:text-[#F5EFE7]"
             >
               <span>Explore:</span>
               <div className="inline-block relative h-7 overflow-hidden min-w-[200px]">
@@ -233,7 +243,7 @@ export default function Hero() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -20, opacity: 0 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="absolute left-0 text-[#0F172A] font-bold underline decoration-[#0F172A] underline-offset-4"
+                    className="absolute left-0 text-[#2B1B12] dark:text-white font-bold underline decoration-[#2B1B12] dark:decoration-white underline-offset-4"
                   >
                     {activeRoom.title}
                   </motion.span>
@@ -244,7 +254,7 @@ export default function Hero() {
             {/* Description */}
             <motion.p
               variants={itemVariants}
-              className="text-[#64748B] text-sm sm:text-base max-w-lg mb-8 leading-relaxed font-normal"
+              className="text-[#5F5750] dark:text-[#D6CEC5] text-sm sm:text-base max-w-lg mb-8 leading-relaxed font-normal"
             >
               Upload a photo of your empty or existing room, choose your aesthetic, and let AI generate photorealistic furnished interiors with verified catalog furniture.
             </motion.p>
@@ -253,35 +263,35 @@ export default function Hero() {
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-3.5 mb-8">
               <Link
                 href="/designer"
-                className="group relative inline-flex items-center justify-center gap-2 bg-[#0F172A] hover:bg-[#1E293B] text-white font-extrabold px-8 py-3.5 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-[#0F172A]/15 hover:scale-[1.02] active:scale-98 overflow-hidden border border-[#0F172A]"
+                className="group relative inline-flex items-center justify-center gap-2 bg-[#2B1B12] hover:bg-[#433328] dark:bg-white dark:hover:bg-[#F5EFE7] text-white dark:text-[#141210] font-extrabold px-8 py-3.5 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-[#2B1B12]/20 hover:scale-[1.02] active:scale-98 overflow-hidden border border-[#2B1B12] dark:border-white"
               >
                 {/* Button shine sweep animation */}
                 <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
-                <span>START DESIGNING</span>
-                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1 duration-200 text-white" />
+                <span className="text-white dark:text-[#141210]">START DESIGNING</span>
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1 duration-200 text-white dark:text-[#141210]" />
               </Link>
 
               <Link
                 href={user ? "/dashboard/projects" : "/furniture"}
-                className="inline-flex items-center justify-center gap-2 border border-[#E2E8F0] hover:border-[#CBD5E1] text-[#0F172A] hover:text-[#0F172A] font-semibold px-7 py-3.5 rounded-xl text-sm transition-all duration-200 hover:bg-[#F8F9FA] backdrop-blur-sm bg-white"
+                className="inline-flex items-center justify-center gap-2 border border-[var(--border)] hover:border-[var(--text-secondary)] text-[#2B1B12] dark:text-white font-bold px-7 py-3.5 rounded-xl text-sm transition-all duration-200 hover:bg-[var(--surface-hover)] backdrop-blur-sm bg-[var(--surface)]"
               >
                 <span>EXPLORE STUDIO</span>
-                <ArrowRight size={16} />
+                <ArrowRight size={16} className="text-[#2B1B12] dark:text-white" />
               </Link>
             </motion.div>
 
             {/* Trust Badges */}
-            <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4 text-xs text-[#64748B] font-medium">
-              <span className="flex items-center gap-1.5 bg-[#F8F9FA] text-[#0F172A] px-2.5 py-1 rounded-md border border-[#E2E8F0]">
-                <CheckCircle className="w-3.5 h-3.5 text-[#0F172A]" />
+            <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4 text-xs text-[#5F5750] dark:text-[#D6CEC5] font-semibold">
+              <span className="flex items-center gap-1.5 bg-[var(--surface)] text-[#2B1B12] dark:text-white px-2.5 py-1 rounded-md border border-[var(--border)]">
+                <CheckCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 No credit card required
               </span>
-              <span className="flex items-center gap-1.5 bg-[#F8F9FA] text-[#0F172A] px-2.5 py-1 rounded-md border border-[#E2E8F0]">
-                <CheckCircle className="w-3.5 h-3.5 text-[#0F172A]" />
+              <span className="flex items-center gap-1.5 bg-[var(--surface)] text-[#2B1B12] dark:text-white px-2.5 py-1 rounded-md border border-[var(--border)]">
+                <CheckCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 Real catalog furniture
               </span>
-              <span className="flex items-center gap-1.5 bg-[#F8F9FA] text-[#0F172A] px-2.5 py-1 rounded-md border border-[#E2E8F0]">
-                <CheckCircle className="w-3.5 h-3.5 text-[#0F172A]" />
+              <span className="flex items-center gap-1.5 bg-[var(--surface)] text-[#2B1B12] dark:text-white px-2.5 py-1 rounded-md border border-[var(--border)]">
+                <CheckCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 Instant AI render
               </span>
             </motion.div>
@@ -298,25 +308,25 @@ export default function Hero() {
             <div
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
-              className="relative rounded-2xl overflow-hidden border border-[#E2E8F0] bg-[#F8F9FA] shadow-2xl backdrop-blur-xl group select-none"
+              className="relative rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--surface)] shadow-2xl backdrop-blur-xl group select-none"
             >
               {/* Top Header Bar */}
-              <div className="p-3.5 border-b border-[#E2E8F0] flex items-center justify-between bg-white">
+              <div className="p-3.5 border-b border-[var(--border)] flex items-center justify-between bg-[var(--surface)]">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-xs font-bold text-[#0F172A]">Insight Nexsus Studio</span>
-                  <span className="text-[10px] bg-[#F1F3F5] text-[#0F172A] font-semibold px-2 py-0.5 rounded-full border border-[#E2E8F0]">
+                  <span className="text-xs font-bold text-[#2B1B12] dark:text-white">Insight Nexsus Studio</span>
+                  <span className="text-[10px] bg-[var(--surface-secondary)] text-[#2B1B12] dark:text-white font-bold px-2 py-0.5 rounded-full border border-[var(--border)]">
                     {activeRoom.style}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-[#0F172A] font-bold">{activeRoom.rating}</span>
-                  <span className="text-xs text-[#64748B] font-medium">· {activeRoom.roomType}</span>
+                  <span className="text-xs text-[#F5A900] font-black">{activeRoom.rating}</span>
+                  <span className="text-xs text-[#5F5750] dark:text-[#D6CEC5] font-medium">· {activeRoom.roomType}</span>
                 </div>
               </div>
 
               {/* SLIDING ROOM IMAGE CONTAINER */}
-              <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#F1F3F5]">
+              <div className="relative w-full aspect-[4/3] overflow-hidden bg-[var(--surface-secondary)]">
                 <AnimatePresence initial={false} custom={direction} mode="popLayout">
                   <motion.div
                     key={activeRoom.id}
@@ -335,36 +345,36 @@ export default function Hero() {
                     />
 
                     {/* Subtle bottom vignette */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
 
                     {/* Floating Style Badge */}
                     <div className="absolute top-4 left-4 z-20 pointer-events-none">
-                      <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-[#0F172A] rounded-lg text-xs font-bold border border-[#E2E8F0] shadow-sm">
+                      <span className="px-3 py-1 bg-white/95 backdrop-blur-md text-[#2B1B12] rounded-lg text-xs font-extrabold border border-white/40 shadow-md">
                         {activeRoom.roomType}
                       </span>
                     </div>
 
                     {/* Floating Top-Right AI Redesigned Pill */}
                     <div className="absolute top-4 right-4 z-20 pointer-events-none">
-                      <span className="px-3 py-1 bg-[#0F172A] text-white rounded-lg text-xs font-black shadow-lg flex items-center gap-1.5 border border-[#0F172A]">
-                        <Sparkles className="w-3.5 h-3.5 text-white" />
+                      <span className="px-3 py-1 bg-[#2B1B12] text-white rounded-lg text-xs font-black shadow-lg flex items-center gap-1.5 border border-[#2B1B12]">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                         AI REDESIGNED
                       </span>
                     </div>
 
                     {/* Room title banner at bottom of image */}
                     <div className="absolute bottom-4 left-4 right-4 z-20 pointer-events-none flex items-center justify-between">
-                      <div className="bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-[#E2E8F0] shadow-xs">
-                        <p className="text-xs font-bold text-[#0F172A]">{activeRoom.title}</p>
-                        <p className="text-[10px] text-[#64748B] font-semibold">{activeRoom.itemsCount} Shoppable Furniture Items</p>
+                      <div className="bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/40 shadow-md">
+                        <p className="text-xs font-bold text-[#2B1B12]">{activeRoom.title}</p>
+                        <p className="text-[10px] text-[#5F5750] font-semibold">{activeRoom.itemsCount} Shoppable Furniture Items</p>
                       </div>
 
                       {/* Color Palette Dots */}
-                      <div className="flex items-center gap-1 bg-white/95 backdrop-blur-md px-2 py-1.5 rounded-lg border border-[#E2E8F0] shadow-xs">
+                      <div className="flex items-center gap-1 bg-white/95 backdrop-blur-md px-2 py-1.5 rounded-lg border border-white/40 shadow-md">
                         {activeRoom.palette.map((color, i) => (
                           <span
                             key={i}
-                            className="w-3 h-3 rounded-full border border-black/10"
+                            className="w-3.5 h-3.5 rounded-full border border-black/20 shadow-2xs"
                             style={{ backgroundColor: color }}
                             title={color}
                           />
@@ -378,21 +388,21 @@ export default function Hero() {
                 <button
                   onClick={prevSlide}
                   aria-label="Previous Slide"
-                  className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/90 hover:bg-[#0F172A] text-[#0F172A] hover:text-white flex items-center justify-center backdrop-blur-md border border-[#E2E8F0] opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 active:scale-95 shadow-xl cursor-pointer"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 hover:bg-[#2B1B12] text-[#2B1B12] hover:text-white flex items-center justify-center backdrop-blur-md border border-[var(--border)] opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 active:scale-95 shadow-xl cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button
                   onClick={nextSlide}
                   aria-label="Next Slide"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/90 hover:bg-[#0F172A] text-[#0F172A] hover:text-white flex items-center justify-center backdrop-blur-md border border-[#E2E8F0] opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 active:scale-95 shadow-xl cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 hover:bg-[#2B1B12] text-[#2B1B12] hover:text-white flex items-center justify-center backdrop-blur-md border border-[var(--border)] opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 active:scale-95 shadow-xl cursor-pointer"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
 
               {/* Bottom Carousel Controls & Pagination Dots */}
-              <div className="p-3 bg-white border-t border-[#E2E8F0] flex items-center justify-between text-xs text-[#64748B]">
+              <div className="p-3 bg-[var(--surface)] border-t border-[var(--border)] flex items-center justify-between text-xs text-[#5F5750] dark:text-[#D6CEC5]">
                 {/* Clickable Slide Indicators */}
                 <div className="flex items-center gap-1.5">
                   {slideRooms.map((room, idx) => (
@@ -402,30 +412,30 @@ export default function Hero() {
                       aria-label={`Slide ${idx + 1}`}
                       className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
                         currentSlide === idx
-                          ? "w-7 bg-[#0F172A]"
-                          : "w-2 bg-[#E2E8F0] hover:bg-[#CBD5E1]"
+                          ? "w-7 bg-[#2B1B12] dark:bg-white"
+                          : "w-2 bg-[var(--border-light)] hover:bg-[var(--text-secondary)]"
                       }`}
                     />
                   ))}
-                  <span className="text-[11px] text-[#64748B] ml-2">
+                  <span className="text-[11px] text-[#5F5750] dark:text-[#D6CEC5] font-semibold ml-2">
                     {currentSlide + 1} of {slideRooms.length}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="text-[11px] text-[#64748B]">Auto-cycling</span>
+                  <span className="text-[11px] text-[#5F5750] dark:text-[#D6CEC5] font-medium">Auto-cycling</span>
                   <div className="flex items-center gap-1">
                     <button
                       onClick={prevSlide}
                       aria-label="Previous room"
-                      className="p-1 rounded-md hover:bg-[#F1F3F5] text-[#64748B] hover:text-[#0F172A] transition-colors cursor-pointer"
+                      className="p-1 rounded-md hover:bg-[var(--surface-secondary)] text-[#5F5750] hover:text-[#2B1B12] dark:hover:text-white transition-colors cursor-pointer"
                     >
                       <ChevronLeft className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={nextSlide}
                       aria-label="Next room"
-                      className="p-1 rounded-md hover:bg-[#F1F3F5] text-[#64748B] hover:text-[#0F172A] transition-colors cursor-pointer"
+                      className="p-1 rounded-md hover:bg-[var(--surface-secondary)] text-[#5F5750] hover:text-[#2B1B12] dark:hover:text-white transition-colors cursor-pointer"
                     >
                       <ChevronRight className="w-3.5 h-3.5" />
                     </button>

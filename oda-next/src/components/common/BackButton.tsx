@@ -63,16 +63,16 @@ export default function BackButton({
   const getVariantStyles = () => {
     switch (variant) {
       case 'subtle':
-        return 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F3F5] active:bg-[#E2E8F0] border-transparent';
+        return 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] active:bg-[var(--border)] border-transparent';
       case 'floating':
-        return 'bg-white/90 backdrop-blur-xl text-[#0F172A] hover:text-[#0F172A] border-[#E2E8F0] shadow-md hover:bg-[#F8F9FA] active:scale-95';
+        return 'bg-[var(--surface)]/95 backdrop-blur-xl text-[var(--text-primary)] border-[var(--border)] shadow-md hover:bg-[var(--surface-secondary)] active:scale-95';
       case 'pill':
-        return 'bg-[#F1F3F5] text-[#0F172A] hover:bg-[#E2E8F0] active:bg-[#CBD5E1] border-[#E2E8F0] rounded-full px-4';
+        return 'bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:bg-[var(--border)] border-[var(--border)] rounded-full px-4';
       case 'outline':
-        return 'bg-transparent border-[#E2E8F0] text-[#64748B] hover:bg-[#F1F3F5] hover:border-[#CBD5E1] hover:text-[#0F172A] active:bg-[#E2E8F0]';
+        return 'bg-transparent border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)] active:bg-[var(--surface-secondary)]';
       case 'default':
       default:
-        return 'bg-[#F1F3F5] text-[#0F172A] hover:text-[#0F172A] border-[#E2E8F0] hover:border-[#CBD5E1] hover:bg-[#E2E8F0] active:bg-[#CBD5E1] shadow-2xs hover:shadow-xs';
+        return 'bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:text-[var(--text-primary)] border-[var(--border)] hover:border-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]/80 shadow-2xs hover:shadow-xs';
     }
   };
 
@@ -81,7 +81,7 @@ export default function BackButton({
       type="button"
       onClick={handleBack}
       aria-label={ariaLabel}
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg border transition-all duration-150 cursor-pointer select-none group focus:outline-none focus:ring-2 focus:ring-[#0F172A]/20 ${getVariantStyles()} ${className}`}
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg border transition-all duration-150 cursor-pointer select-none group focus:outline-none focus:ring-2 focus:ring-amber-500/20 ${getVariantStyles()} ${className}`}
     >
       <ArrowLeft className="w-4 h-4 transition-transform duration-150 group-hover:-translate-x-0.5 text-inherit" />
       <span>{label}</span>

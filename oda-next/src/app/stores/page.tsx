@@ -215,28 +215,28 @@ export default function StoresPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A]">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
       <Sidebar isMobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
       <div className="lg:pl-64">
         {/* Header */}
-        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[#E2E8F0] bg-white/95 backdrop-blur-md px-4 sm:px-6 py-4 shadow-sm">
+        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md px-4 sm:px-6 py-4 shadow-xs">
           <button
             onClick={() => setMobileOpen(true)}
-            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[#F1F3F5] transition-colors cursor-pointer"
+            className="lg:hidden h-10 w-10 rounded-lg flex items-center justify-center hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
           >
-            <Menu className="h-5 w-5 text-[#0F172A]" />
+            <Menu className="h-5 w-5 text-[var(--text-primary)]" />
           </button>
           <BackButton fallbackHref="/dashboard" label="Back to Dashboard" variant="subtle" />
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-[#0F172A] tracking-tight">Nearby Furniture Stores</h1>
-              <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+              <h1 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">Nearby Furniture Stores</h1>
+              <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 {stores.length} Showrooms Live
               </span>
             </div>
-            <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
+            <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-0.5">
               Discover real showroom furniture stores with live raw data, directions & contacts
             </p>
           </div>
@@ -245,7 +245,7 @@ export default function StoresPage() {
           <button
             onClick={() => setShowRawDataModal(true)}
             id="view-raw-data-btn"
-            className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-all hover:scale-105 cursor-pointer"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-[#2B1B12] hover:bg-[#433328] text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs transition-all hover:scale-105 cursor-pointer"
             title="Inspect raw store dataset in JSON or Table format"
           >
             <Database className="h-4 w-4 text-emerald-400" />
@@ -261,8 +261,8 @@ export default function StoresPage() {
         <main className="px-4 sm:px-6 py-6 max-w-7xl mx-auto space-y-4">
           {/* Quick City Chips */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            <span className="text-xs font-semibold text-slate-500 flex items-center gap-1 shrink-0">
-              <Layers className="h-3.5 w-3.5 text-slate-400" /> Hubs:
+            <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1 shrink-0">
+              <Layers className="h-3.5 w-3.5 text-[var(--text-muted)]" /> Hubs:
             </span>
             {CITIES.map((city) => {
               const isSelected = activeCity === city.key;
@@ -272,8 +272,8 @@ export default function StoresPage() {
                   onClick={() => handleCitySelect(city)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium shrink-0 transition-all cursor-pointer ${
                     isSelected
-                      ? "bg-slate-900 text-white shadow-sm font-semibold"
-                      : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900"
+                      ? "bg-[#2B1B12] text-white shadow-xs font-bold"
+                      : "bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] hover:bg-[var(--surface-secondary)]"
                   }`}
                 >
                   {city.label}
@@ -285,23 +285,23 @@ export default function StoresPage() {
           {/* Search bar & Category select */}
           <div className="flex flex-col sm:flex-row gap-3">
             <form onSubmit={handleSearch} className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#64748B]" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--text-secondary)]" />
               <input
                 type="text"
                 value={searchLocation}
                 onChange={(e) => setSearchLocation(e.target.value)}
                 placeholder="Search store name, area, or city (e.g. Peelamedu, Gandhipuram, Bangalore)..."
-                className="w-full pl-11 pr-4 py-3 bg-white border border-[#E2E8F0] rounded-xl text-sm text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#0F172A] shadow-sm"
+                className="w-full pl-11 pr-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--text-primary)] shadow-xs"
               />
             </form>
             <div className="flex gap-2">
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="px-4 py-3 bg-white border border-[#E2E8F0] rounded-xl text-sm text-[#0F172A] focus:outline-none focus:border-[#0F172A] cursor-pointer shadow-sm font-medium"
+                className="px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] cursor-pointer shadow-xs font-medium"
               >
                 {categories.map((c) => (
-                  <option key={c} value={c} className="bg-white text-[#0F172A]">
+                  <option key={c} value={c} className="bg-[var(--surface)] text-[var(--text-primary)]">
                     {c === "All" ? "All Categories" : c}
                   </option>
                 ))}
@@ -314,22 +314,22 @@ export default function StoresPage() {
             {/* Left list of stores */}
             <div className="w-full lg:w-88 shrink-0 overflow-y-auto space-y-3 pr-1.5 scrollbar-thin">
               <div className="flex items-center justify-between pb-1">
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                <span className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
                   Showrooms ({stores.length})
                 </span>
                 {loading && (
-                  <span className="flex items-center gap-1.5 text-xs text-slate-500">
-                    <Loader2 className="h-3.5 w-3.5 animate-spin text-slate-700" />
+                  <span className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)]">
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-[var(--text-primary)]" />
                     Updating...
                   </span>
                 )}
               </div>
 
               {stores.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-[#E2E8F0] p-8 text-center shadow-sm">
-                  <Store className="h-10 w-10 text-[#64748B] mx-auto mb-3" />
-                  <p className="text-[#0F172A] font-bold">No stores found</p>
-                  <p className="text-xs text-[#64748B] mt-1">
+                <div className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] p-8 text-center shadow-xs">
+                  <Store className="h-10 w-10 text-[var(--text-secondary)] mx-auto mb-3" />
+                  <p className="text-[var(--text-primary)] font-bold">No stores found</p>
+                  <p className="text-xs text-[var(--text-secondary)] mt-1">
                     Try adjusting your search or selecting &apos;All Categories&apos;
                   </p>
                   <button
@@ -338,7 +338,7 @@ export default function StoresPage() {
                       setSearchLocation("");
                       fetchStores(userLocation, "All", "");
                     }}
-                    className="mt-4 px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800"
+                    className="mt-4 px-4 py-2 bg-[#2B1B12] text-white rounded-xl text-xs font-bold hover:bg-[#433328]"
                   >
                     Reset Filters
                   </button>
@@ -346,8 +346,6 @@ export default function StoresPage() {
               ) : (
                 stores.map((store) => {
                   const isSelected = selectedStore?._id === store._id;
-                  const categoryBadge =
-                    categoryBadgeColors[store.category || ""] || "bg-slate-100 text-slate-700 border-slate-200";
 
                   return (
                     <motion.div
@@ -357,31 +355,31 @@ export default function StoresPage() {
                       onClick={() => setSelectedStore(store)}
                       className={`rounded-xl border p-4 cursor-pointer transition-all ${
                         isSelected
-                          ? "border-slate-900 ring-2 ring-slate-900/15 bg-white shadow-md"
-                          : "border-[#E2E8F0] bg-white hover:border-slate-300 hover:shadow-sm"
+                          ? "border-[#2B1B12] dark:border-white ring-2 ring-[#2B1B12]/15 bg-[var(--surface)] shadow-md"
+                          : "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--text-secondary)] hover:shadow-xs"
                       }`}
                     >
                       <div className="flex items-start justify-between gap-2">
-                        <h3 className="font-bold text-[#0F172A] text-sm leading-snug">
+                        <h3 className="font-bold text-[var(--text-primary)] text-sm leading-snug">
                           {store.name}
                         </h3>
                         {store.category && (
                           <span
-                            className={`shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full border ${categoryBadge}`}
+                            className="shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full border border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)]"
                           >
                             {store.category}
                           </span>
                         )}
                       </div>
 
-                      <p className="text-xs text-[#64748B] mt-1.5 flex items-start gap-1 leading-relaxed">
+                      <p className="text-xs text-[var(--text-secondary)] mt-1.5 flex items-start gap-1 leading-relaxed">
                         <MapPin className="h-3.5 w-3.5 text-rose-500 shrink-0 mt-0.5" />
                         <span className="line-clamp-2">{store.address}</span>
                       </p>
 
                       <div className="flex items-center gap-3 mt-2.5 text-xs">
                         {store.distance !== undefined && (
-                          <span className="font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 text-[11px]">
+                          <span className="font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20 text-[11px]">
                             📍 {store.distance} km away
                           </span>
                         )}
@@ -389,21 +387,21 @@ export default function StoresPage() {
                           ★ {store.rating || 4.5}
                         </span>
                         {store.openingHours && (
-                          <span className="text-slate-500 text-[11px] hidden sm:inline flex items-center gap-1">
-                            <Clock className="h-3 w-3 text-slate-400" />
+                          <span className="text-[var(--text-secondary)] text-[11px] hidden sm:inline flex items-center gap-1">
+                            <Clock className="h-3 w-3 text-[var(--text-muted)]" />
                             {store.openingHours}
                           </span>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                      <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[var(--border)]">
                         {store.phone && (
                           <a
                             href={`tel:${store.phone}`}
                             onClick={(e) => e.stopPropagation()}
-                            className="flex items-center gap-1 text-xs text-slate-600 hover:text-slate-900 px-2.5 py-1 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors font-medium"
+                            className="flex items-center gap-1 text-xs text-[var(--text-primary)] hover:border-[var(--text-primary)] px-2.5 py-1 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-lg transition-colors font-medium"
                           >
-                            <Phone className="h-3 w-3 text-slate-500" />
+                            <Phone className="h-3 w-3 text-[var(--text-secondary)]" />
                             Call
                           </a>
                         )}
@@ -413,9 +411,9 @@ export default function StoresPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="flex items-center gap-1 text-xs text-slate-600 hover:text-slate-900 px-2.5 py-1 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors font-medium"
+                            className="flex items-center gap-1 text-xs text-[var(--text-primary)] hover:border-[var(--text-primary)] px-2.5 py-1 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-lg transition-colors font-medium"
                           >
-                            <Globe className="h-3 w-3 text-slate-500" />
+                            <Globe className="h-3 w-3 text-[var(--text-secondary)]" />
                             Website
                           </a>
                         )}
@@ -424,7 +422,7 @@ export default function StoresPage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-1 text-xs text-white bg-slate-900 hover:bg-slate-800 px-3 py-1 rounded-lg font-semibold ml-auto transition-colors shadow-sm"
+                          className="flex items-center gap-1 text-xs text-white bg-[#2B1B12] hover:bg-[#433328] px-3 py-1 rounded-lg font-bold ml-auto transition-colors shadow-xs"
                         >
                           <Navigation className="h-3 w-3" />
                           Directions
@@ -437,7 +435,7 @@ export default function StoresPage() {
             </div>
 
             {/* Right Map Canvas */}
-            <div className="flex-1 rounded-2xl overflow-hidden border border-[#E2E8F0] bg-slate-100 min-h-[320px] relative shadow-md">
+            <div className="flex-1 rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--surface-secondary)] min-h-[320px] relative shadow-md">
               {mapReady && MapComponent ? (
                 <MapComponent
                   center={userLocation}
@@ -447,7 +445,7 @@ export default function StoresPage() {
                 />
               ) : (
                 <div className="h-full flex items-center justify-center">
-                  <Loader2 className="h-8 w-8 animate-spin text-[#0F172A]" />
+                  <Loader2 className="h-8 w-8 animate-spin text-[var(--text-primary)]" />
                 </div>
               )}
             </div>
@@ -460,11 +458,11 @@ export default function StoresPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
-                className="mt-6 bg-white rounded-2xl border border-[#E2E8F0] p-6 shadow-xl relative"
+                className="mt-6 bg-[var(--surface)] rounded-2xl border border-[var(--border)] p-6 shadow-xl relative"
               >
                 <button
                   onClick={() => setSelectedStore(null)}
-                  className="absolute top-5 right-5 h-8 w-8 rounded-lg flex items-center justify-center hover:bg-slate-100 text-[#64748B] hover:text-[#0F172A] cursor-pointer"
+                  className="absolute top-5 right-5 h-8 w-8 rounded-lg flex items-center justify-center hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -472,39 +470,39 @@ export default function StoresPage() {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-xl font-bold text-[#0F172A]">
+                      <h2 className="text-xl font-bold text-[var(--text-primary)]">
                         {selectedStore.name}
                       </h2>
                       {selectedStore.category && (
-                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-800 border border-slate-200">
+                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[var(--surface-secondary)] text-[var(--text-primary)] border border-[var(--border)]">
                           {selectedStore.category}
                         </span>
                       )}
                     </div>
 
-                    <p className="text-sm text-[#64748B] mt-1.5 flex items-center gap-1.5">
+                    <p className="text-sm text-[var(--text-secondary)] mt-1.5 flex items-center gap-1.5">
                       <MapPin className="h-4 w-4 text-rose-500 shrink-0" />
                       {selectedStore.address}
                     </p>
 
                     <div className="flex flex-wrap items-center gap-4 mt-3">
                       {selectedStore.distance !== undefined && (
-                        <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                        <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
                           📍 {selectedStore.distance} km from your location
                         </span>
                       )}
                       {selectedStore.phone && (
                         <a
                           href={`tel:${selectedStore.phone}`}
-                          className="flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#0F172A] transition-colors"
+                          className="flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
                         >
-                          <Phone className="h-4 w-4 text-slate-500" />
+                          <Phone className="h-4 w-4 text-[var(--text-muted)]" />
                           {selectedStore.phone}
                         </a>
                       )}
                       {selectedStore.openingHours && (
-                        <span className="flex items-center gap-1.5 text-sm text-[#64748B]">
-                          <Clock className="h-4 w-4 text-slate-500" />
+                        <span className="flex items-center gap-1.5 text-sm text-[var(--text-secondary)]">
+                          <Clock className="h-4 w-4 text-[var(--text-muted)]" />
                           {selectedStore.openingHours}
                         </span>
                       )}
@@ -515,40 +513,40 @@ export default function StoresPage() {
                             className={`text-sm ${
                               i < Math.round(selectedStore.rating || 4.5)
                                 ? "text-amber-400"
-                                : "text-slate-200"
+                                : "text-[var(--border)]"
                             }`}
                           >
                             ★
                           </span>
                         ))}
-                        <span className="text-xs font-bold text-slate-700 ml-1">
-                          ({selectedStore.rating || 4.5})
+                        <span className="text-xs font-bold text-[var(--text-primary)] ml-1">
+                          {selectedStore.rating || 4.5}
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 shrink-0">
-                    <a
-                      href={getDirectionsUrl(selectedStore)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold rounded-xl shadow-md transition-all hover:scale-105"
-                    >
-                      <Navigation className="h-4 w-4" />
-                      Get Directions
-                    </a>
+                  <div className="flex items-center gap-2.5">
                     {selectedStore.website && (
                       <a
                         href={selectedStore.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E2E8F0] text-slate-800 text-sm font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                        className="flex items-center gap-1.5 px-4 py-2.5 bg-[var(--surface-secondary)] hover:border-[var(--text-primary)] border border-[var(--border)] text-[var(--text-primary)] rounded-xl text-sm font-semibold transition-colors shadow-xs"
                       >
-                        <Globe className="h-4 w-4 text-slate-500" />
+                        <Globe className="h-4 w-4" />
                         Website
                       </a>
                     )}
+                    <a
+                      href={getDirectionsUrl(selectedStore)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-5 py-2.5 bg-[#2B1B12] hover:bg-[#433328] text-white rounded-xl text-sm font-bold transition-all shadow-xs hover:scale-105"
+                    >
+                      <Navigation className="h-4 w-4" />
+                      Get Directions
+                    </a>
                   </div>
                 </div>
               </motion.div>
@@ -558,31 +556,31 @@ export default function StoresPage() {
       </div>
 
       {/* ========================================================================= */}
-      {/* RAW DATA INSPECTION MODAL (Answers user request: "add the raw data into this page") */}
+      {/* RAW DATA INSPECTION MODAL */}
       {/* ========================================================================= */}
       <AnimatePresence>
         {showRawDataModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden"
+              className="bg-[var(--surface)] rounded-2xl shadow-2xl border border-[var(--border)] w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden"
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-[var(--surface-secondary)]">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-slate-900 flex items-center justify-center text-white">
+                  <div className="h-10 w-10 rounded-xl bg-[#2B1B12] flex items-center justify-center text-white">
                     <Database className="h-5 w-5 text-emerald-400" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-lg font-bold text-slate-900">Showroom Stores Raw Data</h2>
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold border border-emerald-300">
+                      <h2 className="text-lg font-bold text-[var(--text-primary)]">Showroom Stores Raw Data</h2>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-semibold border border-emerald-500/20">
                         {stores.length} records active / {RAW_STORES.length} total
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-[var(--text-secondary)]">
                       Verified raw store dataset containing geo coordinates, contact details, and categories
                     </p>
                   </div>
@@ -591,16 +589,16 @@ export default function StoresPage() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleCopyJson}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-lg text-xs font-medium transition-colors cursor-pointer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--text-primary)] rounded-lg text-xs font-semibold transition-colors cursor-pointer"
                   >
                     {copied ? (
                       <>
                         <Check className="h-3.5 w-3.5 text-emerald-600" />
-                        <span className="text-emerald-700 font-semibold">Copied!</span>
+                        <span className="text-emerald-600 font-semibold">Copied!</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="h-3.5 w-3.5 text-slate-500" />
+                        <Copy className="h-3.5 w-3.5 text-[var(--text-secondary)]" />
                         <span>Copy JSON</span>
                       </>
                     )}
@@ -608,15 +606,15 @@ export default function StoresPage() {
 
                   <button
                     onClick={handleDownloadJson}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-lg text-xs font-medium transition-colors cursor-pointer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--text-primary)] rounded-lg text-xs font-semibold transition-colors cursor-pointer"
                   >
-                    <Download className="h-3.5 w-3.5 text-slate-500" />
+                    <Download className="h-3.5 w-3.5 text-[var(--text-secondary)]" />
                     <span>Download JSON</span>
                   </button>
 
                   <button
                     onClick={() => setShowRawDataModal(false)}
-                    className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-slate-200 text-slate-500 hover:text-slate-800 cursor-pointer ml-2"
+                    className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer ml-2"
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -624,14 +622,14 @@ export default function StoresPage() {
               </div>
 
               {/* View Switcher Tabs */}
-              <div className="flex items-center justify-between px-6 py-2 border-b border-slate-200 bg-white">
+              <div className="flex items-center justify-between px-6 py-2 border-b border-[var(--border)] bg-[var(--surface)]">
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setRawTab("json")}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-colors ${
                       rawTab === "json"
-                        ? "bg-slate-900 text-white"
-                        : "text-slate-600 hover:bg-slate-100"
+                        ? "bg-[#2B1B12] text-white"
+                        : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"
                     }`}
                   >
                     <Code2 className="h-3.5 w-3.5" />
@@ -639,10 +637,10 @@ export default function StoresPage() {
                   </button>
                   <button
                     onClick={() => setRawTab("table")}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-colors ${
                       rawTab === "table"
-                        ? "bg-slate-900 text-white"
-                        : "text-slate-600 hover:bg-slate-100"
+                        ? "bg-[#2B1B12] text-white"
+                        : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"
                     }`}
                   >
                     <TableIcon className="h-3.5 w-3.5" />
@@ -650,22 +648,22 @@ export default function StoresPage() {
                   </button>
                 </div>
 
-                <div className="text-xs text-slate-500">
-                  Showing <strong className="text-slate-900">{stores.length}</strong> loaded showroom records
+                <div className="text-xs text-[var(--text-secondary)]">
+                  Showing <strong className="text-[var(--text-primary)]">{stores.length}</strong> loaded showroom records
                 </div>
               </div>
 
               {/* Modal Body */}
-              <div className="flex-1 overflow-auto p-6 bg-slate-950 text-slate-100 font-mono text-xs">
+              <div className="flex-1 overflow-auto p-6 bg-[#111827] text-white font-mono text-xs">
                 {rawTab === "json" ? (
                   <pre className="whitespace-pre overflow-x-auto text-emerald-400 leading-relaxed selection:bg-emerald-800">
                     {JSON.stringify(stores, null, 2)}
                   </pre>
                 ) : (
-                  <div className="overflow-x-auto bg-white rounded-xl border border-slate-200 text-slate-900 font-sans">
+                  <div className="overflow-x-auto bg-[var(--surface)] rounded-xl border border-[var(--border)] text-[var(--text-primary)] font-sans">
                     <table className="w-full text-left text-xs border-collapse">
                       <thead>
-                        <tr className="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold">
+                        <tr className="bg-[var(--surface-secondary)] border-b border-[var(--border)] text-[var(--text-primary)] font-bold">
                           <th className="p-3">#</th>
                           <th className="p-3">Store Name</th>
                           <th className="p-3">Category</th>
@@ -675,22 +673,22 @@ export default function StoresPage() {
                           <th className="p-3">Phone</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100">
+                      <tbody className="divide-y divide-[var(--border)]">
                         {stores.map((s, idx) => (
-                          <tr key={s._id} className="hover:bg-slate-50 transition-colors">
-                            <td className="p-3 text-slate-400 font-mono">{idx + 1}</td>
-                            <td className="p-3 font-semibold text-slate-900">{s.name}</td>
+                          <tr key={s._id} className="hover:bg-[var(--surface-secondary)]/50 transition-colors">
+                            <td className="p-3 text-[var(--text-muted)] font-mono">{idx + 1}</td>
+                            <td className="p-3 font-semibold text-[var(--text-primary)]">{s.name}</td>
                             <td className="p-3">
-                              <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-medium">
+                              <span className="px-2 py-0.5 rounded bg-[var(--surface-secondary)] text-[var(--text-primary)] font-medium border border-[var(--border)]">
                                 {s.category || "Furniture"}
                               </span>
                             </td>
-                            <td className="p-3 text-slate-600 max-w-xs truncate">{s.address}</td>
-                            <td className="p-3 font-mono text-slate-500">
+                            <td className="p-3 text-[var(--text-secondary)] max-w-xs truncate">{s.address}</td>
+                            <td className="p-3 font-mono text-[var(--text-secondary)]">
                               {s.lat.toFixed(4)}, {s.lng.toFixed(4)}
                             </td>
-                            <td className="p-3 text-amber-600 font-bold">★ {s.rating || 4.5}</td>
-                            <td className="p-3 text-slate-600">{s.phone || "—"}</td>
+                            <td className="p-3 text-amber-500 font-bold">★ {s.rating || 4.5}</td>
+                            <td className="p-3 text-[var(--text-secondary)]">{s.phone || "—"}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -700,13 +698,13 @@ export default function StoresPage() {
               </div>
 
               {/* Modal Footer */}
-              <div className="flex items-center justify-between px-6 py-3 border-t border-slate-200 bg-slate-50 text-xs text-slate-600">
+              <div className="flex items-center justify-between px-6 py-3 border-t border-[var(--border)] bg-[var(--surface-secondary)] text-xs text-[var(--text-secondary)]">
                 <span>
-                  Source: <strong>Insight Nexsus Verified Showroom Catalog</strong> ({RAW_STORES.length} stores across 7 Indian Metro Hubs)
+                  Source: <strong className="text-[var(--text-primary)]">Insight Nexsus Verified Showroom Catalog</strong> ({RAW_STORES.length} stores across 7 Indian Metro Hubs)
                 </span>
                 <button
                   onClick={() => setShowRawDataModal(false)}
-                  className="px-4 py-1.5 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 transition-colors cursor-pointer"
+                  className="px-4 py-1.5 bg-[#2B1B12] text-white rounded-lg font-bold hover:bg-[#433328] transition-colors cursor-pointer"
                 >
                   Close
                 </button>

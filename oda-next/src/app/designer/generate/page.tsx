@@ -381,7 +381,7 @@ export default function GeneratePage() {
   const itemCount = hotspots.length;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)] transition-colors duration-200">
       <Toaster position="top-center" />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -391,14 +391,14 @@ export default function GeneratePage() {
         </div>
 
         <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 rounded-full mb-3">
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/30 px-3.5 py-1 rounded-full mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             Step 4 of 5
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] mb-1">
             Generated AI Room Redesign
           </h1>
-          <p className="text-xs sm:text-sm text-gray-400">
+          <p className="text-xs sm:text-sm text-[var(--text-secondary)]">
             Your uploaded room redesigned with a complete furniture suite in your chosen {preferences.furnitureStyle || 'Modern'} aesthetic.
           </p>
         </div>
@@ -413,14 +413,14 @@ export default function GeneratePage() {
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
                       index <= 3
                         ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black shadow-lg shadow-amber-500/20'
-                        : 'bg-white/10 text-gray-500 border border-white/10'
+                        : 'bg-[var(--surface-secondary)] text-[var(--text-muted)] border border-[var(--border)]'
                     }`}
                   >
                     {index + 1}
                   </div>
                   <span
                     className={`text-[10px] mt-1 font-semibold ${
-                      index <= 3 ? 'text-amber-400' : 'text-gray-500'
+                      index <= 3 ? 'text-amber-600 dark:text-amber-400' : 'text-[var(--text-muted)]'
                     }`}
                   >
                     {step.label}
@@ -429,7 +429,7 @@ export default function GeneratePage() {
                 {index < steps.length - 1 && (
                   <div
                     className={`w-10 sm:w-12 h-0.5 mx-1 mb-5 ${
-                      index < 3 ? 'bg-amber-500/80' : 'bg-white/10'
+                      index < 3 ? 'bg-amber-500' : 'bg-[var(--border)]'
                     }`}
                   />
                 )}
@@ -442,7 +442,7 @@ export default function GeneratePage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-[#121215] rounded-2xl shadow-2xl border border-white/10 p-12 text-center max-w-3xl mx-auto"
+            className="bg-[var(--surface)] rounded-2xl shadow-xl border border-[var(--border)] p-12 text-center max-w-3xl mx-auto"
           >
             <div className="relative w-32 h-32 mx-auto mb-8">
               <motion.div
@@ -466,21 +466,21 @@ export default function GeneratePage() {
                 transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
               />
               <div className="absolute inset-0 flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-amber-400" />
+                <Sparkles className="w-8 h-8 text-amber-500" />
               </div>
             </div>
 
-            <h2 className="text-xl font-bold text-white mb-2">Redesigning your room with complete furniture suite...</h2>
-            <p className="text-xs sm:text-sm text-gray-400 mb-8 max-w-md mx-auto">
+            <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2">Redesigning your room with complete furniture suite...</h2>
+            <p className="text-xs sm:text-sm text-[var(--text-secondary)] mb-8 max-w-md mx-auto">
               Preserving room architecture, fitting catalog-matched furniture, and rendering photorealistic interior photography
             </p>
 
             <div className="max-w-xs mx-auto">
-              <div className="flex justify-between text-xs text-gray-400 mb-2">
+              <div className="flex justify-between text-xs text-[var(--text-secondary)] mb-2">
                 <span>Generating</span>
-                <span className="text-amber-400 font-bold">{generationProgress}%</span>
+                <span className="text-amber-600 dark:text-amber-400 font-bold">{generationProgress}%</span>
               </div>
-              <div className="w-full bg-black rounded-full h-2 border border-white/10 overflow-hidden">
+              <div className="w-full bg-[var(--surface-secondary)] rounded-full h-2 border border-[var(--border)] overflow-hidden">
                 <motion.div
                   className="bg-gradient-to-r from-amber-400 to-orange-400 h-2 rounded-full"
                   initial={{ width: 0 }}
@@ -490,13 +490,13 @@ export default function GeneratePage() {
               </div>
             </div>
 
-            <div className="mt-8 flex items-center justify-center gap-6 text-xs text-gray-400">
+            <div className="mt-8 flex items-center justify-center gap-6 text-xs text-[var(--text-secondary)]">
               <div className="flex items-center gap-1.5">
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-400" />
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500" />
                 Preserving room architecture
               </div>
               <div className="flex items-center gap-1.5">
-                <Armchair className="w-3.5 h-3.5 text-amber-400" />
+                <Armchair className="w-3.5 h-3.5 text-amber-500" />
                 Rendering complete furniture suite
               </div>
             </div>
@@ -509,7 +509,7 @@ export default function GeneratePage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="lg:col-span-8 bg-[#121215] rounded-2xl shadow-2xl border border-white/10 overflow-hidden flex flex-col"
+                className="lg:col-span-8 bg-[var(--surface)] rounded-2xl shadow-xl border border-[var(--border)] overflow-hidden flex flex-col"
               >
                 {/* Visual Canvas */}
                 <div className="relative h-[480px] sm:h-[540px] w-full overflow-hidden bg-black flex items-center justify-center">
@@ -538,7 +538,7 @@ export default function GeneratePage() {
                   <div className="absolute top-4 right-4 z-30">
                     <button
                       onClick={() => setPreviewZoomOpen(true)}
-                      className="w-8 h-8 rounded-xl bg-black/80 hover:bg-black backdrop-blur-md text-white flex items-center justify-center shadow-lg transition-colors border border-white/20"
+                      className="w-8 h-8 rounded-xl bg-black/80 hover:bg-black backdrop-blur-md text-white flex items-center justify-center shadow-lg transition-colors border border-white/20 cursor-pointer"
                       title="Fullscreen Preview"
                     >
                       <Maximize2 className="w-4 h-4" />
@@ -550,20 +550,20 @@ export default function GeneratePage() {
                     <div className="bg-black/85 backdrop-blur-xl border border-white/15 rounded-xl p-1 flex items-center gap-1 shadow-2xl">
                       <button
                         onClick={() => setViewMode('redesign')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                           viewMode === 'redesign'
                             ? 'bg-amber-400 text-black shadow-xs font-black'
-                            : 'text-gray-300 hover:text-white hover:bg-white/10'
+                            : 'text-gray-200 hover:text-white hover:bg-white/10'
                         }`}
                       >
                         Redesigned Room ✨
                       </button>
                       <button
                         onClick={() => setViewMode('split')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
                           viewMode === 'split'
                             ? 'bg-amber-400 text-black shadow-xs font-black'
-                            : 'text-gray-300 hover:text-white hover:bg-white/10'
+                            : 'text-gray-200 hover:text-white hover:bg-white/10'
                         }`}
                       >
                         <Sliders className="w-3 h-3 text-amber-400" />
@@ -571,10 +571,10 @@ export default function GeneratePage() {
                       </button>
                       <button
                         onClick={() => setViewMode('original')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                           viewMode === 'original'
                             ? 'bg-amber-400 text-black shadow-xs font-black'
-                            : 'text-gray-300 hover:text-white hover:bg-white/10'
+                            : 'text-gray-200 hover:text-white hover:bg-white/10'
                         }`}
                       >
                         Bare Room 📷
@@ -592,33 +592,33 @@ export default function GeneratePage() {
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="lg:col-span-4 bg-[#121215] rounded-2xl shadow-xl border border-white/10 p-5 flex flex-col space-y-4 max-h-[580px] overflow-y-auto"
+                className="lg:col-span-4 bg-[var(--surface)] rounded-2xl shadow-xl border border-[var(--border)] p-5 flex flex-col space-y-4 max-h-[580px] overflow-y-auto"
               >
                 {/* Design Header */}
                 <div>
-                  <h2 className="text-lg font-bold text-white leading-snug">{design.style}</h2>
+                  <h2 className="text-lg font-bold text-[var(--text-primary)] leading-snug">{design.style}</h2>
                   <div className="flex flex-wrap items-center gap-2 mt-2">
-                    <span className="text-xs font-bold text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-md">
+                    <span className="text-xs font-bold text-amber-800 dark:text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-md">
                       ₹{Number(design.budget || 200000).toLocaleString('en-IN')} Budget
                     </span>
-                    <span className="text-xs font-semibold text-gray-300 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-md">
+                    <span className="text-xs font-semibold text-[var(--text-secondary)] bg-[var(--surface-secondary)] border border-[var(--border)] px-2.5 py-0.5 rounded-md">
                       {design.color}
                     </span>
-                    <span className="text-xs font-semibold text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
+                    <span className="text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
                       <Check className="w-3 h-3" />
                       {itemCount} Products
                     </span>
                   </div>
-                  <p className="text-xs text-gray-400 mt-2.5 leading-relaxed">
+                  <p className="text-xs text-[var(--text-secondary)] mt-2.5 leading-relaxed">
                     {design.description || design.mood}
                   </p>
                 </div>
 
                 {/* Included Furniture List */}
-                <div className="border-t border-white/10 pt-3">
-                  <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-2.5 flex items-center justify-between">
+                <div className="border-t border-[var(--border)] pt-3">
+                  <h3 className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-2.5 flex items-center justify-between">
                     <span className="flex items-center gap-1.5">
-                      <Armchair className="w-3.5 h-3.5 text-amber-400" />
+                      <Armchair className="w-3.5 h-3.5 text-amber-500" />
                       <span>Included Furniture & Décor ({itemCount})</span>
                     </span>
                   </h3>
@@ -627,30 +627,30 @@ export default function GeneratePage() {
                     {hotspots.map((item: any, idx: number) => (
                       <div
                         key={idx}
-                        className="p-2.5 bg-black/40 hover:border-amber-500/40 rounded-xl border border-white/10 transition-colors flex items-center justify-between"
+                        className="p-2.5 bg-[var(--surface-secondary)]/50 hover:border-amber-500/50 rounded-xl border border-[var(--border)] transition-colors flex items-center justify-between"
                       >
                         <div className="min-w-0 flex items-center gap-2.5">
                           <span className="w-5 h-5 rounded-full bg-amber-500 text-black text-[10px] font-black flex items-center justify-center shrink-0">
                             {item.id || idx + 1}
                           </span>
                           <div className="min-w-0">
-                            <p className="text-xs font-bold text-white truncate">
+                            <p className="text-xs font-bold text-[var(--text-primary)] truncate">
                               {item.label}
                             </p>
-                            <p className="text-[10px] text-gray-400 truncate">
+                            <p className="text-[10px] text-[var(--text-secondary)] truncate">
                               {item.store} • {item.category || 'Furniture'}
                             </p>
                           </div>
                         </div>
 
                         <div className="text-right shrink-0 ml-2 flex flex-col items-end">
-                          <p className="text-xs font-bold text-amber-400">{item.price}</p>
-                          <div className="flex items-center gap-1.5 mt-0.5">
+                          <p className="text-xs font-bold text-[#F5A900]">{item.price}</p>
+                          <div className="flex items-center gap-1.5 mt-1">
                             <a
                               href={getAmazonProductUrl(item.label || item.category || 'Furniture', item.amazonUrl)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[10px] text-black bg-amber-500 hover:bg-amber-400 px-1.5 py-0.5 rounded font-extrabold transition-colors"
+                              className="text-[10px] text-[#111111] bg-[#FF9900] hover:bg-[#ffaa22] px-2 py-0.5 rounded font-black transition-colors inline-block"
                             >
                               Amazon
                             </a>
@@ -658,7 +658,7 @@ export default function GeneratePage() {
                               href={getFlipkartProductUrl(item.label || item.category || 'Furniture', item.flipkartUrl)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[10px] text-white bg-blue-600 hover:bg-blue-500 px-1.5 py-0.5 rounded font-bold transition-colors"
+                              className="text-[10px] text-[#FFFFFF] bg-[#2874F0] hover:bg-blue-600 px-2 py-0.5 rounded font-bold transition-colors inline-block"
                             >
                               Flipkart
                             </a>
@@ -667,7 +667,7 @@ export default function GeneratePage() {
                                 href={item.productUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[10px] text-gray-400 hover:underline inline-flex items-center gap-0.5"
+                                className="text-[10px] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:underline inline-flex items-center gap-0.5"
                               >
                                 <span>Store</span>
                                 <ExternalLink className="w-2.5 h-2.5" />
@@ -686,48 +686,48 @@ export default function GeneratePage() {
             <div className="flex flex-wrap gap-3 items-center">
               <button
                 onClick={() => router.push('/designer/preferences')}
-                className="flex items-center gap-2 border border-white/15 text-white px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-white/10 transition-colors"
+                className="flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back
               </button>
               <button
                 onClick={handleRegenerate}
-                className="flex items-center gap-2 border border-white/15 text-white px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-white/10 transition-colors"
+                className="flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
               >
-                <RefreshCw className="w-4 h-4 text-amber-400" />
+                <RefreshCw className="w-4 h-4 text-amber-500" />
                 Regenerate
               </button>
               <button
                 onClick={() => setIsSaveModalOpen(true)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors cursor-pointer ${
                   isSaved
-                    ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300'
-                    : 'bg-white/5 border border-white/15 text-white hover:bg-white/10'
+                    ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-700 dark:text-emerald-300'
+                    : 'bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--border)]'
                 }`}
               >
                 {isSaved ? (
                   <>
-                    <FolderCheck className="w-4 h-4 text-emerald-400" />
+                    <FolderCheck className="w-4 h-4 text-emerald-500" />
                     <span>Project Saved ✓</span>
                   </>
                 ) : (
                   <>
-                    <Save className="w-4 h-4 text-amber-400" />
+                    <Save className="w-4 h-4 text-amber-500" />
                     <span>Save Project</span>
                   </>
                 )}
               </button>
               <button
                 onClick={() => router.push('/furniture')}
-                className="flex items-center gap-2 border border-white/15 text-white px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-white/10 transition-colors"
+                className="flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
               >
-                <ShoppingBag className="w-4 h-4 text-amber-400" />
+                <ShoppingBag className="w-4 h-4 text-amber-500" />
                 View Products
               </button>
               <button
                 onClick={handleOpenViewer}
-                className="flex-1 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black py-3 rounded-xl font-extrabold text-sm transition-all shadow-lg shadow-amber-500/20 hover:scale-[1.01] flex items-center justify-center gap-2 min-w-[220px]"
+                className="flex-1 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black py-3 rounded-xl font-extrabold text-sm transition-all shadow-md shadow-amber-500/20 hover:scale-[1.01] flex items-center justify-center gap-2 min-w-[220px] cursor-pointer"
               >
                 <span>Open Full Interactive Room Viewer →</span>
               </button>
@@ -743,29 +743,29 @@ export default function GeneratePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={() => setIsSaveModalOpen(false)}
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-[#121215] border border-white/15 rounded-2xl max-w-md w-full p-6 shadow-2xl relative text-white"
+              className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl max-w-md w-full p-6 shadow-2xl relative text-[var(--text-primary)]"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
+                  <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-500 flex items-center justify-center font-bold">
                     <Save className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-base">Save Design to Project</h3>
-                    <p className="text-xs text-gray-400">Persist full room design, furniture & shopping list to MongoDB</p>
+                    <h3 className="font-bold text-[var(--text-primary)] text-base">Save Design to Project</h3>
+                    <p className="text-xs text-[var(--text-secondary)]">Persist full room design, furniture & shopping list to MongoDB</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsSaveModalOpen(false)}
-                  className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+                  className="w-8 h-8 rounded-full bg-[var(--surface-secondary)] hover:bg-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -773,7 +773,7 @@ export default function GeneratePage() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-300 mb-1.5">
+                  <label className="block text-xs font-bold text-[var(--text-primary)] mb-1.5">
                     Project Name
                   </label>
                   <input
@@ -781,41 +781,41 @@ export default function GeneratePage() {
                     value={projectNameInput}
                     onChange={(e) => setProjectNameInput(e.target.value)}
                     placeholder="e.g. Modern Living Room Redesign"
-                    className="w-full px-3.5 py-2.5 text-sm bg-black border border-white/15 rounded-xl focus:outline-none focus:border-amber-400 text-white font-medium"
+                    className="w-full px-3.5 py-2.5 text-sm bg-[var(--background)] border border-[var(--border)] rounded-xl focus:outline-none focus:border-amber-500 text-[var(--text-primary)] placeholder-[var(--text-muted)] font-medium"
                     autoFocus
                   />
                 </div>
 
-                <div className="bg-black/50 rounded-xl p-3 text-xs space-y-1.5 text-gray-300 border border-white/10">
+                <div className="bg-[var(--surface-secondary)]/50 rounded-xl p-3 text-xs space-y-1.5 text-[var(--text-secondary)] border border-[var(--border)]">
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Room Type:</span>
-                    <span className="font-bold text-white">{roomAnalysis?.roomType || 'Living Room'}</span>
+                    <span className="text-[var(--text-muted)]">Room Type:</span>
+                    <span className="font-bold text-[var(--text-primary)]">{roomAnalysis?.roomType || 'Living Room'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Style & Mood:</span>
-                    <span className="font-bold text-white">{preferences.furnitureStyle || 'Modern'} · {preferences.mood || 'Warm'}</span>
+                    <span className="text-[var(--text-muted)]">Style & Mood:</span>
+                    <span className="font-bold text-[var(--text-primary)]">{preferences.furnitureStyle || 'Modern'} · {preferences.mood || 'Warm'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Furniture Count:</span>
-                    <span className="font-bold text-amber-400">{itemCount} items with Amazon/Flipkart links</span>
+                    <span className="text-[var(--text-muted)]">Furniture Count:</span>
+                    <span className="font-bold text-amber-600 dark:text-amber-400">{itemCount} items with Amazon/Flipkart links</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Target Budget:</span>
-                    <span className="font-bold text-white">₹{Number(preferences.budget || 200000).toLocaleString('en-IN')}</span>
+                    <span className="text-[var(--text-muted)]">Target Budget:</span>
+                    <span className="font-bold text-[var(--text-primary)]">₹{Number(preferences.budget || 200000).toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
                 <div className="flex gap-2 pt-2">
                   <button
                     onClick={() => setIsSaveModalOpen(false)}
-                    className="flex-1 py-2.5 text-sm font-semibold border border-white/15 text-gray-300 rounded-xl hover:bg-white/10 transition-colors"
+                    className="flex-1 py-2.5 text-sm font-semibold border border-[var(--border)] text-[var(--text-secondary)] rounded-xl hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSaveProject}
                     disabled={isSaving}
-                    className="flex-1 py-2.5 text-sm font-extrabold bg-gradient-to-r from-amber-500 to-orange-500 text-black rounded-xl hover:from-amber-400 hover:to-amber-300 transition-all flex items-center justify-center gap-1.5 shadow-md disabled:opacity-50"
+                    className="flex-1 py-2.5 text-sm font-extrabold bg-gradient-to-r from-amber-500 to-orange-500 text-black rounded-xl hover:from-amber-400 hover:to-amber-300 transition-all flex items-center justify-center gap-1.5 shadow-md disabled:opacity-50 cursor-pointer"
                   >
                     {isSaving ? (
                       <>
@@ -843,24 +843,24 @@ export default function GeneratePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4"
             onClick={() => setPreviewZoomOpen(false)}
           >
             <motion.div
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
-              className="bg-[#121215] border border-white/15 rounded-2xl max-w-5xl w-full overflow-hidden shadow-2xl relative text-white"
+              className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl max-w-5xl w-full overflow-hidden shadow-2xl relative text-[var(--text-primary)]"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
+              <div className="p-4 border-b border-[var(--border)] flex items-center justify-between bg-[var(--surface-secondary)]/40">
                 <div>
-                  <h3 className="text-base font-bold text-white">{design.style}</h3>
-                  <p className="text-xs text-gray-400">Photorealistic Redesign with {itemCount} Detected Furniture Items</p>
+                  <h3 className="text-base font-bold text-[var(--text-primary)]">{design.style}</h3>
+                  <p className="text-xs text-[var(--text-secondary)]">Photorealistic Redesign with {itemCount} Detected Furniture Items</p>
                 </div>
                 <button
                   onClick={() => setPreviewZoomOpen(false)}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-gray-300 hover:text-white transition-colors"
+                  className="w-8 h-8 rounded-full bg-[var(--surface-secondary)] hover:bg-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>

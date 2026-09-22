@@ -249,7 +249,8 @@ export default function AnalysisPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+  return (
+    <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
       <Toaster position="top-center" />
 
       <div className="max-w-6xl mx-auto px-4 py-8">
@@ -259,14 +260,14 @@ export default function AnalysisPage() {
         </div>
 
         <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 rounded-full mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--text-primary)] uppercase tracking-widest bg-[var(--surface-secondary)] border border-[var(--border)] px-3.5 py-1 rounded-full mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
             Step 2 of 5
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] mb-1">
             Room Architectural Analysis
           </h1>
-          <p className="text-xs sm:text-sm text-gray-400">
+          <p className="text-xs sm:text-sm text-[var(--text-secondary)]">
             Review your room layout, detected furniture, and structural features
           </p>
         </div>
@@ -280,15 +281,15 @@ export default function AnalysisPage() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
                       index <= 1
-                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black shadow-lg shadow-amber-500/20'
-                        : 'bg-white/10 text-gray-500 border border-white/10'
+                        ? 'bg-[#2B1B12] text-white border border-[#2B1B12] shadow-xs'
+                        : 'bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]'
                     }`}
                   >
                     {index + 1}
                   </div>
                   <span
                     className={`text-[10px] mt-1 font-semibold ${
-                      index <= 1 ? 'text-amber-400' : 'text-gray-500'
+                      index <= 1 ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'
                     }`}
                   >
                     {step.label}
@@ -297,7 +298,7 @@ export default function AnalysisPage() {
                 {index < steps.length - 1 && (
                   <div
                     className={`w-10 sm:w-12 h-0.5 mx-1 mb-5 ${
-                      index < 1 ? 'bg-amber-500/80' : 'bg-white/10'
+                      index < 1 ? 'bg-[#2B1B12] dark:bg-white' : 'bg-[var(--border)]'
                     }`}
                   />
                 )}
@@ -311,12 +312,12 @@ export default function AnalysisPage() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-[#121215] rounded-2xl shadow-xl border border-white/10 overflow-hidden flex flex-col"
+            className="bg-[var(--surface)] rounded-2xl shadow-xs border border-[var(--border)] overflow-hidden flex flex-col"
           >
-            <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
-              <h2 className="text-sm font-bold text-white flex items-center gap-2">
+            <div className="p-4 border-b border-[var(--border)] flex items-center justify-between bg-[var(--surface-secondary)]">
+              <h2 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
                 <span>Uploaded Source Room</span>
-                <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded border border-emerald-500/30">
+                <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded border border-emerald-500/30">
                   Active Source
                 </span>
               </h2>
@@ -325,12 +326,12 @@ export default function AnalysisPage() {
               <img
                 src={uploadedImage}
                 alt="Uploaded room"
-                className="w-full h-80 object-cover rounded-xl shadow-md border border-white/10"
+                className="w-full h-80 object-cover rounded-xl shadow-xs border border-[var(--border)]"
               />
-              <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs text-amber-300 flex items-start gap-2">
-                <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <div className="mt-3 p-3 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-xl text-xs text-[var(--text-secondary)] flex items-start gap-2">
+                <Sparkles className="w-4 h-4 text-[var(--text-primary)] shrink-0 mt-0.5" />
                 <p>
-                  <strong>Architecture Retention Engine:</strong> Insight Nexsus will preserve your exact walls, window placements, floor perspective, and detected furniture while applying your selected style.
+                  <strong className="text-[var(--text-primary)]">Architecture Retention Engine:</strong> Insight Nexsus will preserve your exact walls, window placements, floor perspective, and detected furniture while applying your selected style.
                 </p>
               </div>
             </div>
@@ -340,15 +341,15 @@ export default function AnalysisPage() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-[#121215] rounded-2xl shadow-xl border border-white/10 flex flex-col"
+            className="bg-[var(--surface)] rounded-2xl shadow-xs border border-[var(--border)] flex flex-col"
           >
-            <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
-              <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <Armchair className="w-4 h-4 text-amber-400" />
+            <div className="p-4 border-b border-[var(--border)] flex items-center justify-between bg-[var(--surface-secondary)]">
+              <h2 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
+                <Armchair className="w-4 h-4 text-[var(--text-primary)]" />
                 <span>Detected Architecture & Furniture</span>
               </h2>
               {analysis && (
-                <span className="text-xs font-bold text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-full">
+                <span className="text-xs font-bold text-[var(--text-primary)] bg-[var(--surface)] border border-[var(--border)] px-2.5 py-0.5 rounded-full">
                   {analysis.roomType || 'Living Room'}
                 </span>
               )}
@@ -358,47 +359,47 @@ export default function AnalysisPage() {
               <div className="p-12 text-center my-auto">
                 <div className="relative w-20 h-20 mx-auto mb-6">
                   <motion.div
-                    className="absolute inset-0 border-4 border-amber-500/20 rounded-full"
+                    className="absolute inset-0 border-4 border-[#2B1B12]/20 rounded-full"
                     animate={{ rotate: 360 }}
                     transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                   />
                   <motion.div
-                    className="absolute inset-2 border-4 border-amber-400 border-t-transparent rounded-full"
+                    className="absolute inset-2 border-4 border-[#2B1B12] dark:border-white border-t-transparent rounded-full"
                     animate={{ rotate: -360 }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Armchair className="w-6 h-6 text-amber-400" />
+                    <Armchair className="w-6 h-6 text-[var(--text-primary)]" />
                   </div>
                 </div>
-                <h3 className="text-base font-bold text-white mb-2">
+                <h3 className="text-base font-bold text-[var(--text-primary)] mb-2">
                   AI is analyzing room & furniture...
                 </h3>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-[var(--text-secondary)]">
                   Detecting existing furniture pieces, spatial bounds, lighting, and placement opportunities
                 </p>
               </div>
             ) : analysis ? (
               <div className="p-4 space-y-4 max-h-[560px] overflow-y-auto">
                 {/* 1. DETECTED EXISTING FURNITURE SECTION */}
-                <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/25">
+                <div className="p-3.5 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)]">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <Armchair className="w-4 h-4 text-amber-400" />
-                      <h4 className="text-xs font-bold text-white uppercase tracking-wide">
+                      <Armchair className="w-4 h-4 text-[var(--text-primary)]" />
+                      <h4 className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wide">
                         Detected Existing Furniture ({analysis.furniture?.length || 0})
                       </h4>
                     </div>
                     <button
                       onClick={() => setShowAddFurniture(!showAddFurniture)}
-                      className="text-[11px] font-bold text-black bg-amber-400 hover:bg-amber-300 flex items-center gap-1 px-2.5 py-0.5 rounded-lg transition-colors cursor-pointer"
+                      className="text-[11px] font-bold text-white bg-[#2B1B12] hover:bg-[#433328] flex items-center gap-1 px-2.5 py-0.5 rounded-lg transition-colors cursor-pointer"
                     >
                       <Plus className="w-3 h-3" />
                       Add Item
                     </button>
                   </div>
 
-                  <p className="text-[11px] text-gray-300 mb-3">
+                  <p className="text-[11px] text-[var(--text-secondary)] mb-3">
                     These items were detected in your room and will be <strong>preserved & upgraded</strong> to match your chosen design style:
                   </p>
 
@@ -410,12 +411,12 @@ export default function AnalysisPage() {
                         onChange={(e) => setNewFurnitureInput(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleAddFurniture()}
                         placeholder="e.g. L-shaped Sectional Sofa, Solid Teak TV Unit"
-                        className="flex-1 px-3 py-1.5 text-xs border border-amber-400/50 rounded-lg focus:outline-none focus:border-amber-400 bg-black text-white"
+                        className="flex-1 px-3 py-1.5 text-xs border border-[var(--border)] rounded-lg focus:outline-none focus:border-[var(--text-primary)] bg-[var(--background)] text-[var(--text-primary)]"
                         autoFocus
                       />
                       <button
                         onClick={handleAddFurniture}
-                        className="px-3 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold hover:bg-amber-400 transition-colors"
+                        className="px-3 py-1.5 bg-[#2B1B12] text-white rounded-lg text-xs font-bold hover:bg-[#433328] transition-colors"
                       >
                         Add
                       </button>
@@ -427,16 +428,16 @@ export default function AnalysisPage() {
                       {analysis.furniture.map((item, i) => (
                         <div
                           key={i}
-                          className="flex items-center gap-1.5 px-3 py-1.5 bg-black/60 border border-white/15 rounded-lg text-xs font-semibold text-white group"
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-xs font-semibold text-[var(--text-primary)] group"
                         >
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                           <span>{item}</span>
-                          <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/15 px-1.5 py-0.2 rounded border border-emerald-500/30">
+                          <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/15 px-1.5 py-0.2 rounded border border-emerald-500/30">
                             Preserve
                           </span>
                           <button
                             onClick={() => handleRemoveExistingFurniture(i)}
-                            className="text-gray-400 hover:text-red-400 p-0.5 rounded transition-colors ml-1"
+                            className="text-[var(--text-muted)] hover:text-red-500 p-0.5 rounded transition-colors ml-1 cursor-pointer"
                             title="Remove from room"
                           >
                             <Trash2 className="w-3 h-3" />
@@ -445,9 +446,9 @@ export default function AnalysisPage() {
                       ))}
                     </div>
                   ) : (
-                    <div className="p-3 bg-black/40 rounded-lg border border-dashed border-white/20 text-center">
-                      <p className="text-xs font-semibold text-white">Empty / Bare Room Detected</p>
-                      <p className="text-[11px] text-gray-400 mt-0.5">
+                    <div className="p-3 bg-[var(--surface)] rounded-lg border border-dashed border-[var(--border)] text-center">
+                      <p className="text-xs font-semibold text-[var(--text-primary)]">Empty / Bare Room Detected</p>
+                      <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">
                         The AI will generate a complete, realistic furniture suite tailored for this {analysis.roomType || 'room'}.
                       </p>
                     </div>
@@ -456,16 +457,16 @@ export default function AnalysisPage() {
 
                 {/* 2. AI SUGGESTED COMPLEMENTARY FURNITURE */}
                 {analysis.suggestedFurniture && analysis.suggestedFurniture.length > 0 && (
-                  <div className="p-3.5 rounded-xl bg-black/40 border border-white/10">
+                  <div className="p-3.5 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)]">
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                        <h4 className="text-[11px] font-bold text-white uppercase tracking-wide">
+                        <Sparkles className="w-3.5 h-3.5 text-[var(--text-primary)]" />
+                        <h4 className="text-[11px] font-bold text-[var(--text-primary)] uppercase tracking-wide">
                           AI Recommended Additions to Complete Room
                         </h4>
                       </div>
                     </div>
-                    <p className="text-[11px] text-gray-400 mb-2.5">
+                    <p className="text-[11px] text-[var(--text-secondary)] mb-2.5">
                       Click any item to include it in the generated furniture layout:
                     </p>
                     <div className="flex flex-wrap gap-1.5">
@@ -473,9 +474,9 @@ export default function AnalysisPage() {
                         <button
                           key={i}
                           onClick={() => handleAddSuggestedToFurniture(item)}
-                          className="flex items-center gap-1 px-2.5 py-1 bg-white/5 hover:bg-amber-500/15 border border-white/10 hover:border-amber-500/40 rounded-md text-xs font-medium text-gray-200 hover:text-amber-300 transition-all cursor-pointer"
+                          className="flex items-center gap-1 px-2.5 py-1 bg-[var(--surface)] hover:bg-[var(--border)] border border-[var(--border)] rounded-md text-xs font-medium text-[var(--text-primary)] transition-all cursor-pointer"
                         >
-                          <Plus className="w-3 h-3 text-amber-400" />
+                          <Plus className="w-3 h-3 text-[var(--text-secondary)]" />
                           <span>{item}</span>
                         </button>
                       ))}
@@ -485,7 +486,7 @@ export default function AnalysisPage() {
 
                 {/* 3. ARCHITECTURAL CHARACTERISTICS */}
                 <div className="space-y-2 pt-1">
-                  <h4 className="text-[11px] font-bold text-gray-400 uppercase tracking-wide px-1">
+                  <h4 className="text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wide px-1">
                     Spatial Architecture & Lighting
                   </h4>
 
@@ -500,11 +501,11 @@ export default function AnalysisPage() {
                     return (
                       <div
                         key={key}
-                        className="flex items-center gap-3 p-2.5 rounded-xl bg-black/40 border border-white/10 group hover:border-amber-500/30 transition-colors"
+                        className="flex items-center gap-3 p-2.5 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)] group hover:border-[var(--text-primary)] transition-colors"
                       >
-                        <Icon className="w-4 h-4 text-amber-400 shrink-0" />
+                        <Icon className="w-4 h-4 text-[var(--text-primary)] shrink-0" />
                         <div className="flex-1 min-w-0">
-                          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                          <p className="text-[10px] text-[var(--text-secondary)] font-bold uppercase tracking-wider">
                             {label}
                           </p>
                           {editingField === key ? (
@@ -514,18 +515,18 @@ export default function AnalysisPage() {
                                 value={editValue}
                                 onChange={(e) => setEditValue(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleEditSave(key)}
-                                className="flex-1 px-2.5 py-1 text-xs border border-amber-400 rounded focus:outline-none bg-black text-white"
+                                className="flex-1 px-2.5 py-1 text-xs border border-[var(--border)] rounded focus:outline-none bg-[var(--background)] text-[var(--text-primary)]"
                                 autoFocus
                               />
                               <button
                                 onClick={() => handleEditSave(key)}
-                                className="text-xs text-black font-bold px-2.5 py-1 bg-amber-400 rounded"
+                                className="text-xs text-white font-bold px-2.5 py-1 bg-[#2B1B12] rounded cursor-pointer"
                               >
                                 Save
                               </button>
                             </div>
                           ) : (
-                            <p className="text-xs text-white font-medium truncate mt-0.5">
+                            <p className="text-xs text-[var(--text-primary)] font-medium truncate mt-0.5">
                               {displayValue}
                             </p>
                           )}
@@ -533,7 +534,7 @@ export default function AnalysisPage() {
                         {editingField !== key && (
                           <button
                             onClick={() => handleEditStart(key, rawValue)}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity p-1 text-gray-400 hover:text-amber-400"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity p-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
                             title="Edit field"
                           >
                             <Pencil className="w-3 h-3" />
@@ -552,7 +553,7 @@ export default function AnalysisPage() {
         <div className="flex gap-3 mt-8 max-w-6xl mx-auto">
           <button
             onClick={() => router.push('/designer')}
-            className="flex items-center gap-2 border border-white/15 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-white/10 transition-colors"
+            className="flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -560,7 +561,7 @@ export default function AnalysisPage() {
           <button
             onClick={handleConfirm}
             disabled={!analysis || isAnalyzing}
-            className="flex-1 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black py-3 rounded-xl font-extrabold text-sm transition-all shadow-lg shadow-amber-500/20 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 bg-[#2B1B12] hover:bg-[#433328] text-white py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-[#2B1B12]/15 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer border border-[#2B1B12]"
           >
             <span>Proceed to Style & Furniture Preferences</span>
             <ArrowRight className="w-4 h-4 stroke-[3]" />

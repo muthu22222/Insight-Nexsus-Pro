@@ -439,29 +439,29 @@ export default function ViewerPage() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: '100%', opacity: 0 }}
               transition={{ type: 'spring', damping: 26, stiffness: 220 }}
-              className="w-80 sm:w-96 bg-[#0c0c0e] border-l border-white/10 flex flex-col h-full shadow-2xl z-50 shrink-0 text-white"
+              className="w-80 sm:w-96 bg-[var(--surface)] border-l border-[var(--border)] flex flex-col h-full shadow-2xl z-50 shrink-0 text-[var(--text-primary)]"
             >
               {/* Drawer Header */}
-              <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/50 shrink-0">
+              <div className="p-4 border-b border-[var(--border)] flex items-center justify-between bg-[var(--surface-secondary)]/50 shrink-0">
                 <div className="flex items-center gap-2">
                   <span className="w-6 h-6 rounded-full bg-amber-500 text-black flex items-center justify-center text-xs font-black shadow-xs">
                     {currentItem?.id || 1}
                   </span>
                   <div>
-                    <h3 className="text-xs font-bold text-white leading-tight">
+                    <h3 className="text-xs font-bold text-[var(--text-primary)] leading-tight">
                       {currentItem?.label || 'Selected Product'}
                     </h3>
-                    <p className="text-[10px] text-gray-400">{currentItem?.category || 'Furniture'}</p>
+                    <p className="text-[10px] text-[var(--text-secondary)]">{currentItem?.category || 'Furniture'}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-black text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded">
+                  <span className="text-xs font-black text-amber-800 dark:text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded">
                     {currentItem?.price}
                   </span>
                   <button
                     onClick={() => setIsSidebarOpen(false)}
-                    className="p-1 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-colors"
+                    className="p-1 hover:bg-[var(--surface-secondary)] rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -469,16 +469,16 @@ export default function ViewerPage() {
               </div>
 
               {/* Budget Alert Banner */}
-              <div className="px-4 py-2 border-b border-white/10 bg-black/30 flex items-center justify-between text-xs shrink-0">
-                <span className="text-gray-400 text-[11px]">Budget: <strong className="text-white">₹{userTargetBudget.toLocaleString('en-IN')}</strong></span>
+              <div className="px-4 py-2 border-b border-[var(--border)] bg-[var(--surface-secondary)]/30 flex items-center justify-between text-xs shrink-0">
+                <span className="text-[var(--text-secondary)] text-[11px]">Budget: <strong className="text-[var(--text-primary)]">₹{userTargetBudget.toLocaleString('en-IN')}</strong></span>
                 {isOverBudget ? (
-                  <span className="text-[10px] font-bold text-amber-300 bg-amber-500/20 border border-amber-500/30 px-2 py-0.5 rounded flex items-center gap-1">
-                    <AlertTriangle className="w-3 h-3 text-amber-400" />
+                  <span className="text-[10px] font-bold text-amber-800 dark:text-amber-300 bg-amber-500/20 border border-amber-500/30 px-2 py-0.5 rounded flex items-center gap-1">
+                    <AlertTriangle className="w-3 h-3 text-amber-500" />
                     ₹{budgetDifference.toLocaleString('en-IN')} OVER
                   </span>
                 ) : (
-                  <span className="text-[10px] font-bold text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded flex items-center gap-1">
-                    <CheckCircle className="w-3 h-3 text-emerald-400" />
+                  <span className="text-[10px] font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded flex items-center gap-1">
+                    <CheckCircle className="w-3 h-3 text-emerald-500" />
                     ₹{Math.abs(budgetDifference).toLocaleString('en-IN')} REMAINING
                   </span>
                 )}
@@ -488,11 +488,11 @@ export default function ViewerPage() {
               <div className="p-4 flex-1 overflow-y-auto space-y-4">
                 {/* Active Product Card */}
                 {currentItem && (
-                  <div className="space-y-3 bg-[#121215] p-3.5 rounded-2xl border border-white/10 shadow-xl">
+                  <div className="space-y-3 bg-[var(--surface-secondary)]/40 p-3.5 rounded-2xl border border-[var(--border)] shadow-md">
                     <div>
-                      <h2 className="text-sm font-bold text-white leading-snug">{currentItem.label}</h2>
+                      <h2 className="text-sm font-bold text-[var(--text-primary)] leading-snug">{currentItem.label}</h2>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-xs font-semibold text-gray-300 bg-black/60 px-2 py-0.5 rounded border border-white/10 shadow-2xs">
+                        <span className="text-xs font-semibold text-[var(--text-secondary)] bg-[var(--surface)] px-2 py-0.5 rounded border border-[var(--border)] shadow-2xs">
                           {currentItem.store}
                         </span>
                         <div className="flex items-center gap-1">
@@ -500,30 +500,30 @@ export default function ViewerPage() {
                             <Star
                               key={star}
                               className={`w-3 h-3 ${
-                                star <= 4 ? 'fill-amber-400 text-amber-400' : 'text-gray-700'
+                                star <= 4 ? 'fill-amber-400 text-amber-400' : 'text-gray-300 dark:text-gray-700'
                               }`}
                             />
                           ))}
-                          <span className="text-[10px] text-gray-400 font-bold ml-0.5">4.8</span>
+                          <span className="text-[10px] text-[var(--text-secondary)] font-bold ml-0.5">4.8</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="bg-black/50 p-3 rounded-xl border border-white/10">
-                      <h4 className="text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-1">Placement & Location</h4>
-                      <p className="text-xs text-gray-300 leading-relaxed">
+                    <div className="bg-[var(--surface)]/70 p-3 rounded-xl border border-[var(--border)]">
+                      <h4 className="text-[10px] uppercase tracking-wider text-[var(--text-muted)] font-bold mb-1">Placement & Location</h4>
+                      <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                         {currentItem.description}
                       </p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-2">
-                      <div className="bg-black/50 p-2.5 rounded-xl border border-white/10">
-                        <p className="text-[10px] text-gray-400 font-semibold">Estimated Price</p>
-                        <p className="text-xs font-black text-amber-400 mt-0.5">{currentItem.price}</p>
+                      <div className="bg-[var(--surface)]/70 p-2.5 rounded-xl border border-[var(--border)]">
+                        <p className="text-[10px] text-[var(--text-muted)] font-semibold">Estimated Price</p>
+                        <p className="text-xs font-black text-[#F5A900] mt-0.5">{currentItem.price}</p>
                       </div>
-                      <div className="bg-black/50 p-2.5 rounded-xl border border-white/10">
-                        <p className="text-[10px] text-gray-400 font-semibold">Style Match</p>
-                        <p className="text-xs font-bold text-emerald-400 mt-0.5">{currentItem.match || 96}% Match</p>
+                      <div className="bg-[var(--surface)]/70 p-2.5 rounded-xl border border-[var(--border)]">
+                        <p className="text-[10px] text-[var(--text-muted)] font-semibold">Style Match</p>
+                        <p className="text-xs font-bold text-[#00C98D] mt-0.5">{currentItem.match || 96}% Match</p>
                       </div>
                     </div>
 
@@ -533,7 +533,7 @@ export default function ViewerPage() {
                         href={getAmazonProductUrl(currentItem.label || 'Furniture', currentItem.amazonUrl)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full bg-amber-500 hover:bg-amber-400 text-black py-2.5 rounded-xl text-xs font-extrabold transition-colors flex items-center justify-center gap-1.5 shadow-md"
+                        className="w-full bg-[#FF9900] hover:bg-[#ffaa22] text-[#111111] py-2.5 rounded-xl text-xs font-black transition-colors flex items-center justify-center gap-1.5 shadow-md"
                       >
                         <span>Buy on Amazon</span>
                         <span className="text-xs">→</span>
@@ -543,7 +543,7 @@ export default function ViewerPage() {
                         href={getFlipkartProductUrl(currentItem.label || 'Furniture', currentItem.flipkartUrl)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full bg-blue-600 hover:bg-blue-500 text-white py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-md"
+                        className="w-full bg-[#2874F0] hover:bg-blue-600 text-[#FFFFFF] py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-md"
                       >
                         <span>Buy on Flipkart</span>
                         <span className="text-xs">→</span>
@@ -554,9 +554,9 @@ export default function ViewerPage() {
                           href={currentItem.productUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full bg-white/5 hover:bg-white/10 border border-white/15 text-white py-2 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+                          className="w-full bg-[var(--surface)] hover:bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] py-2 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
                         >
-                          <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
+                          <ExternalLink className="w-3.5 h-3.5 text-amber-500" />
                           <span>View on {currentItem.store || 'Store'}</span>
                         </a>
                       )}
@@ -565,13 +565,13 @@ export default function ViewerPage() {
                         onClick={() => handleSaveItem(currentItem.id)}
                         className={`w-full border py-2 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
                           savedItems.includes(currentItem.id)
-                            ? 'border-amber-500/40 bg-amber-500/15 text-amber-300'
-                            : 'border-white/10 text-gray-300 hover:bg-white/5'
+                            ? 'border-amber-500/40 bg-amber-500/15 text-amber-700 dark:text-amber-300'
+                            : 'border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]'
                         }`}
                       >
                         <Heart
                           className={`w-3.5 h-3.5 ${
-                            savedItems.includes(currentItem.id) ? 'fill-amber-400 text-amber-400' : ''
+                            savedItems.includes(currentItem.id) ? 'fill-amber-500 text-amber-500' : ''
                           }`}
                         />
                         {savedItems.includes(currentItem.id) ? 'Saved in Project' : 'Save to Favorites'}
@@ -591,11 +591,11 @@ export default function ViewerPage() {
                         }}
                         className={`w-full border py-2 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
                           cartItemIds.includes(String(currentItem.id))
-                            ? 'border-emerald-500/40 bg-emerald-500/15 text-emerald-300'
-                            : 'border-white/10 text-gray-300 hover:bg-white/5'
+                            ? 'border-emerald-500/40 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300'
+                            : 'border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]'
                         }`}
                       >
-                        <ShoppingCart className="w-3.5 h-3.5 text-amber-400" />
+                        <ShoppingCart className="w-3.5 h-3.5 text-amber-500" />
                         <span>
                           {cartItemIds.includes(String(currentItem.id))
                             ? 'Remove from Cart'
@@ -607,9 +607,9 @@ export default function ViewerPage() {
                 )}
 
                 {/* All Furniture List */}
-                <div className="border-t border-white/10 pt-3">
-                  <h4 className="text-[11px] uppercase tracking-wider text-gray-400 font-bold mb-2 flex items-center gap-1.5">
-                    <Armchair className="w-3.5 h-3.5 text-amber-400" />
+                <div className="border-t border-[var(--border)] pt-3">
+                  <h4 className="text-[11px] uppercase tracking-wider text-[var(--text-muted)] font-bold mb-2 flex items-center gap-1.5">
+                    <Armchair className="w-3.5 h-3.5 text-amber-500" />
                     <span>All Furniture In Room ({activeHotspots.length})</span>
                   </h4>
 
@@ -623,7 +623,7 @@ export default function ViewerPage() {
                           className={`w-full p-2.5 rounded-xl border transition-all flex items-center justify-between ${
                             isSelected
                               ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                              : 'border-white/10 hover:border-amber-500/30 bg-black/40'
+                              : 'border-[var(--border)] hover:border-amber-500/40 bg-[var(--surface)]/50'
                           }`}
                         >
                           <button
@@ -638,20 +638,20 @@ export default function ViewerPage() {
                               className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 transition-colors ${
                                 isSelected
                                   ? 'bg-amber-500 text-black'
-                                  : 'bg-white/10 text-gray-300'
+                                  : 'bg-[var(--surface-secondary)] text-[var(--text-secondary)]'
                               }`}
                             >
                               {item.id}
                             </span>
                             <div className="min-w-0">
-                              <p className={`text-xs font-bold truncate ${isSelected ? 'text-amber-300' : 'text-white'}`}>
+                              <p className={`text-xs font-bold truncate ${isSelected ? 'text-amber-600 dark:text-amber-300' : 'text-[var(--text-primary)]'}`}>
                                 {item.label}
                               </p>
-                              <p className="text-[10px] text-gray-400">{item.store}</p>
+                              <p className="text-[10px] text-[var(--text-secondary)]">{item.store}</p>
                             </div>
                           </button>
                           <div className="flex items-center gap-2 shrink-0 ml-2">
-                            <span className="text-xs font-black text-amber-400">{item.price}</span>
+                            <span className="text-xs font-black text-[#F5A900]">{item.price}</span>
                             <button
                               type="button"
                               onClick={(e) => {
@@ -667,8 +667,8 @@ export default function ViewerPage() {
                               }}
                               className={`p-1 rounded-lg border transition-colors cursor-pointer ${
                                 inCart
-                                  ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
-                                  : 'border-white/10 text-gray-400 hover:text-white hover:bg-white/10'
+                                  ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-700 dark:text-emerald-300'
+                                  : 'border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]'
                               }`}
                               title={inCart ? 'Remove from cart' : 'Add to cart'}
                             >
