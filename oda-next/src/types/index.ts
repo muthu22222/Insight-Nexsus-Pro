@@ -21,6 +21,14 @@ export interface Project {
   userId: string;
   name: string;
   roomImage: string;
+  originalImage?: string;
+  generatedImage?: string;
+  roomType?: string;
+  selectedStyle?: string;
+  style?: string;
+  mood?: string;
+  color?: string;
+  budget?: number;
   roomAnalysis: RoomAnalysis | null;
   designs: AIDesign[];
   selectedDesign: string | null;
@@ -112,6 +120,7 @@ export interface BudgetPlan {
   totalBudget: number;
   allocations: BudgetAllocation[];
   remaining: number;
+  spent?: number;
 }
 
 export interface BudgetAllocation {

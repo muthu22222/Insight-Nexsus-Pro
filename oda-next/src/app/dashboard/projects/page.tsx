@@ -17,6 +17,7 @@ import {
   Check,
   X,
   Wand2,
+  Database,
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import Sidebar from "@/components/shared/Sidebar";
@@ -55,6 +56,40 @@ export default function ProjectsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
   const [savingRename, setSavingRename] = useState(false);
+  const [seeding, setSeeding] = useState(false);
+
+  const handleSeedRawData = async () => {
+    setSeeding(true);
+    try {
+      const token = await getToken();
+      if (!token) {
+        toast.error("Please log in to seed raw projects.");
+        return;
+      }
+      const res = await fetch("/api/projects/seed", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success(data.message || "Successfully seeded raw projects!");
+        if (data.data) {
+          setProjects(data.data);
+        } else {
+          fetchProjects();
+        }
+      } else {
+        toast.error(data.error || "Failed to seed raw projects");
+      }
+    } catch {
+      toast.error("Network error while seeding raw projects");
+    } finally {
+      setSeeding(false);
+    }
+  };
 
   useEffect(() => {
     fetchProjects();
@@ -204,13 +239,27 @@ export default function ProjectsPage() {
                 <p className="text-[#64748B] mb-6 max-w-sm mx-auto text-sm">
                   Upload a photo of your room, let AI generate photorealistic interior designs with matched catalog furniture, and save your project!
                 </p>
-                <Link
-                  href="/designer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#0F172A] hover:bg-[#1E293B] text-white text-sm font-bold rounded-xl shadow-md shadow-[#0F172A]/15 border border-[#0F172A] hover:scale-[1.02] transition-transform"
-                >
-                  <Plus className="h-4 w-4 stroke-[3]" />
-                  Start Your First Design
-                </Link>
+                <div className="flex items-center justify-center gap-3 flex-wrap">
+                  <Link
+                    href="/designer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#0F172A] hover:bg-[#1E293B] text-white text-sm font-bold rounded-xl shadow-md shadow-[#0F172A]/15 border border-[#0F172A] hover:scale-[1.02] transition-transform"
+                  >
+                    <Plus className="h-4 w-4 stroke-[3]" />
+                    Start Your First Design
+                  </Link>
+                  <button
+                    onClick={handleSeedRawData}
+                    disabled={seeding}
+                    className="inline-flex items-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-sm font-bold rounded-xl shadow-md shadow-emerald-600/20 transition-all cursor-pointer"
+                  >
+                    {seeding ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Database className="h-4 w-4" />
+                    )}
+                    Seed Studio Raw Projects
+                  </button>
+                </div>
               </motion.div>
             ) : (
               <motion.div

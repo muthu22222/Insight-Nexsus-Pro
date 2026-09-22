@@ -4,6 +4,7 @@ import Project from '@/models/Project';
 import { connectToDatabase } from '@/lib/mongodb';
 import { authenticate } from '@/lib/auth';
 import { getAmazonProductUrl, getFlipkartProductUrl } from '@/lib/store-links';
+import { RAW_PROJECTS } from '@/data/raw-projects';
 
 function isValidObjectId(id: string) {
   return mongoose.Types.ObjectId.isValid(id);
@@ -35,6 +36,13 @@ export async function GET(
     }).lean();
 
     if (!project) {
+      const raw = RAW_PROJECTS.find((p) => p._id === id);
+      if (raw) {
+        return NextResponse.json({
+          success: true,
+          data: raw,
+        });
+      }
       return NextResponse.json(
         { success: false, error: 'Project not found' },
         { status: 404 }
