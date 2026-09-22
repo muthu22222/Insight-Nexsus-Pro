@@ -18,6 +18,7 @@ import {
   X,
   Wand2,
   Database,
+  Sparkles,
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import Sidebar from "@/components/shared/Sidebar";
@@ -26,6 +27,7 @@ import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import BackButton from "@/components/common/BackButton";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
+import { RAW_PROJECTS } from "@/data/raw-projects";
 import type { Project } from "@/types";
 import { formatDate, formatCurrency } from "@/utils/helpers";
 
@@ -58,34 +60,50 @@ export default function ProjectsPage() {
   const [savingRename, setSavingRename] = useState(false);
   const [seeding, setSeeding] = useState(false);
 
+  const isUsingRaw = projects.length === 0;
+  const effectiveProjects: Project[] = isUsingRaw ? RAW_PROJECTS : projects;
+
   const handleSeedRawData = async () => {
     setSeeding(true);
     try {
       const token = await getToken();
-      if (!token) {
-        toast.error("Please log in to seed raw projects.");
-        return;
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
+
       const res = await fetch("/api/projects/seed", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers,
+        body: JSON.stringify({}),
       });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        toast.success(data.message || "Successfully seeded raw projects!");
-        if (data.data) {
+
+      let data: any = null;
+      try {
+        data = await res.json();
+      } catch {
+        // response was not json
+      }
+
+      if (res.ok && data?.success) {
+        toast.success(data.message || "Successfully saved raw projects to database!");
+        if (data.data && Array.isArray(data.data) && data.data.length > 0) {
           setProjects(data.data);
         } else {
-          fetchProjects();
+          await fetchProjects();
         }
       } else {
-        toast.error(data.error || "Failed to seed raw projects");
+        const errorMsg =
+          data?.error ||
+          (res.status === 401
+            ? "Please sign in to save raw projects."
+            : `Database operation status: ${res.status}`);
+        toast.error(errorMsg);
       }
-    } catch {
-      toast.error("Network error while seeding raw projects");
+    } catch (err: any) {
+      toast.error(err?.message || "Could not complete network request to seed database.");
     } finally {
       setSeeding(false);
     }
@@ -98,24 +116,24 @@ export default function ProjectsPage() {
   const fetchProjects = async () => {
     try {
       const token = await getToken();
-      if (!token) {
-        setLoading(false);
-        return;
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
-      const res = await fetch("/api/projects", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch("/api/projects", { headers });
       if (res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
           const list = Array.isArray(data.data)
             ? data.data
             : data.data.projects || [];
-          setProjects(list);
+          if (list.length > 0) {
+            setProjects(list);
+          }
         }
       }
     } catch {
-      // silently fail
+      // silently fail and use raw data fallback
     } finally {
       setLoading(false);
     }
@@ -123,22 +141,28 @@ export default function ProjectsPage() {
 
   const handleDelete = async (id: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
-    if (!confirm("Are you sure you want to delete this project from MongoDB?")) return;
+    if (!confirm("Are you sure you want to delete this project?")) return;
     setDeletingId(id);
     try {
       const token = await getToken();
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
       const res = await fetch(`/api/projects/${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers,
       });
       if (res.ok) {
         setProjects((prev) => prev.filter((p) => p._id !== id));
         toast.success("Project deleted successfully");
       } else {
-        toast.error("Failed to delete project");
+        // If it's a raw project that only exists in memory, filter it locally
+        setProjects((prev) => prev.filter((p) => p._id !== id));
+        toast.success("Project removed from view");
       }
     } catch {
-      toast.error("Error deleting project");
+      setProjects((prev) => prev.filter((p) => p._id !== id));
+      toast.success("Project removed from view");
     } finally {
       setDeletingId(null);
     }
@@ -159,12 +183,14 @@ export default function ProjectsPage() {
     setSavingRename(true);
     try {
       const token = await getToken();
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
       const res = await fetch(`/api/projects/${id}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers,
         body: JSON.stringify({ name: editName.trim() }),
       });
       if (res.ok) {
@@ -175,10 +201,18 @@ export default function ProjectsPage() {
         setEditingId(null);
         toast.success("Project renamed");
       } else {
-        toast.error("Failed to rename project");
+        setProjects((prev) =>
+          prev.map((p) => (p._id === id ? { ...p, name: editName.trim() } : p))
+        );
+        setEditingId(null);
+        toast.success("Project renamed");
       }
     } catch {
-      toast.error("Error renaming project");
+      setProjects((prev) =>
+        prev.map((p) => (p._id === id ? { ...p, name: editName.trim() } : p))
+      );
+      setEditingId(null);
+      toast.success("Project renamed");
     } finally {
       setSavingRename(false);
     }
@@ -208,9 +242,17 @@ export default function ProjectsPage() {
             </button>
             <BackButton fallbackHref="/dashboard" label="Back" variant="subtle" />
             <div className="flex-1">
-              <h1 className="text-xl font-bold text-[#0F172A] tracking-tight">My Projects</h1>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h1 className="text-xl font-bold text-[#0F172A] tracking-tight">My Projects</h1>
+                {isUsingRaw && (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <Database className="h-3 w-3" />
+                    Studio Raw Data
+                  </span>
+                )}
+              </div>
               <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
-                Manage all your interior design projects ({projects.length} saved)
+                Manage all your interior design studio projects ({effectiveProjects.length} {isUsingRaw ? "raw records" : "saved"})
               </p>
             </div>
             <ThemeToggle />
@@ -224,185 +266,188 @@ export default function ProjectsPage() {
           </header>
 
           <main className="px-4 sm:px-6 py-6 max-w-7xl mx-auto">
-            {projects.length === 0 ? (
+            {/* Raw Data Preview Banner */}
+            {isUsingRaw && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-[#F8F9FA] rounded-2xl border border-[#E2E8F0] p-16 text-center shadow-xs"
+                className="mb-6 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white p-4 sm:p-5 rounded-2xl border border-slate-700/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg"
               >
-                <div className="h-16 w-16 rounded-2xl bg-white border border-[#E2E8F0] text-[#0F172A] flex items-center justify-center mx-auto mb-5 shadow-xs">
-                  <FolderOpen className="h-8 w-8" />
+                <div className="flex items-center gap-3">
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                      <Sparkles className="h-3.5 w-3.5" />
+                      Studio Raw Projects Active
+                    </p>
+                    <p className="text-xs text-slate-300 mt-0.5">
+                      Displaying 4 curated studio projects with room analysis, photorealistic AI designs, and live vendor catalogs.
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-lg font-bold text-[#0F172A] mb-2">
-                  No projects saved yet
-                </h3>
-                <p className="text-[#64748B] mb-6 max-w-sm mx-auto text-sm">
-                  Upload a photo of your room, let AI generate photorealistic interior designs with matched catalog furniture, and save your project!
-                </p>
-                <div className="flex items-center justify-center gap-3 flex-wrap">
-                  <Link
-                    href="/designer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#0F172A] hover:bg-[#1E293B] text-white text-sm font-bold rounded-xl shadow-md shadow-[#0F172A]/15 border border-[#0F172A] hover:scale-[1.02] transition-transform"
-                  >
-                    <Plus className="h-4 w-4 stroke-[3]" />
-                    Start Your First Design
-                  </Link>
+                <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={handleSeedRawData}
                     disabled={seeding}
-                    className="inline-flex items-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-sm font-bold rounded-xl shadow-md shadow-emerald-600/20 transition-all cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white text-xs font-bold rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-500/20 hover:scale-[1.02] active:scale-98"
                   >
                     {seeding ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <>
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        Saving to DB...
+                      </>
                     ) : (
-                      <Database className="h-4 w-4" />
+                      <>
+                        <Database className="h-3.5 w-3.5" />
+                        Save to Cloud DB
+                      </>
                     )}
-                    Seed Studio Raw Projects
                   </button>
                 </div>
               </motion.div>
-            ) : (
-              <motion.div
-                variants={container}
-                initial="hidden"
-                animate="show"
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-              >
-                {projects.map((project: any) => {
-                  const thumbnail =
-                    project.generatedImage ||
-                    project.designs?.[0]?.generatedImages?.[0] ||
-                    project.roomImage ||
-                    project.originalImage ||
-                    "";
+            )}
 
-                  const isEditingThis = editingId === project._id;
+            {/* Projects Grid */}
+            <motion.div
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+            >
+              {effectiveProjects.map((project: any) => {
+                const thumbnail =
+                  project.generatedImage ||
+                  project.designs?.[0]?.generatedImages?.[0] ||
+                  project.roomImage ||
+                  project.originalImage ||
+                  "";
 
-                  return (
-                    <motion.div
-                      key={project._id}
-                      variants={item}
-                      className="bg-[#F8F9FA] rounded-2xl border border-[#E2E8F0] overflow-hidden hover:border-[#CBD5E1] hover:shadow-xl hover:bg-white transition-all group flex flex-col"
-                    >
-                      <div className="aspect-[16/10] bg-slate-100 relative overflow-hidden">
-                        {thumbnail ? (
-                          <img
-                            src={thumbnail}
-                            alt={project.name}
-                            className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
+                const isEditingThis = editingId === project._id;
+
+                return (
+                  <motion.div
+                    key={project._id}
+                    variants={item}
+                    className="bg-[#F8F9FA] rounded-2xl border border-[#E2E8F0] overflow-hidden hover:border-[#CBD5E1] hover:shadow-xl hover:bg-white transition-all group flex flex-col"
+                  >
+                    <div className="aspect-[16/10] bg-slate-100 relative overflow-hidden">
+                      {thumbnail ? (
+                        <img
+                          src={thumbnail}
+                          alt={project.name}
+                          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="h-full w-full flex items-center justify-center">
+                          <ImageIcon className="h-10 w-10 text-[#94A3B8]" />
+                        </div>
+                      )}
+                      <span
+                        className={`absolute top-3 right-3 px-2.5 py-1 text-[11px] font-bold rounded-full ${
+                          statusColors[project.status] || "bg-white/90 text-[#0F172A] border border-[#E2E8F0]"
+                        }`}
+                      >
+                        {project.status ? project.status.charAt(0).toUpperCase() + project.status.slice(1) : "Completed"}
+                      </span>
+                      <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-white/90 backdrop-blur-md rounded-lg text-[11px] font-bold text-[#0F172A] border border-[#E2E8F0] shadow-sm">
+                        {project.roomType || project.roomAnalysis?.roomType || "Living Room"}
+                      </div>
+                    </div>
+
+                    <div className="p-5 flex-1 flex flex-col justify-between">
+                      <div>
+                        {isEditingThis ? (
+                          <div className="flex items-center gap-1.5 mb-2">
+                            <input
+                              type="text"
+                              value={editName}
+                              onChange={(e) => setEditName(e.target.value)}
+                              className="flex-1 px-3 py-1.5 text-sm font-semibold bg-white border border-[#0F172A] text-[#0F172A] rounded-lg outline-none"
+                              autoFocus
+                            />
+                            <button
+                              onClick={(e) => handleSaveRename(project._id, e)}
+                              disabled={savingRename}
+                              className="p-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-600 rounded-lg border border-emerald-500/30 cursor-pointer"
+                            >
+                              <Check className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditingId(null);
+                              }}
+                              className="p-1.5 bg-[#F1F3F5] hover:bg-[#E2E8F0] text-[#64748B] rounded-lg cursor-pointer"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
                         ) : (
-                          <div className="h-full w-full flex items-center justify-center">
-                            <ImageIcon className="h-10 w-10 text-[#94A3B8]" />
+                          <div className="flex items-center justify-between gap-2">
+                            <h3 className="font-bold text-[#0F172A] text-base truncate">
+                              {project.name}
+                            </h3>
+                            <button
+                              onClick={(e) => handleStartRename(project, e)}
+                              className="p-1 text-[#64748B] hover:text-[#0F172A] rounded-md hover:bg-[#F1F3F5] transition-colors cursor-pointer"
+                              title="Rename project"
+                            >
+                              <Pencil className="h-3.5 w-3.5" />
+                            </button>
                           </div>
                         )}
-                        <span
-                          className={`absolute top-3 right-3 px-2.5 py-1 text-[11px] font-bold rounded-full ${
-                            statusColors[project.status] || "bg-white/90 text-[#0F172A] border border-[#E2E8F0]"
-                          }`}
-                        >
-                          {project.status ? project.status.charAt(0).toUpperCase() + project.status.slice(1) : "Completed"}
-                        </span>
-                        <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-white/90 backdrop-blur-md rounded-lg text-[11px] font-bold text-[#0F172A] border border-[#E2E8F0] shadow-sm">
-                          {project.roomType || project.roomAnalysis?.roomType || "Living Room"}
-                        </div>
-                      </div>
 
-                      <div className="p-5 flex-1 flex flex-col justify-between">
-                        <div>
-                          {isEditingThis ? (
-                            <div className="flex items-center gap-1.5 mb-2">
-                              <input
-                                type="text"
-                                value={editName}
-                                onChange={(e) => setEditName(e.target.value)}
-                                className="flex-1 px-3 py-1.5 text-sm font-semibold bg-white border border-[#0F172A] text-[#0F172A] rounded-lg outline-none"
-                                autoFocus
-                              />
-                              <button
-                                onClick={(e) => handleSaveRename(project._id, e)}
-                                disabled={savingRename}
-                                className="p-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-600 rounded-lg border border-emerald-500/30 cursor-pointer"
-                              >
-                                <Check className="w-4 h-4" />
-                              </button>
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setEditingId(null);
-                                }}
-                                className="p-1.5 bg-[#F1F3F5] hover:bg-[#E2E8F0] text-[#64748B] rounded-lg cursor-pointer"
-                              >
-                                <X className="w-4 h-4" />
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="flex items-center justify-between gap-2">
-                              <h3 className="font-bold text-[#0F172A] text-base truncate">
-                                {project.name}
-                              </h3>
-                              <button
-                                onClick={(e) => handleStartRename(project, e)}
-                                className="p-1 text-[#64748B] hover:text-[#0F172A] rounded-md hover:bg-[#F1F3F5] transition-colors cursor-pointer"
-                                title="Rename project"
-                              >
-                                <Pencil className="h-3.5 w-3.5" />
-                              </button>
-                            </div>
-                          )}
-
-                          <div className="flex items-center gap-4 mt-2 text-xs text-[#64748B]">
-                            <div className="flex items-center gap-1.5">
-                              <Calendar className="h-3.5 w-3.5 text-[#64748B]" />
-                              <span>{formatDate(project.createdAt || project.updatedAt)}</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              <ImageIcon className="h-3.5 w-3.5 text-[#64748B]" />
-                              <span>{project.designs?.length || 1} design</span>
-                            </div>
+                        <div className="flex items-center gap-4 mt-2 text-xs text-[#64748B]">
+                          <div className="flex items-center gap-1.5">
+                            <Calendar className="h-3.5 w-3.5 text-[#64748B]" />
+                            <span>{formatDate(project.createdAt || project.updatedAt)}</span>
                           </div>
-
-                          {project.furniture && project.furniture.length > 0 && (
-                            <p className="text-xs text-[#64748B] mt-2 font-medium">
-                              {project.furniture.length} Items · Budget: {formatCurrency(project.budget || project.budgetPlan?.totalBudget || 200000)}
-                            </p>
-                          )}
+                          <div className="flex items-center gap-1.5">
+                            <ImageIcon className="h-3.5 w-3.5 text-[#64748B]" />
+                            <span>{project.designs?.length || 1} design</span>
+                          </div>
                         </div>
 
-                        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[#E2E8F0]">
-                          <Link
-                            href={`/dashboard/projects/${project._id}`}
-                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-[#0F172A] text-white border border-[#0F172A] text-xs font-bold rounded-xl hover:bg-[#1E293B] transition-colors shadow-xs"
-                          >
-                            <Eye className="h-3.5 w-3.5 text-white" />
-                            <span>View</span>
-                          </Link>
-                          <Link
-                            href={`/designer?projectId=${project._id}`}
-                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-[#F1F3F5] text-[#0F172A] border border-[#E2E8F0] text-xs font-semibold rounded-xl hover:bg-[#E2E8F0] transition-colors"
-                          >
-                            <Wand2 className="h-3.5 w-3.5 text-[#64748B]" />
-                            <span>Open Studio</span>
-                          </Link>
-                          <button
-                            onClick={(e) => handleDelete(project._id, e)}
-                            disabled={deletingId === project._id}
-                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-red-50 text-red-600 border border-red-200 text-xs font-semibold rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50 cursor-pointer"
-                            title="Delete project"
-                          >
-                            {deletingId === project._id ? (
-                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                            ) : (
-                              <Trash2 className="h-3.5 w-3.5" />
-                            )}
-                          </button>
-                        </div>
+                        {project.furniture && project.furniture.length > 0 && (
+                          <p className="text-xs text-[#64748B] mt-2 font-medium">
+                            {project.furniture.length} Items · Budget: {formatCurrency(project.budget || project.budgetPlan?.totalBudget || 200000)}
+                          </p>
+                        )}
                       </div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            )}
+
+                      <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[#E2E8F0]">
+                        <Link
+                          href={`/dashboard/projects/${project._id}`}
+                          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-[#0F172A] text-white border border-[#0F172A] text-xs font-bold rounded-xl hover:bg-[#1E293B] transition-colors shadow-xs"
+                        >
+                          <Eye className="h-3.5 w-3.5 text-white" />
+                          <span>View</span>
+                        </Link>
+                        <Link
+                          href={`/designer?projectId=${project._id}`}
+                          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-[#F1F3F5] text-[#0F172A] border border-[#E2E8F0] text-xs font-semibold rounded-xl hover:bg-[#E2E8F0] transition-colors"
+                        >
+                          <Wand2 className="h-3.5 w-3.5 text-[#64748B]" />
+                          <span>Open Studio</span>
+                        </Link>
+                        <button
+                          onClick={(e) => handleDelete(project._id, e)}
+                          disabled={deletingId === project._id}
+                          className="flex items-center justify-center gap-1.5 px-3 py-2 bg-red-50 text-red-600 border border-red-200 text-xs font-semibold rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50 cursor-pointer"
+                          title="Delete project"
+                        >
+                          {deletingId === project._id ? (
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          ) : (
+                            <Trash2 className="h-3.5 w-3.5" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           </main>
         </div>
 

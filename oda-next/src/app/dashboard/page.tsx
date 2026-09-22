@@ -159,29 +159,42 @@ export default function DashboardPage() {
     setSeeding(true);
     try {
       const token = await getToken();
-      if (!token) {
-        toast.error("Please sign in to save raw data to your MongoDB database.");
-        return;
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
+
       const res = await fetch("/api/projects/seed", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers,
+        body: JSON.stringify({}),
       });
-      const data = await res.json();
-      if (res.ok && data.success) {
+
+      let data: any = null;
+      try {
+        data = await res.json();
+      } catch {
+        // response was not JSON
+      }
+
+      if (res.ok && data?.success) {
         toast.success(data.message || "Successfully seeded 4 raw projects!");
-        if (data.data) {
+        if (data.data && Array.isArray(data.data) && data.data.length > 0) {
           setProjects(data.data);
           setShowRawOverride(false);
         }
       } else {
-        toast.error(data.error || "Failed to seed raw projects.");
+        const errorMsg =
+          data?.error ||
+          (res.status === 401
+            ? "Please sign in to save raw projects."
+            : `Database operation status: ${res.status}`);
+        toast.error(errorMsg);
       }
-    } catch {
-      toast.error("Network error while seeding raw projects.");
+    } catch (err: any) {
+      toast.error(err?.message || "Could not complete network request to seed database.");
     } finally {
       setSeeding(false);
     }
