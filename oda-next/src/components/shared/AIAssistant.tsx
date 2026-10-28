@@ -110,19 +110,19 @@ export default function AIAssistant() {
             className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-96 h-[500px] bg-[var(--surface)] rounded-2xl shadow-2xl border border-[var(--border)] flex flex-col overflow-hidden text-[var(--text-primary)]"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 bg-[#2B1B12] dark:bg-[#1E1A17] text-white border-b border-[var(--border)]">
+            <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-[#7C3AED] via-[#6D28D9] to-[#211A2E] text-white border-b border-[var(--border)] shadow-sm">
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-full bg-white/10 flex items-center justify-center">
-                  <Sparkles className="h-5 w-5 text-amber-400" />
+                <div className="h-9 w-9 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20">
+                  <Sparkles className="h-5 w-5 text-amber-300" />
                 </div>
                 <div>
                   <h3 className="text-sm font-bold tracking-tight text-white">Insight Nexsus AI</h3>
-                  <p className="text-[11px] font-medium text-[#F5EFE7]">Interior Design & Styling Expert</p>
+                  <p className="text-[11px] font-medium text-purple-100">Interior Design & Styling Expert</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors text-white cursor-pointer"
+                className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-white/15 transition-colors text-white cursor-pointer"
                 aria-label="Close assistant"
               >
                 <X className="h-4 w-4 stroke-[3]" />
@@ -139,7 +139,7 @@ export default function AIAssistant() {
                   <div
                     className={`max-w-[82%] rounded-2xl px-4 py-2.5 text-xs sm:text-sm leading-relaxed ${
                       msg.role === "user"
-                        ? "bg-[#2B1B12] dark:bg-white text-white dark:text-[#141210] font-semibold rounded-br-xs shadow-sm"
+                        ? "bg-gradient-to-r from-[#7C3AED] to-[#8B5CF6] text-white font-semibold rounded-br-xs shadow-md shadow-[#7C3AED]/20"
                         : "bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] rounded-bl-xs shadow-xs font-normal"
                     }`}
                   >
@@ -151,9 +151,9 @@ export default function AIAssistant() {
                 <div className="flex justify-start">
                   <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl rounded-bl-xs px-4 py-3 shadow-xs">
                     <div className="flex gap-1.5">
-                      <span className="h-2 w-2 bg-[var(--text-primary)] rounded-full animate-bounce" />
-                      <span className="h-2 w-2 bg-[var(--text-primary)] rounded-full animate-bounce [animation-delay:0.15s]" />
-                      <span className="h-2 w-2 bg-[var(--text-primary)] rounded-full animate-bounce [animation-delay:0.3s]" />
+                      <span className="h-2 w-2 bg-[#7C3AED] rounded-full animate-bounce" />
+                      <span className="h-2 w-2 bg-[#7C3AED] rounded-full animate-bounce [animation-delay:0.15s]" />
+                      <span className="h-2 w-2 bg-[#7C3AED] rounded-full animate-bounce [animation-delay:0.3s]" />
                     </div>
                   </div>
                 </div>
@@ -167,7 +167,7 @@ export default function AIAssistant() {
                   <button
                     key={action}
                     onClick={() => sendMessage(action)}
-                    className="px-2.5 py-1 text-[11px] font-bold bg-[var(--surface-secondary)] text-[var(--text-primary)] border border-[var(--border)] rounded-full hover:bg-[var(--surface-hover)] transition-colors cursor-pointer"
+                    className="px-2.5 py-1 text-[11px] font-bold bg-[#F0E7FF] text-[#7C3AED] dark:bg-[#7C3AED]/20 dark:text-[#A78BFA] border border-[#7C3AED]/30 rounded-full hover:bg-[#E9DEFF] dark:hover:bg-[#7C3AED]/30 transition-colors cursor-pointer"
                   >
                     {action}
                   </button>
@@ -185,12 +185,12 @@ export default function AIAssistant() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask about design, budget, furniture..."
-                className="flex-1 px-4 py-2 text-xs sm:text-sm bg-[var(--surface-secondary)] rounded-full border border-[var(--border)] focus:outline-none focus:border-[#2B1B12] dark:focus:border-white text-[var(--text-primary)] placeholder:text-[var(--text-muted)] transition-all font-medium"
+                className="flex-1 px-4 py-2 text-xs sm:text-sm bg-[var(--surface-secondary)] rounded-full border border-[var(--border)] focus:outline-none focus:border-[#7C3AED] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] transition-all font-medium"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
-                className="h-9 w-9 rounded-full bg-[#2B1B12] hover:bg-[#433328] dark:bg-white dark:hover:bg-[#F5EFE7] text-white dark:text-[#141210] flex items-center justify-center hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0 border border-[#2B1B12] dark:border-white cursor-pointer shadow-xs"
+                className="h-9 w-9 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white flex items-center justify-center hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0 cursor-pointer shadow-md shadow-[#7C3AED]/25"
                 aria-label="Send message"
               >
                 <Send className="h-4 w-4 stroke-[2.5]" />
@@ -204,7 +204,7 @@ export default function AIAssistant() {
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.94 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-4 sm:right-6 z-50 h-14 w-14 rounded-full bg-[#2B1B12] hover:bg-[#433328] dark:bg-white dark:hover:bg-[#F5EFE7] text-white dark:text-[#141210] shadow-xl flex items-center justify-center cursor-pointer border border-[#2B1B12] dark:border-white"
+        className="fixed bottom-6 right-4 sm:right-6 z-50 h-14 w-14 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-xl shadow-[#7C3AED]/35 flex items-center justify-center cursor-pointer border border-white/20 hover:shadow-[#7C3AED]/50 transition-shadow"
         aria-label="Toggle AI assistant"
       >
         {isOpen ? (

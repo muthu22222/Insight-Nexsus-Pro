@@ -247,12 +247,12 @@ export default function StoresPage() {
           <button
             onClick={() => setShowRawDataModal(true)}
             id="view-raw-data-btn"
-            className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-[#2B1B12] hover:bg-[#433328] text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs transition-all hover:scale-105 cursor-pointer"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-[#7C3AED]/25 transition-all hover:scale-105 cursor-pointer"
             title="Inspect raw store dataset in JSON or Table format"
           >
-            <Database className="h-4 w-4 text-emerald-400" />
+            <Database className="h-4 w-4 text-emerald-300" />
             <span className="hidden sm:inline">Raw Data</span>
-            <span className="px-1.5 py-0.2 bg-emerald-500/30 text-emerald-300 text-[11px] rounded font-mono">
+            <span className="px-1.5 py-0.2 bg-emerald-500/30 text-emerald-200 text-[11px] rounded font-mono">
               {RAW_STORES.length}
             </span>
           </button>
@@ -274,8 +274,8 @@ export default function StoresPage() {
                   onClick={() => handleCitySelect(city)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium shrink-0 transition-all cursor-pointer ${
                     isSelected
-                      ? "bg-[#2B1B12] text-white shadow-xs font-bold"
-                      : "bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] hover:bg-[var(--surface-secondary)]"
+                      ? "bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-sm shadow-[#7C3AED]/25 font-bold"
+                      : "bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] hover:border-[#7C3AED] hover:text-[#7C3AED]"
                   }`}
                 >
                   {city.label}
@@ -293,14 +293,14 @@ export default function StoresPage() {
                 value={searchLocation}
                 onChange={(e) => setSearchLocation(e.target.value)}
                 placeholder="Search store name, area, or city (e.g. Peelamedu, Gandhipuram, Bangalore)..."
-                className="w-full pl-11 pr-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--text-primary)] shadow-xs"
+                className="w-full pl-11 pr-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] shadow-xs"
               />
             </form>
             <div className="flex gap-2">
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] cursor-pointer shadow-xs font-medium"
+                className="px-4 py-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#7C3AED] cursor-pointer shadow-xs font-medium"
               >
                 {categories.map((c) => (
                   <option key={c} value={c} className="bg-[var(--surface)] text-[var(--text-primary)]">
@@ -321,7 +321,7 @@ export default function StoresPage() {
                 </span>
                 {loading && (
                   <span className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)]">
-                    <Loader2 className="h-3.5 w-3.5 animate-spin text-[var(--text-primary)]" />
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-[#7C3AED]" />
                     Updating...
                   </span>
                 )}
@@ -340,7 +340,7 @@ export default function StoresPage() {
                       setSearchLocation("");
                       fetchStores(userLocation, "All", "");
                     }}
-                    className="mt-4 px-4 py-2 bg-[#2B1B12] text-white rounded-xl text-xs font-bold hover:bg-[#433328]"
+                    className="mt-4 px-4 py-2 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white rounded-xl text-xs font-bold shadow-sm shadow-[#7C3AED]/25 hover:from-[#6D28D9] hover:to-[#7C3AED]"
                   >
                     Reset Filters
                   </button>
@@ -357,8 +357,8 @@ export default function StoresPage() {
                       onClick={() => setSelectedStore(store)}
                       className={`rounded-xl border p-4 cursor-pointer transition-all ${
                         isSelected
-                          ? "border-[#2B1B12] dark:border-white ring-2 ring-[#2B1B12]/15 bg-[var(--surface)] shadow-md"
-                          : "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--text-secondary)] hover:shadow-xs"
+                          ? "border-[#7C3AED] ring-2 ring-[#7C3AED]/20 bg-[var(--surface)] shadow-md"
+                          : "border-[var(--border)] bg-[var(--surface)] hover:border-[#7C3AED]/60 hover:shadow-xs"
                       }`}
                     >
                       <div className="flex items-start justify-between gap-2">
@@ -424,7 +424,7 @@ export default function StoresPage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-1 text-xs text-white bg-[#2B1B12] hover:bg-[#433328] px-3 py-1 rounded-lg font-bold ml-auto transition-colors shadow-xs"
+                          className="flex items-center gap-1 text-xs text-white bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] px-3 py-1 rounded-lg font-bold ml-auto transition-colors shadow-sm shadow-[#7C3AED]/20"
                         >
                           <Navigation className="h-3 w-3" />
                           Directions
@@ -447,7 +447,7 @@ export default function StoresPage() {
                 />
               ) : (
                 <div className="h-full flex items-center justify-center">
-                  <Loader2 className="h-8 w-8 animate-spin text-[var(--text-primary)]" />
+                  <Loader2 className="h-8 w-8 animate-spin text-[#7C3AED]" />
                 </div>
               )}
             </div>
@@ -544,7 +544,7 @@ export default function StoresPage() {
                       href={getDirectionsUrl(selectedStore)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-5 py-2.5 bg-[#2B1B12] hover:bg-[#433328] text-white rounded-xl text-sm font-bold transition-all shadow-xs hover:scale-105"
+                      className="flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-[#7C3AED]/25 hover:scale-105"
                     >
                       <Navigation className="h-4 w-4" />
                       Get Directions
@@ -572,8 +572,8 @@ export default function StoresPage() {
               {/* Modal Header */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-[var(--surface-secondary)]">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-[#2B1B12] flex items-center justify-center text-white">
-                    <Database className="h-5 w-5 text-emerald-400" />
+                  <div className="h-10 w-10 rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#A855F7] flex items-center justify-center text-white shadow-sm shadow-[#7C3AED]/25">
+                    <Database className="h-5 w-5 text-white" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
@@ -630,7 +630,7 @@ export default function StoresPage() {
                     onClick={() => setRawTab("json")}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-colors ${
                       rawTab === "json"
-                        ? "bg-[#2B1B12] text-white"
+                        ? "bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-sm shadow-[#7C3AED]/25"
                         : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"
                     }`}
                   >
@@ -641,7 +641,7 @@ export default function StoresPage() {
                     onClick={() => setRawTab("table")}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-colors ${
                       rawTab === "table"
-                        ? "bg-[#2B1B12] text-white"
+                        ? "bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-sm shadow-[#7C3AED]/25"
                         : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"
                     }`}
                   >
@@ -706,7 +706,7 @@ export default function StoresPage() {
                 </span>
                 <button
                   onClick={() => setShowRawDataModal(false)}
-                  className="px-4 py-1.5 bg-[#2B1B12] text-white rounded-lg font-bold hover:bg-[#433328] transition-colors cursor-pointer"
+                  className="px-4 py-1.5 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white rounded-lg font-bold hover:from-[#6D28D9] hover:to-[#7C3AED] transition-colors cursor-pointer shadow-sm shadow-[#7C3AED]/25"
                 >
                   Close
                 </button>

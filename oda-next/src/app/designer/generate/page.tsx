@@ -391,7 +391,7 @@ export default function GeneratePage() {
         </div>
 
         <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/30 px-3.5 py-1 rounded-full mb-3">
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#7C3AED] dark:text-[#A78BFA] uppercase tracking-widest bg-[#F0E7FF] dark:bg-[#7C3AED]/15 border border-[#7C3AED]/30 px-3.5 py-1 rounded-full mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             Step 4 of 5
           </span>
@@ -412,7 +412,7 @@ export default function GeneratePage() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
                       index <= 3
-                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black shadow-lg shadow-amber-500/20'
+                        ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-lg shadow-[#7C3AED]/25'
                         : 'bg-[var(--surface-secondary)] text-[var(--text-muted)] border border-[var(--border)]'
                     }`}
                   >
@@ -420,7 +420,7 @@ export default function GeneratePage() {
                   </div>
                   <span
                     className={`text-[10px] mt-1 font-semibold ${
-                      index <= 3 ? 'text-amber-600 dark:text-amber-400' : 'text-[var(--text-muted)]'
+                      index <= 3 ? 'text-[#7C3AED] dark:text-[#A78BFA]' : 'text-[var(--text-muted)]'
                     }`}
                   >
                     {step.label}
@@ -429,7 +429,7 @@ export default function GeneratePage() {
                 {index < steps.length - 1 && (
                   <div
                     className={`w-10 sm:w-12 h-0.5 mx-1 mb-5 ${
-                      index < 3 ? 'bg-amber-500' : 'bg-[var(--border)]'
+                      index < 3 ? 'bg-[#7C3AED]' : 'bg-[var(--border)]'
                     }`}
                   />
                 )}
@@ -446,27 +446,27 @@ export default function GeneratePage() {
           >
             <div className="relative w-32 h-32 mx-auto mb-8">
               <motion.div
-                className="absolute inset-0 rounded-full border-4 border-amber-500/10"
+                className="absolute inset-0 rounded-full border-4 border-[#7C3AED]/15"
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
               <motion.div
-                className="absolute inset-2 rounded-full border-4 border-amber-500/30"
+                className="absolute inset-2 rounded-full border-4 border-[#7C3AED]/30"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
               />
               <motion.div
-                className="absolute inset-4 rounded-full border-4 border-amber-400 border-t-transparent"
+                className="absolute inset-4 rounded-full border-4 border-[#A855F7] border-t-transparent"
                 animate={{ rotate: -360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
               />
               <motion.div
-                className="absolute inset-6 rounded-full border-4 border-amber-500 border-t-transparent"
+                className="absolute inset-6 rounded-full border-4 border-[#7C3AED] border-t-transparent"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
               />
               <div className="absolute inset-0 flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-amber-500" />
+                <Sparkles className="w-8 h-8 text-[#7C3AED]" />
               </div>
             </div>
 
@@ -478,11 +478,11 @@ export default function GeneratePage() {
             <div className="max-w-xs mx-auto">
               <div className="flex justify-between text-xs text-[var(--text-secondary)] mb-2">
                 <span>Generating</span>
-                <span className="text-amber-600 dark:text-amber-400 font-bold">{generationProgress}%</span>
+                <span className="text-[#7C3AED] dark:text-[#A78BFA] font-bold">{generationProgress}%</span>
               </div>
               <div className="w-full bg-[var(--surface-secondary)] rounded-full h-2 border border-[var(--border)] overflow-hidden">
                 <motion.div
-                  className="bg-gradient-to-r from-amber-400 to-orange-400 h-2 rounded-full"
+                  className="bg-gradient-to-r from-[#7C3AED] to-[#A855F7] h-2 rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${generationProgress}%` }}
                   transition={{ duration: 0.3 }}
@@ -492,11 +492,11 @@ export default function GeneratePage() {
 
             <div className="mt-8 flex items-center justify-center gap-6 text-xs text-[var(--text-secondary)]">
               <div className="flex items-center gap-1.5">
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500" />
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#7C3AED]" />
                 Preserving room architecture
               </div>
               <div className="flex items-center gap-1.5">
-                <Armchair className="w-3.5 h-3.5 text-amber-500" />
+                <Armchair className="w-3.5 h-3.5 text-[#0F9D78]" />
                 Rendering complete furniture suite
               </div>
             </div>
@@ -529,7 +529,7 @@ export default function GeneratePage() {
                     <span className="px-3 py-1.5 bg-black/85 backdrop-blur-md text-white rounded-xl text-xs font-bold shadow-lg border border-white/15">
                       {design.style}
                     </span>
-                    <span className="px-2.5 py-1 bg-amber-500 text-black rounded-lg text-xs font-black shadow-md">
+                    <span className="px-2.5 py-1 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white rounded-lg text-xs font-bold shadow-md">
                       {design.furnitureStyle || 'Modern'}
                     </span>
                   </div>
@@ -552,7 +552,7 @@ export default function GeneratePage() {
                         onClick={() => setViewMode('redesign')}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                           viewMode === 'redesign'
-                            ? 'bg-amber-400 text-black shadow-xs font-black'
+                            ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-md font-bold'
                             : 'text-gray-200 hover:text-white hover:bg-white/10'
                         }`}
                       >
@@ -562,18 +562,18 @@ export default function GeneratePage() {
                         onClick={() => setViewMode('split')}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
                           viewMode === 'split'
-                            ? 'bg-amber-400 text-black shadow-xs font-black'
+                            ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-md font-bold'
                             : 'text-gray-200 hover:text-white hover:bg-white/10'
                         }`}
                       >
-                        <Sliders className="w-3 h-3 text-amber-400" />
+                        <Sliders className="w-3 h-3 text-[#C4B5FD]" />
                         <span>Compare Before/After</span>
                       </button>
                       <button
                         onClick={() => setViewMode('original')}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                           viewMode === 'original'
-                            ? 'bg-amber-400 text-black shadow-xs font-black'
+                            ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-md font-bold'
                             : 'text-gray-200 hover:text-white hover:bg-white/10'
                         }`}
                       >
@@ -598,7 +598,7 @@ export default function GeneratePage() {
                 <div>
                   <h2 className="text-lg font-bold text-[var(--text-primary)] leading-snug">{design.style}</h2>
                   <div className="flex flex-wrap items-center gap-2 mt-2">
-                    <span className="text-xs font-bold text-amber-800 dark:text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-md">
+                    <span className="text-xs font-bold text-[#7C3AED] dark:text-[#A78BFA] bg-[#F0E7FF] dark:bg-[#7C3AED]/15 border border-[#7C3AED]/30 px-2.5 py-0.5 rounded-md">
                       ₹{Number(design.budget || 200000).toLocaleString('en-IN')} Budget
                     </span>
                     <span className="text-xs font-semibold text-[var(--text-secondary)] bg-[var(--surface-secondary)] border border-[var(--border)] px-2.5 py-0.5 rounded-md">
@@ -618,7 +618,7 @@ export default function GeneratePage() {
                 <div className="border-t border-[var(--border)] pt-3">
                   <h3 className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-2.5 flex items-center justify-between">
                     <span className="flex items-center gap-1.5">
-                      <Armchair className="w-3.5 h-3.5 text-amber-500" />
+                      <Armchair className="w-3.5 h-3.5 text-[#7C3AED]" />
                       <span>Included Furniture & Décor ({itemCount})</span>
                     </span>
                   </h3>
@@ -627,10 +627,10 @@ export default function GeneratePage() {
                     {hotspots.map((item: any, idx: number) => (
                       <div
                         key={idx}
-                        className="p-2.5 bg-[var(--surface-secondary)]/50 hover:border-amber-500/50 rounded-xl border border-[var(--border)] transition-colors flex items-center justify-between"
+                        className="p-2.5 bg-[var(--surface-secondary)]/50 hover:border-[#7C3AED]/50 rounded-xl border border-[var(--border)] transition-colors flex items-center justify-between"
                       >
                         <div className="min-w-0 flex items-center gap-2.5">
-                          <span className="w-5 h-5 rounded-full bg-amber-500 text-black text-[10px] font-black flex items-center justify-center shrink-0">
+                          <span className="w-5 h-5 rounded-full bg-[#7C3AED] text-white text-[10px] font-black flex items-center justify-center shrink-0">
                             {item.id || idx + 1}
                           </span>
                           <div className="min-w-0">
@@ -644,7 +644,7 @@ export default function GeneratePage() {
                         </div>
 
                         <div className="text-right shrink-0 ml-2 flex flex-col items-end">
-                          <p className="text-xs font-bold text-[#F5A900]">{item.price}</p>
+                          <p className="text-xs font-bold text-[#D97706] dark:text-[#FBBF24]">{item.price}</p>
                           <div className="flex items-center gap-1.5 mt-1">
                             <a
                               href={getAmazonProductUrl(item.label || item.category || 'Furniture', item.amazonUrl)}
@@ -695,7 +695,7 @@ export default function GeneratePage() {
                 onClick={handleRegenerate}
                 className="flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
               >
-                <RefreshCw className="w-4 h-4 text-amber-500" />
+                <RefreshCw className="w-4 h-4 text-[#7C3AED]" />
                 Regenerate
               </button>
               <button
@@ -713,7 +713,7 @@ export default function GeneratePage() {
                   </>
                 ) : (
                   <>
-                    <Save className="w-4 h-4 text-amber-500" />
+                    <Save className="w-4 h-4 text-[#7C3AED]" />
                     <span>Save Project</span>
                   </>
                 )}
@@ -722,12 +722,12 @@ export default function GeneratePage() {
                 onClick={() => router.push('/furniture')}
                 className="flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
               >
-                <ShoppingBag className="w-4 h-4 text-amber-500" />
+                <ShoppingBag className="w-4 h-4 text-[#7C3AED]" />
                 View Products
               </button>
               <button
                 onClick={handleOpenViewer}
-                className="flex-1 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black py-3 rounded-xl font-extrabold text-sm transition-all shadow-md shadow-amber-500/20 hover:scale-[1.01] flex items-center justify-center gap-2 min-w-[220px] cursor-pointer"
+                className="flex-1 bg-gradient-to-r from-[#7C3AED] via-[#8B5CF6] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white py-3 rounded-xl font-extrabold text-sm transition-all shadow-md shadow-[#7C3AED]/25 hover:scale-[1.01] flex items-center justify-center gap-2 min-w-[220px] cursor-pointer"
               >
                 <span>Open Full Interactive Room Viewer →</span>
               </button>
@@ -755,7 +755,7 @@ export default function GeneratePage() {
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-500 flex items-center justify-center font-bold">
+                  <div className="w-9 h-9 rounded-xl bg-[#F0E7FF] dark:bg-[#7C3AED]/15 border border-[#7C3AED]/30 text-[#7C3AED] dark:text-[#A78BFA] flex items-center justify-center font-bold">
                     <Save className="w-5 h-5" />
                   </div>
                   <div>
@@ -781,7 +781,7 @@ export default function GeneratePage() {
                     value={projectNameInput}
                     onChange={(e) => setProjectNameInput(e.target.value)}
                     placeholder="e.g. Modern Living Room Redesign"
-                    className="w-full px-3.5 py-2.5 text-sm bg-[var(--background)] border border-[var(--border)] rounded-xl focus:outline-none focus:border-amber-500 text-[var(--text-primary)] placeholder-[var(--text-muted)] font-medium"
+                    className="w-full px-3.5 py-2.5 text-sm bg-[var(--background)] border border-[var(--border)] rounded-xl focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] text-[var(--text-primary)] placeholder-[var(--text-muted)] font-medium"
                     autoFocus
                   />
                 </div>
@@ -797,7 +797,7 @@ export default function GeneratePage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[var(--text-muted)]">Furniture Count:</span>
-                    <span className="font-bold text-amber-600 dark:text-amber-400">{itemCount} items with Amazon/Flipkart links</span>
+                    <span className="font-bold text-[#7C3AED] dark:text-[#A78BFA]">{itemCount} items with Amazon/Flipkart links</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[var(--text-muted)]">Target Budget:</span>
@@ -815,7 +815,7 @@ export default function GeneratePage() {
                   <button
                     onClick={handleSaveProject}
                     disabled={isSaving}
-                    className="flex-1 py-2.5 text-sm font-extrabold bg-gradient-to-r from-amber-500 to-orange-500 text-black rounded-xl hover:from-amber-400 hover:to-amber-300 transition-all flex items-center justify-center gap-1.5 shadow-md disabled:opacity-50 cursor-pointer"
+                    className="flex-1 py-2.5 text-sm font-extrabold bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white rounded-xl hover:from-[#6D28D9] hover:to-[#7C3AED] transition-all flex items-center justify-center gap-1.5 shadow-md shadow-[#7C3AED]/25 disabled:opacity-50 cursor-pointer"
                   >
                     {isSaving ? (
                       <>

@@ -175,9 +175,9 @@ function DesignerUploadContent() {
 
   if (isLoadingProject) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center bg-white text-[#0F172A] space-y-4">
-        <Loader2 className="h-9 w-9 animate-spin text-[#0F172A]" />
-        <p className="text-sm font-bold text-[#64748B]">Loading your project from MongoDB...</p>
+      <div className="flex h-screen flex-col items-center justify-center bg-[var(--background)] text-[var(--text-primary)] space-y-4">
+        <Loader2 className="h-9 w-9 animate-spin text-[#7C3AED]" />
+        <p className="text-sm font-bold text-[#514858] dark:text-[#E2DCE8]">Loading your project from MongoDB...</p>
       </div>
     );
   }
@@ -194,8 +194,8 @@ function DesignerUploadContent() {
         </div>
 
         <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--text-primary)] uppercase tracking-widest bg-[var(--surface-secondary)] border border-[var(--border)] px-3.5 py-1 rounded-full mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#7C3AED] dark:text-[#A78BFA] uppercase tracking-widest bg-[#F0E7FF] dark:bg-[#7C3AED]/20 border border-[#7C3AED]/30 px-3.5 py-1 rounded-full mb-3 shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#7C3AED] dark:text-[#A78BFA]" />
             AI Designer Studio
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] mb-1">
@@ -215,7 +215,7 @@ function DesignerUploadContent() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
                       index === 0
-                        ? 'bg-[#2B1B12] text-white border border-[#2B1B12] shadow-xs'
+                        ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white border border-[#7C3AED]/40 shadow-sm shadow-[#7C3AED]/20'
                         : 'bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]'
                     }`}
                   >
@@ -223,7 +223,7 @@ function DesignerUploadContent() {
                   </div>
                   <span
                     className={`text-[10px] mt-1 font-semibold ${
-                      index === 0 ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'
+                      index === 0 ? 'text-[#7C3AED] dark:text-[#A78BFA] font-bold' : 'text-[var(--text-secondary)]'
                     }`}
                   >
                     {step.label}
@@ -254,13 +254,13 @@ function DesignerUploadContent() {
                   {...getRootProps()}
                   className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all bg-[var(--background)] ${
                     isDragActive
-                      ? 'border-[var(--text-primary)] bg-[var(--surface-secondary)]'
-                      : 'border-[var(--border)] hover:border-[var(--text-primary)] hover:bg-[var(--surface-secondary)]'
+                      ? 'border-[#7C3AED] bg-[#F0E7FF]/50 dark:bg-[#7C3AED]/15'
+                      : 'border-[var(--border)] hover:border-[#7C3AED] hover:bg-[#F0E7FF]/30 dark:hover:bg-[#7C3AED]/10'
                   }`}
                 >
                   <input {...getInputProps()} />
                   <div className="flex flex-col items-center">
-                    <div className="w-16 h-16 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-2xl flex items-center justify-center mb-4 text-[var(--text-primary)] shadow-xs">
+                    <div className="w-16 h-16 bg-[#F0E7FF] dark:bg-[#7C3AED]/20 border border-[#7C3AED]/30 rounded-2xl flex items-center justify-center mb-4 text-[#7C3AED] dark:text-[#A78BFA] shadow-xs">
                       <Upload className="w-7 h-7" />
                     </div>
                     <p className="text-base font-bold text-[var(--text-primary)] mb-1">
@@ -311,7 +311,7 @@ function DesignerUploadContent() {
                   <div className="mt-4">
                     <div className="w-full bg-[var(--surface-secondary)] rounded-full h-1.5 overflow-hidden">
                       <motion.div
-                        className="bg-[#2B1B12] dark:bg-white h-1.5 rounded-full"
+                        className="bg-gradient-to-r from-[#7C3AED] to-[#A855F7] h-1.5 rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${uploadProgress}%` }}
                         transition={{ duration: 0.3 }}
@@ -324,14 +324,14 @@ function DesignerUploadContent() {
                   <button
                     onClick={handleRetake}
                     disabled={isUploading}
-                    className="flex-1 border border-[var(--border)] text-[var(--text-primary)] py-3 rounded-xl font-semibold text-sm hover:bg-[var(--surface-secondary)] transition-colors disabled:opacity-50 cursor-pointer bg-[var(--surface)]"
+                    className="flex-1 border border-[var(--border)] text-[var(--text-primary)] hover:border-[#7C3AED] hover:text-[#7C3AED] hover:bg-[#F0E7FF]/40 dark:hover:bg-[#7C3AED]/10 py-3 rounded-xl font-semibold text-sm transition-colors disabled:opacity-50 cursor-pointer bg-[var(--surface)]"
                   >
                     Retake
                   </button>
                   <button
                     onClick={handleContinue}
                     disabled={isUploading}
-                    className="flex-1 bg-[#2B1B12] hover:bg-[#433328] text-white py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-[#2B1B12]/15 hover:scale-[1.01] disabled:opacity-50 flex items-center justify-center gap-2 border border-[#2B1B12] cursor-pointer"
+                    className="flex-1 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#9333EA] text-white py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-[#7C3AED]/25 hover:shadow-lg hover:shadow-[#7C3AED]/35 hover:scale-[1.01] active:scale-98 disabled:opacity-50 flex items-center justify-center gap-2 border border-[#7C3AED]/40 cursor-pointer"
                   >
                     {isUploading ? (
                       <Loader2 className="w-4 h-4 animate-spin" />

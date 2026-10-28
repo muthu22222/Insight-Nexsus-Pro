@@ -77,18 +77,18 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
         {!collapsed ? (
           <>
             <Link href="/dashboard" className="flex items-center gap-2.5 overflow-hidden group">
-              <div className="h-9 w-9 rounded-xl bg-[#2B1B12] dark:bg-white border border-[var(--border)] flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
-                <span className="text-white dark:text-[#141210] font-black text-xs tracking-wider">IN</span>
+              <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#7C3AED] to-[#A855F7] border border-[#7C3AED]/30 flex items-center justify-center shrink-0 shadow-md shadow-[#7C3AED]/20 group-hover:scale-105 transition-transform">
+                <span className="text-white font-black text-xs tracking-wider">IN</span>
               </div>
               <span className="text-lg font-bold text-[var(--text-primary)] tracking-tight whitespace-nowrap">
-                Insight <span className="text-[var(--text-muted)]">Nexsus</span>
+                Insight <span className="text-[#7C3AED] dark:text-[#A78BFA]">Nexsus</span>
               </span>
             </Link>
 
             <button
               type="button"
               onClick={toggleSidebar}
-              className="hidden lg:flex h-8 w-8 items-center justify-center rounded-lg hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer shrink-0"
+              className="hidden lg:flex h-8 w-8 items-center justify-center rounded-lg hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] hover:text-[#7C3AED] dark:hover:text-[#A78BFA] transition-colors cursor-pointer shrink-0"
               aria-label="Collapse sidebar"
               title="Collapse sidebar (‹)"
             >
@@ -111,7 +111,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
             <button
               type="button"
               onClick={toggleSidebar}
-              className="hidden lg:flex h-8 w-8 items-center justify-center rounded-lg hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+              className="hidden lg:flex h-8 w-8 items-center justify-center rounded-lg hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] hover:text-[#7C3AED] dark:hover:text-[#A78BFA] transition-colors cursor-pointer"
               aria-label="Expand sidebar"
               title="Expand sidebar (›)"
             >
@@ -122,8 +122,8 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
               className="flex items-center justify-center group"
               title="Insight Nexsus"
             >
-              <div className="h-8 w-8 rounded-xl bg-[#2B1B12] dark:bg-white border border-[var(--border)] flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
-                <span className="text-white dark:text-[#141210] font-black text-[11px] tracking-wider">IN</span>
+              <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#7C3AED] to-[#A855F7] border border-[#7C3AED]/30 flex items-center justify-center shadow-md shadow-[#7C3AED]/20 group-hover:scale-105 transition-transform">
+                <span className="text-white font-black text-[11px] tracking-wider">IN</span>
               </div>
             </Link>
           </div>
@@ -145,7 +145,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
                     document.dispatchEvent(new CustomEvent("toggle-ai-assistant"));
                     onMobileClose?.();
                   }}
-                  className={`flex items-center rounded-xl text-sm font-semibold transition-all hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer ${
+                  className={`flex items-center rounded-xl text-sm font-semibold transition-all hover:bg-[#F0E7FF]/70 dark:hover:bg-[#7C3AED]/15 text-[var(--text-primary)] hover:text-[#6D28D9] dark:hover:text-[#A78BFA] cursor-pointer ${
                     collapsed
                       ? "h-11 w-11 mx-auto justify-center p-0"
                       : "w-full gap-3 px-3 py-2.5"
@@ -153,7 +153,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
                   aria-label={item.label}
                   title={collapsed ? item.label : undefined}
                 >
-                  <Icon className="h-5 w-5 shrink-0 text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors" />
+                  <Icon className="h-5 w-5 shrink-0 text-[var(--text-primary)] group-hover:text-[#6D28D9] dark:group-hover:text-[#A78BFA] transition-colors" />
                   {!collapsed && <span className="truncate">{item.label}</span>}
                 </button>
 
@@ -179,15 +179,15 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
                     : "gap-3 px-3 py-2.5"
                 } ${
                   active
-                    ? "bg-[var(--surface-secondary)] text-[var(--text-primary)] border border-[var(--border)] font-bold shadow-xs"
-                    : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)] border border-transparent font-medium"
+                    ? "bg-[#F0E7FF] text-[#7C3AED] dark:bg-[#7C3AED]/20 dark:text-[#A78BFA] border border-[#7C3AED]/30 font-bold shadow-xs"
+                    : "text-[var(--text-primary)] hover:bg-[#F0E7FF]/60 dark:hover:bg-[#7C3AED]/10 hover:text-[#6D28D9] dark:hover:text-[#A78BFA] border border-transparent font-semibold"
                 }`}
                 aria-label={item.label}
                 title={collapsed ? item.label : undefined}
               >
                 <Icon
                   className={`h-5 w-5 shrink-0 ${
-                    active ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]"
+                    active ? "text-[#7C3AED] dark:text-[#A78BFA]" : "text-[var(--text-primary)] group-hover:text-[#6D28D9] dark:group-hover:text-[#A78BFA]"
                   } transition-colors`}
                 />
                 {!collapsed && <span className="truncate">{item.label}</span>}
@@ -206,7 +206,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
       </nav>
 
       {/* Footer / User Profile & Theme Toggle */}
-      <div className={`border-t border-[var(--border)] bg-[var(--surface-secondary)] ${collapsed ? "p-2 space-y-2" : "p-3"}`}>
+      <div className={`border-t border-[var(--border)] bg-[var(--surface-secondary)]/50 ${collapsed ? "p-2 space-y-2" : "p-3"}`}>
         {user && (
           <div className="relative group">
             <div
@@ -214,7 +214,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
                 collapsed ? "justify-center p-1" : "gap-3 px-3 py-2"
               }`}
             >
-              <div className="h-8 w-8 rounded-full bg-[#2B1B12] dark:bg-white border border-[var(--border)] flex items-center justify-center text-white dark:text-[#141210] text-xs font-black shrink-0">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#7C3AED] to-[#A855F7] border border-[#7C3AED]/30 flex items-center justify-center text-white text-xs font-black shrink-0 shadow-xs">
                 {user.avatar ? (
                   <img
                     src={user.avatar}
@@ -254,7 +254,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }: SidebarProps) {
           <button
             type="button"
             onClick={handleLogout}
-            className={`flex items-center rounded-xl text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] hover:text-red-500 transition-colors cursor-pointer ${
+            className={`flex items-center rounded-xl text-sm font-semibold text-[var(--text-secondary)] hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 transition-colors cursor-pointer ${
               collapsed
                 ? "h-10 w-10 mx-auto justify-center p-0"
                 : "w-full gap-3 px-3 py-2"

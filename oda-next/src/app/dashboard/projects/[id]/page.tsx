@@ -254,7 +254,7 @@ export default function ProjectDetailPage() {
         <p className="text-[var(--text-secondary)] mb-4">Project not found</p>
         <Link
           href="/dashboard/projects"
-          className="px-5 py-2.5 bg-[#2B1B12] hover:bg-[#433328] text-white text-sm font-extrabold rounded-xl border border-[#2B1B12]"
+          className="px-5 py-2.5 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white text-sm font-extrabold rounded-xl border border-[#7C3AED] shadow-md shadow-[#7C3AED]/25"
         >
           Back to Projects
         </Link>
@@ -346,7 +346,7 @@ export default function ProjectDetailPage() {
               <ThemeToggle />
               <Link
                 href={`/designer?projectId=${project._id}`}
-                className="hidden sm:flex items-center gap-2 px-3.5 py-2 bg-[#2B1B12] hover:bg-[#433328] text-white text-xs font-bold rounded-xl shadow-xs border border-[#2B1B12] hover:scale-[1.02] transition-transform"
+                className="hidden sm:flex items-center gap-2 px-3.5 py-2 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white text-xs font-bold rounded-xl shadow-xs border border-[#7C3AED] hover:scale-[1.02] transition-transform"
               >
                 <Wand2 className="h-3.5 w-3.5 stroke-[2.5]" />
                 <span>Open in Studio</span>
@@ -385,11 +385,11 @@ export default function ProjectDetailPage() {
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center gap-2 px-4 py-3 text-xs sm:text-sm font-bold whitespace-nowrap border-b-2 transition-colors cursor-pointer ${
                       active
-                        ? "border-[#2B1B12] dark:border-white text-[#2B1B12] dark:text-white bg-[var(--surface-secondary)] rounded-t-lg"
+                        ? "border-[#7C3AED] text-[#7C3AED] dark:text-[#A78BFA] bg-[#F0E7FF]/50 dark:bg-[#7C3AED]/15 rounded-t-lg"
                         : "border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"
                     }`}
                   >
-                    <Icon className={`h-4 w-4 ${active ? "text-[#2B1B12] dark:text-white" : "text-[var(--text-secondary)]"}`} />
+                    <Icon className={`h-4 w-4 ${active ? "text-[#7C3AED] dark:text-[#A78BFA]" : "text-[var(--text-secondary)]"}`} />
                     {tab.label}
                   </button>
                 );
@@ -543,7 +543,7 @@ export default function ProjectDetailPage() {
                                 <ImageIcon className="h-8 w-8 text-[var(--text-muted)]" />
                               </div>
                             )}
-                            <div className="absolute top-3 left-3 px-2.5 py-1 bg-[#2B1B12] text-white border border-[#2B1B12] text-xs font-black rounded-full flex items-center gap-1 shadow-md">
+                            <div className="absolute top-3 left-3 px-2.5 py-1 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white border border-[#7C3AED] text-xs font-bold rounded-full flex items-center gap-1 shadow-md">
                               <Check className="h-3 w-3" />
                               Saved Design
                             </div>
@@ -562,7 +562,7 @@ export default function ProjectDetailPage() {
                             </p>
                             <Link
                               href={`/designer?projectId=${project._id}`}
-                              className="mt-3 w-full py-2 bg-[#2B1B12] hover:bg-[#433328] text-white text-xs font-extrabold rounded-xl border border-[#2B1B12] transition-transform flex items-center justify-center gap-1.5 shadow-xs hover:scale-[1.01]"
+                              className="mt-3 w-full py-2 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white text-xs font-extrabold rounded-xl border border-[#7C3AED] transition-transform flex items-center justify-center gap-1.5 shadow-sm shadow-[#7C3AED]/25 hover:scale-[1.01]"
                             >
                               <Wand2 className="w-3.5 h-3.5 stroke-[2.5]" />
                               <span>Open in Studio</span>
@@ -597,7 +597,7 @@ export default function ProjectDetailPage() {
                         return (
                           <div
                             key={item._id || idx}
-                            className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] overflow-hidden hover:border-[var(--text-secondary)] transition-all flex flex-col justify-between shadow-xs"
+                            className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] overflow-hidden hover:border-[#7C3AED]/60 transition-all flex flex-col justify-between shadow-xs"
                           >
                             <div className="aspect-[4/3] bg-[var(--surface-secondary)] relative">
                               {item.image || genImage ? (
@@ -624,7 +624,7 @@ export default function ProjectDetailPage() {
                                 <p className="text-xs text-[var(--text-secondary)] mt-0.5">
                                   {item.brand || "Designer Brand"} · {item.category || "Furniture"}
                                 </p>
-                                <p className="text-base font-black text-[#F5A900] mt-2">
+                                <p className="text-base font-black text-[#D97706] dark:text-[#FBBF24] mt-2">
                                   {formatCurrency(itemPrice)}
                                 </p>
                               </div>
@@ -713,7 +713,7 @@ export default function ProjectDetailPage() {
                             </div>
                             <div className="w-full h-2.5 bg-[var(--surface-secondary)] rounded-full overflow-hidden border border-[var(--border)]">
                               <div
-                                className={`h-full rounded-full ${categoryColors[alloc.category] || "bg-[#2B1B12]"}`}
+                                className={`h-full rounded-full ${categoryColors[alloc.category] || "bg-[#7C3AED]"}`}
                                 style={{ width: `${alloc.percentage}%` }}
                               />
                             </div>

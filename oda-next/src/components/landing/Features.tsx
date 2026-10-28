@@ -69,7 +69,7 @@ export default function Features() {
   return (
     <section id="features" className="py-24 md:py-32 bg-[var(--background)] overflow-hidden relative">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-stone-200/30 blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-r from-[#7C3AED]/10 to-[#10B981]/10 blur-[140px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
         <motion.div
@@ -78,14 +78,14 @@ export default function Features() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-flex items-center gap-1.5 text-[#2B1B12] dark:text-white text-xs sm:text-sm font-bold tracking-widest uppercase bg-[var(--surface-secondary)] border border-[var(--border)] px-3.5 py-1 rounded-full mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-[#5F5750] dark:text-[#D6CEC5]" />
+          <span className="inline-flex items-center gap-1.5 text-[#7C3AED] dark:text-[#A78BFA] text-xs sm:text-sm font-bold tracking-widest uppercase bg-[#F0E7FF] dark:bg-[#7C3AED]/20 border border-[#7C3AED]/30 px-4 py-1.5 rounded-full mb-4 shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#7C3AED] dark:text-[#A78BFA]" />
             Why Insight Nexsus
           </span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#2B1B12] dark:text-white mt-2 tracking-tight">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#17131D] dark:text-white mt-2 tracking-tight">
             Everything You Need to Design Smarter
           </h2>
-          <p className="text-[#5F5750] dark:text-[#D6CEC5] text-sm sm:text-base max-w-xl mx-auto mt-4 font-normal">
+          <p className="text-[#514858] dark:text-[#E2DCE8] text-sm sm:text-base max-w-xl mx-auto mt-4 font-medium">
             From instant AI room mapping to guaranteed real store products and live budget calculation.
           </p>
         </motion.div>
@@ -119,23 +119,23 @@ export default function Features() {
               return (
                 <div
                   key={`row1-${feature.title}-${idx}`}
-                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--text-secondary)] rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl backdrop-blur-md"
+                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-[var(--surface)] border border-[var(--border)] hover:border-[#7C3AED] rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#7C3AED]/10 backdrop-blur-md"
                 >
                   {/* Top Badge & Icon */}
                   <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)] flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-xs">
-                      <Icon size={22} className="text-[#2B1B12] dark:text-white" />
+                    <div className="w-12 h-12 rounded-xl bg-[#F0E7FF] dark:bg-[#7C3AED]/20 border border-[#7C3AED]/30 flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-xs">
+                      <Icon size={22} className="text-[#7C3AED] dark:text-[#A78BFA]" />
                     </div>
-                    <span className="text-[11px] font-bold text-[#5F5750] dark:text-[#D6CEC5] bg-[var(--surface-secondary)] border border-[var(--border)] px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold text-[#0F9D78] dark:text-[#10B981] bg-[#E6F8F1] dark:bg-[#10B981]/20 border border-[#0F9D78]/30 px-2.5 py-0.5 rounded-full">
                       {feature.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-[#2B1B12] dark:text-white text-lg font-bold mb-2.5 transition-colors">
+                  <h3 className="text-[#17131D] dark:text-white group-hover:text-[#7C3AED] dark:group-hover:text-[#A78BFA] text-lg font-bold mb-2.5 transition-colors">
                     {feature.title}
                   </h3>
 
-                  <p className="text-[#5F5750] dark:text-[#D6CEC5] text-sm leading-relaxed">
+                  <p className="text-[#514858] dark:text-[#E2DCE8] text-sm leading-relaxed font-medium">
                     {feature.description}
                   </p>
                 </div>
@@ -165,22 +165,22 @@ export default function Features() {
               return (
                 <div
                   key={`row2-${feature.title}-${idx}`}
-                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--text-secondary)] rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl backdrop-blur-md"
+                  className="group relative w-[320px] sm:w-[380px] shrink-0 bg-[var(--surface)] border border-[var(--border)] hover:border-[#7C3AED] rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#7C3AED]/10 backdrop-blur-md"
                 >
                   <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)] flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-xs">
-                      <Icon size={22} className="text-[#2B1B12] dark:text-white" />
+                    <div className="w-12 h-12 rounded-xl bg-[#F0E7FF] dark:bg-[#7C3AED]/20 border border-[#7C3AED]/30 flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-xs">
+                      <Icon size={22} className="text-[#7C3AED] dark:text-[#A78BFA]" />
                     </div>
-                    <span className="text-[11px] font-bold text-[#5F5750] dark:text-[#D6CEC5] bg-[var(--surface-secondary)] border border-[var(--border)] px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold text-[#0F9D78] dark:text-[#10B981] bg-[#E6F8F1] dark:bg-[#10B981]/20 border border-[#0F9D78]/30 px-2.5 py-0.5 rounded-full">
                       {feature.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-[#2B1B12] dark:text-white text-lg font-bold mb-2.5 transition-colors">
+                  <h3 className="text-[#17131D] dark:text-white group-hover:text-[#7C3AED] dark:group-hover:text-[#A78BFA] text-lg font-bold mb-2.5 transition-colors">
                     {feature.title}
                   </h3>
 
-                  <p className="text-[#5F5750] dark:text-[#D6CEC5] text-sm leading-relaxed">
+                  <p className="text-[#514858] dark:text-[#E2DCE8] text-sm leading-relaxed font-medium">
                     {feature.description}
                   </p>
                 </div>

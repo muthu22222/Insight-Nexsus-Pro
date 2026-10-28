@@ -216,7 +216,7 @@ export default function ProductDetailPage() {
               className="space-y-6"
             >
               <div>
-                <span className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-widest bg-[var(--surface-secondary)] border border-[var(--border)] px-2.5 py-0.5 rounded-md">
+                <span className="text-xs font-bold text-[#7C3AED] dark:text-[#A78BFA] uppercase tracking-widest bg-[#F0E7FF] dark:bg-[#7C3AED]/15 border border-[#7C3AED]/30 px-2.5 py-0.5 rounded-md">
                   {product.brand}
                 </span>
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] mt-2">
@@ -233,7 +233,7 @@ export default function ProductDetailPage() {
               </div>
 
               <div>
-                <p className="text-3xl font-black text-[#F5A900]">
+                <p className="text-3xl font-black text-[#D97706] dark:text-[#FBBF24]">
                   {formatCurrency(product.price)}
                 </p>
                 <p className="text-xs text-[var(--text-secondary)] mt-1">
@@ -294,7 +294,7 @@ export default function ProductDetailPage() {
                 <div className="relative flex-1">
                   <button
                     onClick={() => setShowProjectDropdown(!showProjectDropdown)}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] font-bold text-sm rounded-xl hover:border-[var(--text-primary)] transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] font-bold text-sm rounded-xl hover:border-[#7C3AED] hover:text-[#7C3AED] transition-colors cursor-pointer"
                   >
                     <Bookmark className="h-4 w-4 text-[var(--text-secondary)]" />
                     Save to Project
@@ -378,7 +378,7 @@ export default function ProductDetailPage() {
           {relatedProducts.length > 0 && (
             <div className="mt-12">
               <h2 className="text-lg font-bold text-[var(--text-primary)] mb-5 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[var(--text-secondary)]" />
+                <Sparkles className="w-4 h-4 text-[#7C3AED]" />
                 Related Products
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -386,7 +386,7 @@ export default function ProductDetailPage() {
                   <Link
                     key={rp._id}
                     href={`/furniture/${rp._id}`}
-                    className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] overflow-hidden hover:border-[var(--text-secondary)] hover:shadow-xl transition-all group"
+                    className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] overflow-hidden hover:border-[#7C3AED]/60 hover:shadow-xl hover:shadow-[#7C3AED]/10 transition-all group"
                   >
                     <div className="aspect-square bg-[var(--surface-secondary)] overflow-hidden">
                       {rp.image ? (
@@ -406,7 +406,7 @@ export default function ProductDetailPage() {
                       <p className="text-sm font-semibold text-[var(--text-primary)] truncate mt-0.5">
                         {rp.productName}
                       </p>
-                      <p className="text-sm font-extrabold text-[#F5A900] mt-1">
+                      <p className="text-sm font-extrabold text-[#D97706] dark:text-[#FBBF24] mt-1">
                         {formatCurrency(rp.price)}
                       </p>
                     </div>

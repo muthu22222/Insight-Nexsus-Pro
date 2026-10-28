@@ -151,22 +151,22 @@ export default function AdminDashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-gray-50">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="flex h-screen items-center justify-center bg-[var(--bg-main)]">
+        <Loader2 className="h-8 w-8 animate-spin text-[#7C3AED]" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex h-screen items-center justify-center bg-gray-50">
-        <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center max-w-md">
+      <div className="flex h-screen items-center justify-center bg-[var(--bg-main)]">
+        <div className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border-subtle)] p-8 text-center max-w-md shadow-sm">
           <Shield className="h-12 w-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Access Denied</h2>
-          <p className="text-gray-500 text-sm">{error}</p>
+          <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Access Denied</h2>
+          <p className="text-[var(--text-secondary)] text-sm">{error}</p>
           <Link
             href="/dashboard"
-            className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 transition-colors"
+            className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white text-sm font-medium rounded-xl hover:opacity-95 shadow-sm transition-all"
           >
             Go to Dashboard
           </Link>
@@ -180,43 +180,43 @@ export default function AdminDashboardPage() {
       label: "Total Users",
       value: stats?.totalUsers ?? 0,
       icon: Users,
-      color: "bg-blue-50",
-      iconColor: "text-blue-600",
+      color: "bg-[#F0E7FF] dark:bg-[#7C3AED]/20",
+      iconColor: "text-[#7C3AED]",
     },
     {
       label: "Total Projects",
       value: stats?.totalProjects ?? 0,
       icon: FolderOpen,
-      color: "bg-violet-50",
-      iconColor: "text-violet-600",
+      color: "bg-[#E6F8F1] dark:bg-[#0F9D78]/20",
+      iconColor: "text-[#0F9D78]",
     },
     {
       label: "Total Furniture Items",
       value: stats?.totalFurnitureItems ?? 0,
       icon: Package,
-      color: "bg-green-50",
-      iconColor: "text-green-600",
+      color: "bg-amber-50 dark:bg-amber-950/30",
+      iconColor: "text-amber-600",
     },
     {
       label: "AI Requests",
       value: stats?.totalAiRequests ?? 0,
       icon: Bot,
-      color: "bg-amber-50",
-      iconColor: "text-amber-600",
+      color: "bg-[#F0E7FF] dark:bg-[#7C3AED]/20",
+      iconColor: "text-[#7C3AED]",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[var(--bg-main)] text-[var(--text-primary)]">
       {/* Admin Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 hidden lg:flex flex-col">
-        <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-100">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center">
+      <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-[var(--bg-card)] border-r border-[var(--border-subtle)] hidden lg:flex flex-col">
+        <div className="flex items-center gap-3 px-6 py-5 border-b border-[var(--border-subtle)]">
+          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#7C3AED] to-[#A855F7] flex items-center justify-center shadow-sm">
             <Shield className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h1 className="text-sm font-bold text-gray-900">Insight Nexsus Admin</h1>
-            <p className="text-xs text-gray-500">Management Panel</p>
+            <h1 className="text-sm font-bold text-[var(--text-primary)]">Insight Nexsus Admin</h1>
+            <p className="text-xs text-[var(--text-secondary)]">Management Panel</p>
           </div>
         </div>
 
@@ -232,8 +232,8 @@ export default function AdminDashboardPage() {
                 href={navItem.href}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-blue-50 text-blue-700"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    ? "bg-[#F0E7FF] text-[#7C3AED] dark:bg-[#7C3AED]/20 dark:text-[#A78BFA] font-semibold"
+                    : "text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)]"
                 }`}
               >
                 <navItem.icon className="h-4.5 w-4.5" />
@@ -243,20 +243,20 @@ export default function AdminDashboardPage() {
           })}
         </nav>
 
-        <div className="px-3 py-4 border-t border-gray-100">
+        <div className="px-3 py-4 border-t border-[var(--border-subtle)]">
           <div className="flex items-center gap-3 px-3 py-2">
-            <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center">
-              <span className="text-xs font-bold text-gray-600">
+            <div className="h-8 w-8 rounded-full bg-[#F0E7FF] dark:bg-[#7C3AED]/20 flex items-center justify-center">
+              <span className="text-xs font-bold text-[#7C3AED] dark:text-[#A78BFA]">
                 {user?.name?.charAt(0) || "A"}
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">{user?.name}</p>
-              <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+              <p className="text-sm font-medium text-[var(--text-primary)] truncate">{user?.name}</p>
+              <p className="text-xs text-[var(--text-secondary)] truncate">{user?.email}</p>
             </div>
             <button
               onClick={handleLogout}
-              className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-red-600 transition-colors"
+              className="p-1.5 rounded-lg hover:bg-[var(--bg-card-hover)] text-[var(--text-secondary)] hover:text-red-600 transition-colors"
               title="Logout"
             >
               <LogOut className="h-4 w-4" />
@@ -268,19 +268,19 @@ export default function AdminDashboardPage() {
       {/* Main Content */}
       <div className="lg:pl-64">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-4">
+        <header className="sticky top-0 z-30 bg-[var(--bg-card)]/80 backdrop-blur-md border-b border-[var(--border-subtle)] px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <BackButton fallbackHref="/dashboard" label="Back to App" variant="subtle" />
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Admin Dashboard</h1>
-                <p className="text-sm text-gray-500 mt-0.5">
+                <h1 className="text-xl font-bold text-[var(--text-primary)]">Admin Dashboard</h1>
+                <p className="text-sm text-[var(--text-secondary)] mt-0.5">
                   Overview of your platform metrics
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-700 text-xs font-medium rounded-full">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-400 border border-red-200/50 dark:border-red-800/40 text-xs font-medium rounded-full">
                 <Shield className="h-3 w-3" />
                 Admin
               </span>
@@ -294,17 +294,17 @@ export default function AdminDashboardPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {statCards.map((card) => (
                 <motion.div key={card.label} variants={item}>
-                  <div className="bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md transition-shadow">
+                  <div className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border-subtle)] p-5 hover:shadow-md hover:border-[#7C3AED]/30 transition-all">
                     <div className="flex items-center justify-between">
                       <div className={`h-11 w-11 rounded-xl ${card.color} flex items-center justify-center`}>
                         <card.icon className={`h-5 w-5 ${card.iconColor}`} />
                       </div>
-                      <TrendingUp className="h-4 w-4 text-gray-300" />
+                      <TrendingUp className="h-4 w-4 text-[var(--text-muted)]" />
                     </div>
-                    <p className="mt-4 text-2xl font-bold text-gray-900">
+                    <p className="mt-4 text-2xl font-bold text-[var(--text-primary)]">
                       {card.value.toLocaleString("en-IN")}
                     </p>
-                    <p className="text-sm text-gray-500">{card.label}</p>
+                    <p className="text-sm text-[var(--text-secondary)]">{card.label}</p>
                   </div>
                 </motion.div>
               ))}
@@ -312,41 +312,41 @@ export default function AdminDashboardPage() {
 
             {/* Recent Activity */}
             <motion.div variants={item}>
-              <div className="bg-white rounded-2xl border border-gray-100">
-                <div className="px-6 py-4 border-b border-gray-100">
+              <div className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border-subtle)] overflow-hidden">
+                <div className="px-6 py-4 border-b border-[var(--border-subtle)]">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-gray-900">Recent Activity</h2>
+                    <h2 className="text-lg font-semibold text-[var(--text-primary)]">Recent Activity</h2>
                     <Link
                       href="/admin/users"
-                      className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+                      className="text-sm text-[#7C3AED] hover:text-[#A855F7] font-medium flex items-center gap-1 transition-colors"
                     >
                       View All
                       <ChevronRight className="h-3.5 w-3.5" />
                     </Link>
                   </div>
                 </div>
-                <div className="divide-y divide-gray-50">
+                <div className="divide-y divide-[var(--border-subtle)]">
                   {stats?.recentActivity && stats.recentActivity.length > 0 ? (
                     stats.recentActivity.map((activity) => (
                       <div
                         key={activity.id}
-                        className="flex items-center gap-4 px-6 py-3.5 hover:bg-gray-50 transition-colors"
+                        className="flex items-center gap-4 px-6 py-3.5 hover:bg-[var(--bg-card-hover)] transition-colors"
                       >
-                        <div className="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0">
+                        <div className="h-8 w-8 rounded-lg bg-[var(--bg-secondary)] flex items-center justify-center flex-shrink-0">
                           {getActivityIcon(activity.type)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm text-gray-700">{activity.message}</p>
+                          <p className="text-sm text-[var(--text-primary)]">{activity.message}</p>
                         </div>
-                        <span className="text-xs text-gray-400 whitespace-nowrap">
+                        <span className="text-xs text-[var(--text-muted)] whitespace-nowrap">
                           {formatTimeAgo(activity.timestamp)}
                         </span>
                       </div>
                     ))
                   ) : (
                     <div className="px-6 py-12 text-center">
-                      <Clock className="h-8 w-8 text-gray-300 mx-auto mb-3" />
-                      <p className="text-sm text-gray-500">No recent activity</p>
+                      <Clock className="h-8 w-8 text-[var(--text-muted)] mx-auto mb-3" />
+                      <p className="text-sm text-[var(--text-secondary)]">No recent activity</p>
                     </div>
                   )}
                 </div>
@@ -355,46 +355,46 @@ export default function AdminDashboardPage() {
 
             {/* Quick Actions */}
             <motion.div variants={item}>
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+              <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Quick Actions</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Link
                   href="/admin/furniture"
-                  className="flex items-center gap-4 bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md transition-shadow group"
+                  className="flex items-center gap-4 bg-[var(--bg-card)] rounded-2xl border border-[var(--border-subtle)] p-5 hover:border-[#0F9D78]/50 hover:shadow-md transition-all group"
                 >
-                  <div className="h-11 w-11 rounded-xl bg-green-50 flex items-center justify-center">
-                    <Sofa className="h-5 w-5 text-green-600" />
+                  <div className="h-11 w-11 rounded-xl bg-[#E6F8F1] dark:bg-[#0F9D78]/20 flex items-center justify-center">
+                    <Sofa className="h-5 w-5 text-[#0F9D78]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">Manage Furniture</p>
-                    <p className="text-xs text-gray-500">Add, edit, or remove items</p>
+                    <p className="text-sm font-semibold text-[var(--text-primary)]">Manage Furniture</p>
+                    <p className="text-xs text-[var(--text-secondary)]">Add, edit, or remove items</p>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-300 ml-auto group-hover:text-green-600 transition-colors" />
+                  <ChevronRight className="h-4 w-4 text-[var(--text-muted)] ml-auto group-hover:text-[#0F9D78] transition-colors" />
                 </Link>
                 <Link
                   href="/admin/users"
-                  className="flex items-center gap-4 bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md transition-shadow group"
+                  className="flex items-center gap-4 bg-[var(--bg-card)] rounded-2xl border border-[var(--border-subtle)] p-5 hover:border-[#7C3AED]/50 hover:shadow-md transition-all group"
                 >
-                  <div className="h-11 w-11 rounded-xl bg-blue-50 flex items-center justify-center">
-                    <Users className="h-5 w-5 text-blue-600" />
+                  <div className="h-11 w-11 rounded-xl bg-[#F0E7FF] dark:bg-[#7C3AED]/20 flex items-center justify-center">
+                    <Users className="h-5 w-5 text-[#7C3AED]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">Manage Users</p>
-                    <p className="text-xs text-gray-500">View user accounts</p>
+                    <p className="text-sm font-semibold text-[var(--text-primary)]">Manage Users</p>
+                    <p className="text-xs text-[var(--text-secondary)]">View user accounts</p>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-300 ml-auto group-hover:text-blue-600 transition-colors" />
+                  <ChevronRight className="h-4 w-4 text-[var(--text-muted)] ml-auto group-hover:text-[#7C3AED] transition-colors" />
                 </Link>
                 <Link
                   href="/admin/furniture"
-                  className="flex items-center gap-4 bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md transition-shadow group"
+                  className="flex items-center gap-4 bg-[var(--bg-card)] rounded-2xl border border-[var(--border-subtle)] p-5 hover:border-[#7C3AED]/50 hover:shadow-md transition-all group"
                 >
-                  <div className="h-11 w-11 rounded-xl bg-violet-50 flex items-center justify-center">
-                    <Package className="h-5 w-5 text-violet-600" />
+                  <div className="h-11 w-11 rounded-xl bg-[#F0E7FF] dark:bg-[#7C3AED]/20 flex items-center justify-center">
+                    <Package className="h-5 w-5 text-[#7C3AED]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">Add Furniture</p>
-                    <p className="text-xs text-gray-500">Catalog new products</p>
+                    <p className="text-sm font-semibold text-[var(--text-primary)]">Add Furniture</p>
+                    <p className="text-xs text-[var(--text-secondary)]">Catalog new products</p>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-300 ml-auto group-hover:text-violet-600 transition-colors" />
+                  <ChevronRight className="h-4 w-4 text-[var(--text-muted)] ml-auto group-hover:text-[#7C3AED] transition-colors" />
                 </Link>
               </div>
             </motion.div>

@@ -259,8 +259,8 @@ export default function AnalysisPage() {
         </div>
 
         <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--text-primary)] uppercase tracking-widest bg-[var(--surface-secondary)] border border-[var(--border)] px-3.5 py-1 rounded-full mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#7C3AED] dark:text-[#A78BFA] uppercase tracking-widest bg-[#F0E7FF] dark:bg-[#7C3AED]/20 border border-[#7C3AED]/30 px-3.5 py-1 rounded-full mb-3 shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#7C3AED] dark:text-[#A78BFA]" />
             Step 2 of 5
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] mb-1">
@@ -279,8 +279,10 @@ export default function AnalysisPage() {
                 <div className="flex flex-col items-center">
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
-                      index <= 1
-                        ? 'bg-[#2B1B12] text-white border border-[#2B1B12] shadow-xs'
+                      index === 1
+                        ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white border border-[#7C3AED]/40 shadow-sm shadow-[#7C3AED]/20'
+                        : index < 1
+                        ? 'bg-[#E6F8F1] dark:bg-[#10B981]/20 text-[#0F9D78] dark:text-[#10B981] border border-[#0F9D78]/30 font-bold'
                         : 'bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]'
                     }`}
                   >
@@ -288,7 +290,7 @@ export default function AnalysisPage() {
                   </div>
                   <span
                     className={`text-[10px] mt-1 font-semibold ${
-                      index <= 1 ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'
+                      index === 1 ? 'text-[#7C3AED] dark:text-[#A78BFA] font-bold' : index < 1 ? 'text-[#0F9D78] dark:text-[#10B981] font-bold' : 'text-[var(--text-secondary)]'
                     }`}
                   >
                     {step.label}
@@ -297,7 +299,7 @@ export default function AnalysisPage() {
                 {index < steps.length - 1 && (
                   <div
                     className={`w-10 sm:w-12 h-0.5 mx-1 mb-5 ${
-                      index < 1 ? 'bg-[#2B1B12] dark:bg-white' : 'bg-[var(--border)]'
+                      index < 1 ? 'bg-[#0F9D78]' : 'bg-[var(--border)]'
                     }`}
                   />
                 )}
@@ -358,17 +360,17 @@ export default function AnalysisPage() {
               <div className="p-12 text-center my-auto">
                 <div className="relative w-20 h-20 mx-auto mb-6">
                   <motion.div
-                    className="absolute inset-0 border-4 border-[#2B1B12]/20 rounded-full"
+                    className="absolute inset-0 border-4 border-[#7C3AED]/20 rounded-full"
                     animate={{ rotate: 360 }}
                     transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                   />
                   <motion.div
-                    className="absolute inset-2 border-4 border-[#2B1B12] dark:border-white border-t-transparent rounded-full"
+                    className="absolute inset-2 border-4 border-[#7C3AED] dark:border-[#A78BFA] border-t-transparent rounded-full"
                     animate={{ rotate: -360 }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Armchair className="w-6 h-6 text-[var(--text-primary)]" />
+                    <Armchair className="w-6 h-6 text-[#7C3AED] dark:text-[#A78BFA]" />
                   </div>
                 </div>
                 <h3 className="text-base font-bold text-[var(--text-primary)] mb-2">
@@ -384,14 +386,14 @@ export default function AnalysisPage() {
                 <div className="p-3.5 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)]">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <Armchair className="w-4 h-4 text-[var(--text-primary)]" />
+                      <Armchair className="w-4 h-4 text-[#7C3AED] dark:text-[#A78BFA]" />
                       <h4 className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wide">
                         Detected Existing Furniture ({analysis.furniture?.length || 0})
                       </h4>
                     </div>
                     <button
                       onClick={() => setShowAddFurniture(!showAddFurniture)}
-                      className="text-[11px] font-bold text-white bg-[#2B1B12] hover:bg-[#433328] flex items-center gap-1 px-2.5 py-0.5 rounded-lg transition-colors cursor-pointer"
+                      className="text-[11px] font-bold text-white bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#9333EA] flex items-center gap-1 px-2.5 py-1 rounded-lg transition-all shadow-xs cursor-pointer"
                     >
                       <Plus className="w-3 h-3" />
                       Add Item
@@ -410,12 +412,12 @@ export default function AnalysisPage() {
                         onChange={(e) => setNewFurnitureInput(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleAddFurniture()}
                         placeholder="e.g. L-shaped Sectional Sofa, Solid Teak TV Unit"
-                        className="flex-1 px-3 py-1.5 text-xs border border-[var(--border)] rounded-lg focus:outline-none focus:border-[var(--text-primary)] bg-[var(--background)] text-[var(--text-primary)]"
+                        className="flex-1 px-3 py-1.5 text-xs border border-[var(--border)] rounded-lg focus:outline-none focus:border-[#7C3AED] bg-[var(--background)] text-[var(--text-primary)]"
                         autoFocus
                       />
                       <button
                         onClick={handleAddFurniture}
-                        className="px-3 py-1.5 bg-[#2B1B12] text-white rounded-lg text-xs font-bold hover:bg-[#433328] transition-colors"
+                        className="px-3 py-1.5 bg-[#7C3AED] text-white rounded-lg text-xs font-bold hover:bg-[#6D28D9] transition-colors"
                       >
                         Add
                       </button>
@@ -519,7 +521,7 @@ export default function AnalysisPage() {
                               />
                               <button
                                 onClick={() => handleEditSave(key)}
-                                className="text-xs text-white font-bold px-2.5 py-1 bg-[#2B1B12] rounded cursor-pointer"
+                                className="text-xs text-white font-bold px-2.5 py-1 bg-[#7C3AED] hover:bg-[#6D28D9] rounded cursor-pointer"
                               >
                                 Save
                               </button>
@@ -533,7 +535,7 @@ export default function AnalysisPage() {
                         {editingField !== key && (
                           <button
                             onClick={() => handleEditStart(key, rawValue)}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity p-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity p-1 text-[var(--text-secondary)] hover:text-[#7C3AED] dark:hover:text-[#A78BFA] cursor-pointer"
                             title="Edit field"
                           >
                             <Pencil className="w-3 h-3" />
@@ -552,7 +554,7 @@ export default function AnalysisPage() {
         <div className="flex gap-3 mt-8 max-w-6xl mx-auto">
           <button
             onClick={() => router.push('/designer')}
-            className="flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
+            className="flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] hover:border-[#7C3AED] hover:text-[#7C3AED] hover:bg-[#F0E7FF]/40 dark:hover:bg-[#7C3AED]/10 px-6 py-2.5 rounded-xl font-semibold text-sm transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -560,7 +562,7 @@ export default function AnalysisPage() {
           <button
             onClick={handleConfirm}
             disabled={!analysis || isAnalyzing}
-            className="flex-1 bg-[#2B1B12] hover:bg-[#433328] text-white py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-[#2B1B12]/15 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer border border-[#2B1B12]"
+            className="flex-1 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#9333EA] text-white py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-[#7C3AED]/25 hover:shadow-lg hover:shadow-[#7C3AED]/35 hover:scale-[1.01] active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer border border-[#7C3AED]/40"
           >
             <span>Proceed to Style & Furniture Preferences</span>
             <ArrowRight className="w-4 h-4 stroke-[3]" />

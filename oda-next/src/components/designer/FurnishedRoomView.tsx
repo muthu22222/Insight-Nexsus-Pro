@@ -233,8 +233,8 @@ export default function FurnishedRoomView({
             {/* Subtle loading shimmer if AI image is currently generating */}
             {isRedesignLoading && (
               <div className="absolute inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center pointer-events-none">
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/80 border border-amber-500/40 rounded-full shadow-2xl">
-                  <Loader2 className="w-3.5 h-3.5 text-amber-400 animate-spin" />
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/80 border border-[#7C3AED]/40 rounded-full shadow-2xl">
+                  <Loader2 className="w-3.5 h-3.5 text-[#A78BFA] animate-spin" />
                   <span className="text-[11px] font-semibold text-white">Loading Redesigned Room...</span>
                 </div>
               </div>
@@ -256,7 +256,7 @@ export default function FurnishedRoomView({
             <div className="absolute top-4 -left-20 -translate-x-1/2 bg-black/80 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow pointer-events-none">
               Original
             </div>
-            <div className="absolute top-4 left-20 -translate-x-1/2 bg-amber-600/90 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow pointer-events-none">
+            <div className="absolute top-4 left-20 -translate-x-1/2 bg-[#7C3AED]/90 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow pointer-events-none">
               Redesigned
             </div>
           </div>
@@ -289,7 +289,7 @@ export default function FurnishedRoomView({
                   <div
                     className={`relative w-6 h-6 rounded-full flex items-center justify-center backdrop-blur-md border transition-all duration-200 shadow-xl ${
                       isFocused
-                        ? 'bg-amber-500 text-white border-white scale-125 ring-4 ring-amber-400/40'
+                        ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white border-white scale-125 ring-4 ring-[#7C3AED]/40'
                         : 'bg-black/75 text-white/95 border-white/40 hover:bg-black/90 hover:scale-115'
                     }`}
                   >
@@ -318,23 +318,23 @@ export default function FurnishedRoomView({
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div className="flex items-start justify-between gap-2 mb-1">
-                          <span className="text-[9px] font-bold uppercase tracking-wider text-[#F5A900]">
+                          <span className="text-[9px] font-bold uppercase tracking-wider text-[#7C3AED] dark:text-[#A78BFA]">
                             {hotspot.category || 'Furniture'}
                           </span>
                           {hotspot.match && (
-                            <span className="text-[9px] font-bold text-[#00C98D] bg-[#00C98D]/15 px-1.5 py-0.5 rounded border border-[#00C98D]/30">
+                            <span className="text-[9px] font-bold text-[#0F9D78] dark:text-[#10B981] bg-[#E6F8F1] dark:bg-[#0F9D78]/20 px-1.5 py-0.5 rounded border border-[#0F9D78]/30">
                               {hotspot.match}% Match
                             </span>
                           )}
                         </div>
 
-                        <h4 className="text-xs font-bold text-[#2B1B12] dark:text-white leading-tight mb-1">
+                        <h4 className="text-xs font-bold text-[var(--text-primary)] leading-tight mb-1">
                           {hotspot.label}
                         </h4>
 
                         <div className="flex items-center justify-between text-[11px] text-[var(--text-secondary)] mt-2 pt-2 border-t border-[var(--border)]">
                           <div>
-                            <span className="text-xs font-black text-[#F5A900]">
+                            <span className="text-xs font-black text-[#D97706] dark:text-[#FBBF24]">
                               {hotspot.price}
                             </span>
                             {hotspot.store && (

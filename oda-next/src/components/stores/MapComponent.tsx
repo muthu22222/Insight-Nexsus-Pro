@@ -74,8 +74,8 @@ export default function MapComponent({
       className: "custom-user-marker",
       html: `
         <div style="position:relative;display:flex;align-items:center;justify-content:center;">
-          <div style="position:absolute;width:26px;height:26px;background:rgba(37,99,235,0.3);border-radius:50%;animation:pulse 2s infinite;"></div>
-          <div style="width:14px;height:14px;background:#2563eb;border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.4);position:relative;z-index:2;"></div>
+          <div style="position:absolute;width:26px;height:26px;background:rgba(124,58,237,0.3);border-radius:50%;animation:pulse 2s infinite;"></div>
+          <div style="width:14px;height:14px;background:#7C3AED;border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.4);position:relative;z-index:2;"></div>
         </div>
       `,
       iconSize: [26, 26],
@@ -86,8 +86,8 @@ export default function MapComponent({
       .addTo(map)
       .bindPopup(
         `<div style="font-family:inherit;padding:4px 2px;">
-          <h4 style="font-weight:700;font-size:13px;color:#1e293b;margin:0 0 2px 0;">📍 Your Location</h4>
-          <p style="font-size:11px;color:#64748b;margin:0;">Showing nearby furniture stores in your area</p>
+          <h4 style="font-weight:700;font-size:13px;color:#211A23;margin:0 0 2px 0;">📍 Your Location</h4>
+          <p style="font-size:11px;color:#6B6472;margin:0;">Showing nearby furniture stores in your area</p>
         </div>`
       );
 
@@ -106,7 +106,7 @@ export default function MapComponent({
       if (!store.lat || !store.lng) return;
 
       const isSelected = selectedStore?._id === store._id;
-      const markerColor = isSelected ? "#2563eb" : "#e11d48";
+      const markerColor = isSelected ? "#7C3AED" : "#0F9D78";
 
       const storeIcon = L.divIcon({
         className: "custom-store-marker",
@@ -123,14 +123,14 @@ export default function MapComponent({
       const popupContent = `
         <div style="font-family:inherit;min-width:210px;padding:4px 2px;">
           <div style="display:flex;align-items:center;justify-content:between;gap:6px;margin-bottom:4px;">
-            <h3 style="font-weight:700;font-size:14px;color:#0f172a;margin:0;">${store.name}</h3>
+            <h3 style="font-weight:700;font-size:14px;color:#211A23;margin:0;">${store.name}</h3>
           </div>
-          <p style="font-size:11px;color:#64748b;margin:0 0 6px 0;line-height:1.4;">${store.address}</p>
-          <div style="font-size:11px;font-weight:600;color:#059669;margin-bottom:8px;">★ ${store.rating || 4.5} Rating · ${store.category || "Furniture & Decor"}</div>
-          <div style="display:flex;gap:6px;padding-top:6px;border-top:1px solid #f1f5f9;">
-            <a href="https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}" target="_blank" rel="noopener noreferrer" style="flex:1;text-align:center;padding:5px 8px;background:#2563eb;color:white;text-decoration:none;border-radius:6px;font-size:11px;font-weight:600;">Directions</a>
-            ${store.phone ? `<a href="tel:${store.phone}" style="padding:5px 8px;background:#f8fafc;border:1px solid #e2e8f0;color:#334155;text-decoration:none;border-radius:6px;font-size:11px;font-weight:600;">Call</a>` : ""}
-            ${store.website ? `<a href="${store.website}" target="_blank" rel="noopener noreferrer" style="padding:5px 8px;background:#f8fafc;border:1px solid #e2e8f0;color:#334155;text-decoration:none;border-radius:6px;font-size:11px;font-weight:600;">Web</a>` : ""}
+          <p style="font-size:11px;color:#6B6472;margin:0 0 6px 0;line-height:1.4;">${store.address}</p>
+          <div style="font-size:11px;font-weight:600;color:#0F9D78;margin-bottom:8px;">★ ${store.rating || 4.5} Rating · ${store.category || "Furniture & Decor"}</div>
+          <div style="display:flex;gap:6px;padding-top:6px;border-top:1px solid #E8E1ED;">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}" target="_blank" rel="noopener noreferrer" style="flex:1;text-align:center;padding:5px 8px;background:linear-gradient(135deg, #7C3AED, #A855F7);color:white;text-decoration:none;border-radius:8px;font-size:11px;font-weight:600;box-shadow:0 2px 6px rgba(124,58,237,0.25);">Directions</a>
+            ${store.phone ? `<a href="tel:${store.phone}" style="padding:5px 8px;background:#FAF8F5;border:1px solid #E8E1ED;color:#211A23;text-decoration:none;border-radius:8px;font-size:11px;font-weight:600;">Call</a>` : ""}
+            ${store.website ? `<a href="${store.website}" target="_blank" rel="noopener noreferrer" style="padding:5px 8px;background:#FAF8F5;border:1px solid #E8E1ED;color:#211A23;text-decoration:none;border-radius:8px;font-size:11px;font-weight:600;">Web</a>` : ""}
           </div>
         </div>
       `;

@@ -131,9 +131,9 @@ export default function LoginPage() {
         </div>
         <div className="bg-[var(--surface)] rounded-2xl shadow-sm border border-[var(--border)] p-8">
           <div className="text-center mb-8">
-            <Link href="/" className="inline-block">
+            <Link href="/" className="inline-block group">
               <h1 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">
-                Insight <span className="text-[#C9A66B]">Nexsus</span>
+                Insight <span className="text-[#7C3AED] dark:text-[#A78BFA] font-extrabold group-hover:opacity-90 transition-opacity">Nexsus</span>
               </h1>
             </Link>
             <p className="text-[var(--text-secondary)] mt-2 text-sm">Welcome back. Sign in to continue.</p>
@@ -155,8 +155,8 @@ export default function LoginPage() {
                     if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
                   }}
                   placeholder="you@example.com"
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-lg border ${
-                    errors.email ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-[var(--border)] focus:border-[var(--text-primary)]'
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border ${
+                    errors.email ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-[var(--border)] focus:border-[#7C3AED]'
                   } bg-[var(--background)] text-[var(--text-primary)] text-sm placeholder-[var(--text-muted)] outline-none transition-all`}
                 />
               </div>
@@ -178,14 +178,14 @@ export default function LoginPage() {
                     if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }));
                   }}
                   placeholder="Enter your password"
-                  className={`w-full pl-10 pr-10 py-2.5 rounded-lg border ${
-                    errors.password ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-[var(--border)] focus:border-[var(--text-primary)]'
+                  className={`w-full pl-10 pr-10 py-2.5 rounded-xl border ${
+                    errors.password ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-[var(--border)] focus:border-[#7C3AED]'
                   } bg-[var(--background)] text-[var(--text-primary)] text-sm placeholder-[var(--text-muted)] outline-none transition-all`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[#7C3AED] dark:hover:text-[#A78BFA] cursor-pointer"
                 >
                   {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                 </button>
@@ -194,7 +194,7 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-center justify-end">
-              <Link href="/auth/forgot-password" className="text-sm text-[var(--text-primary)] hover:underline font-semibold">
+              <Link href="/auth/forgot-password" className="text-sm text-[#6D28D9] dark:text-[#C4B5FD] hover:underline font-bold transition-colors">
                 Forgot password?
               </Link>
             </div>
@@ -202,7 +202,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-[#2B1B12] text-white py-2.5 rounded-lg font-bold text-sm hover:bg-[#433328] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md shadow-[#2B1B12]/20 cursor-pointer"
+              className="w-full bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#9333EA] text-white py-3 rounded-xl font-bold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md shadow-[#7C3AED]/25 hover:shadow-lg hover:shadow-[#7C3AED]/35 hover:scale-[1.01] active:scale-98 border border-[#7C3AED]/40 cursor-pointer"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -220,14 +220,14 @@ export default function LoginPage() {
               <div className="w-full border-t border-[var(--border)]" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-[var(--surface)] px-3 text-[var(--text-muted)]">or continue with</span>
+              <span className="bg-[var(--surface)] px-3 text-[var(--text-secondary)] font-semibold">or continue with</span>
             </div>
           </div>
 
           <button
             onClick={handleGoogleLogin}
             disabled={isGoogleLoading}
-            className="w-full border border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] py-2.5 rounded-lg font-bold text-sm hover:border-[var(--text-primary)] transition-colors disabled:opacity-50 flex items-center justify-center gap-3 cursor-pointer"
+            className="w-full border border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] py-2.5 rounded-xl font-bold text-sm hover:border-[#7C3AED] hover:bg-[#F0E7FF]/50 dark:hover:bg-[#7C3AED]/15 transition-all disabled:opacity-50 flex items-center justify-center gap-3 cursor-pointer"
           >
             {isGoogleLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -256,9 +256,9 @@ export default function LoginPage() {
             )}
           </button>
 
-          <p className="text-center text-sm text-[var(--text-secondary)] mt-6">
+          <p className="text-center text-sm text-[var(--text-secondary)] mt-6 font-medium">
             Don&apos;t have an account?{' '}
-            <Link href="/auth/register" className="text-[var(--text-primary)] hover:underline font-bold">
+            <Link href="/auth/register" className="text-[#6D28D9] dark:text-[#C4B5FD] hover:underline font-bold">
               Sign Up
             </Link>
           </p>

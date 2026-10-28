@@ -152,23 +152,23 @@ export default function AdminUsersPage() {
 
   if (!authorized) {
     return (
-      <div className="flex h-screen items-center justify-center bg-gray-50">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="flex h-screen items-center justify-center bg-[var(--bg-main)]">
+        <Loader2 className="h-8 w-8 animate-spin text-[#7C3AED]" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[var(--bg-main)] text-[var(--text-primary)]">
       {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 hidden lg:flex flex-col">
-        <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-100">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center">
+      <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-[var(--bg-card)] border-r border-[var(--border-subtle)] hidden lg:flex flex-col">
+        <div className="flex items-center gap-3 px-6 py-5 border-b border-[var(--border-subtle)]">
+          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#7C3AED] to-[#A855F7] flex items-center justify-center shadow-sm">
             <Shield className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h1 className="text-sm font-bold text-gray-900">Insight Nexsus Admin</h1>
-            <p className="text-xs text-gray-500">Management Panel</p>
+            <h1 className="text-sm font-bold text-[var(--text-primary)]">Insight Nexsus Admin</h1>
+            <p className="text-xs text-[var(--text-secondary)]">Management Panel</p>
           </div>
         </div>
 
@@ -184,8 +184,8 @@ export default function AdminUsersPage() {
                 href={navItem.href}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-blue-50 text-blue-700"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    ? "bg-[#F0E7FF] text-[#7C3AED] dark:bg-[#7C3AED]/20 dark:text-[#A78BFA] font-semibold"
+                    : "text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)]"
                 }`}
               >
                 <navItem.icon className="h-4.5 w-4.5" />
@@ -195,23 +195,23 @@ export default function AdminUsersPage() {
           })}
         </nav>
 
-        <div className="px-3 py-4 border-t border-gray-100">
+        <div className="px-3 py-4 border-t border-[var(--border-subtle)]">
           <div className="flex items-center gap-3 px-3 py-2">
-            <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center">
-              <span className="text-xs font-bold text-gray-600">
+            <div className="h-8 w-8 rounded-full bg-[#F0E7FF] dark:bg-[#7C3AED]/20 flex items-center justify-center">
+              <span className="text-xs font-bold text-[#7C3AED] dark:text-[#A78BFA]">
                 {adminUser?.name?.charAt(0) || "A"}
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">{adminUser?.name}</p>
-              <p className="text-xs text-gray-500 truncate">{adminUser?.email}</p>
+              <p className="text-sm font-medium text-[var(--text-primary)] truncate">{adminUser?.name}</p>
+              <p className="text-xs text-[var(--text-secondary)] truncate">{adminUser?.email}</p>
             </div>
             <button
               onClick={() => {
                 localStorage.removeItem("token");
                 router.push("/auth/login");
               }}
-              className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-red-600 transition-colors"
+              className="p-1.5 rounded-lg hover:bg-[var(--bg-card-hover)] text-[var(--text-secondary)] hover:text-red-600 transition-colors"
               title="Logout"
             >
               <LogOut className="h-4 w-4" />
@@ -222,11 +222,11 @@ export default function AdminUsersPage() {
 
       {/* Main Content */}
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-4">
+        <header className="sticky top-0 z-30 bg-[var(--bg-card)]/80 backdrop-blur-md border-b border-[var(--border-subtle)] px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold text-gray-900">User Management</h1>
-              <p className="text-sm text-gray-500 mt-0.5">
+              <h1 className="text-xl font-bold text-[var(--text-primary)]">User Management</h1>
+              <p className="text-sm text-[var(--text-secondary)] mt-0.5">
                 View and manage user accounts
               </p>
             </div>
@@ -238,18 +238,18 @@ export default function AdminUsersPage() {
           <form onSubmit={handleSearch} className="mb-6">
             <div className="flex gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--text-muted)]" />
                 <input
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search by name or email..."
-                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#7C3AED] focus:border-transparent transition-all"
                 />
               </div>
               <button
                 type="submit"
-                className="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-50 transition-colors"
+                className="px-5 py-2.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-primary)] text-sm font-medium rounded-xl hover:bg-[var(--bg-card-hover)] transition-colors"
               >
                 Search
               </button>
@@ -261,41 +261,41 @@ export default function AdminUsersPage() {
             variants={container}
             initial="hidden"
             animate="show"
-            className="bg-white rounded-2xl border border-gray-100 overflow-hidden"
+            className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border-subtle)] overflow-hidden shadow-sm"
           >
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-100">
-                    <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <tr className="border-b border-[var(--border-subtle)] bg-[var(--bg-secondary)]/50">
+                    <th className="text-left px-6 py-3.5 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
                       User
                     </th>
-                    <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <th className="text-left px-6 py-3.5 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
                       Role
                     </th>
-                    <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <th className="text-left px-6 py-3.5 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
                       Projects
                     </th>
-                    <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <th className="text-left px-6 py-3.5 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
                       Joined
                     </th>
-                    <th className="text-right px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <th className="text-right px-6 py-3.5 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-[var(--border-subtle)]">
                   {loading ? (
                     <tr>
                       <td colSpan={5} className="px-6 py-12 text-center">
-                        <Loader2 className="h-6 w-6 animate-spin text-blue-600 mx-auto" />
+                        <Loader2 className="h-6 w-6 animate-spin text-[#7C3AED] mx-auto" />
                       </td>
                     </tr>
                   ) : users.length === 0 ? (
                     <tr>
                       <td colSpan={5} className="px-6 py-12 text-center">
-                        <Users className="h-8 w-8 text-gray-300 mx-auto mb-3" />
-                        <p className="text-sm text-gray-500">No users found</p>
+                        <Users className="h-8 w-8 text-[var(--text-muted)] mx-auto mb-3" />
+                        <p className="text-sm text-[var(--text-secondary)]">No users found</p>
                       </td>
                     </tr>
                   ) : (
@@ -303,11 +303,11 @@ export default function AdminUsersPage() {
                       <motion.tr
                         key={userData._id}
                         variants={itemAnim}
-                        className="hover:bg-gray-50 transition-colors"
+                        className="hover:bg-[var(--bg-card-hover)] transition-colors"
                       >
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center flex-shrink-0">
+                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#7C3AED] to-[#A855F7] flex items-center justify-center flex-shrink-0 shadow-sm">
                               {userData.avatar ? (
                                 <img
                                   src={userData.avatar}
@@ -321,39 +321,39 @@ export default function AdminUsersPage() {
                               )}
                             </div>
                             <div className="min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate">
+                              <p className="text-sm font-medium text-[var(--text-primary)] truncate">
                                 {userData.name}
                               </p>
-                              <p className="text-xs text-gray-500 truncate">{userData.email}</p>
+                              <p className="text-xs text-[var(--text-secondary)] truncate">{userData.email}</p>
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4">
                           {userData.role === "admin" ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-violet-50 text-violet-700 text-xs font-medium rounded-full">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#F0E7FF] dark:bg-[#7C3AED]/20 text-[#7C3AED] dark:text-[#A78BFA] text-xs font-semibold rounded-full">
                               <Shield className="h-3 w-3" />
                               Admin
                             </span>
                           ) : (
-                            <span className="inline-flex px-2.5 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
+                            <span className="inline-flex px-2.5 py-1 bg-[var(--bg-secondary)] text-[var(--text-secondary)] text-xs font-medium rounded-full">
                               User
                             </span>
                           )}
                         </td>
                         <td className="px-6 py-4">
-                          <div className="flex items-center gap-1.5 text-sm text-gray-700">
-                            <FolderOpen className="h-3.5 w-3.5 text-gray-400" />
+                          <div className="flex items-center gap-1.5 text-sm text-[var(--text-primary)]">
+                            <FolderOpen className="h-3.5 w-3.5 text-[var(--text-muted)]" />
                             {userData.projectCount ?? 0}
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-500">
+                        <td className="px-6 py-4 text-sm text-[var(--text-secondary)]">
                           {formatDate(userData.createdAt)}
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center justify-end">
                             <button
                               onClick={() => setSelectedUser(userData)}
-                              className="px-3 py-1.5 text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                              className="px-3 py-1.5 text-xs font-medium text-[#7C3AED] hover:text-[#A855F7] hover:bg-[#F0E7FF]/50 dark:hover:bg-[#7C3AED]/20 rounded-lg transition-colors"
                             >
                               View Details
                             </button>
@@ -368,8 +368,8 @@ export default function AdminUsersPage() {
 
             {/* Pagination */}
             {pagination.pages > 1 && (
-              <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-                <p className="text-sm text-gray-500">
+              <div className="px-6 py-4 border-t border-[var(--border-subtle)] flex items-center justify-between">
+                <p className="text-sm text-[var(--text-secondary)]">
                   Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
                   {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}
                   {pagination.total} users
@@ -378,7 +378,7 @@ export default function AdminUsersPage() {
                   <button
                     onClick={() => fetchUsers(pagination.page - 1, search)}
                     disabled={pagination.page <= 1}
-                    className="px-3 py-1.5 border border-gray-200 text-sm rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 border border-[var(--border-subtle)] text-sm rounded-lg hover:bg-[var(--bg-card-hover)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[var(--text-primary)]"
                   >
                     Previous
                   </button>
@@ -399,8 +399,8 @@ export default function AdminUsersPage() {
                         onClick={() => fetchUsers(pageNum, search)}
                         className={`h-9 w-9 rounded-lg text-sm font-medium transition-colors ${
                           pagination.page === pageNum
-                            ? "bg-blue-600 text-white"
-                            : "border border-gray-200 hover:bg-gray-50 text-gray-700"
+                            ? "bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-sm"
+                            : "border border-[var(--border-subtle)] hover:bg-[var(--bg-card-hover)] text-[var(--text-primary)]"
                         }`}
                       >
                         {pageNum}
@@ -410,7 +410,7 @@ export default function AdminUsersPage() {
                   <button
                     onClick={() => fetchUsers(pagination.page + 1, search)}
                     disabled={pagination.page >= pagination.pages}
-                    className="px-3 py-1.5 border border-gray-200 text-sm rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 border border-[var(--border-subtle)] text-sm rounded-lg hover:bg-[var(--bg-card-hover)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[var(--text-primary)]"
                   >
                     Next
                   </button>
@@ -429,19 +429,19 @@ export default function AdminUsersPage() {
             if (e.target === e.currentTarget) setSelectedUser(null);
           }}
         >
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-900">User Details</h2>
+          <div className="bg-[var(--bg-card)] rounded-2xl shadow-xl w-full max-w-md overflow-hidden border border-[var(--border-subtle)]">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border-subtle)]">
+              <h2 className="text-lg font-semibold text-[var(--text-primary)]">User Details</h2>
               <button
                 onClick={() => setSelectedUser(null)}
-                className="p-2 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+                className="p-2 rounded-lg hover:bg-[var(--bg-card-hover)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
             <div className="px-6 py-6 space-y-5">
               <div className="flex items-center gap-4">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center flex-shrink-0">
+                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-[#7C3AED] to-[#A855F7] flex items-center justify-center flex-shrink-0 shadow-sm">
                   {selectedUser.avatar ? (
                     <img
                       src={selectedUser.avatar}
@@ -455,9 +455,9 @@ export default function AdminUsersPage() {
                   )}
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{selectedUser.name}</h3>
+                  <h3 className="text-lg font-semibold text-[var(--text-primary)]">{selectedUser.name}</h3>
                   {selectedUser.role === "admin" && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-violet-50 text-violet-700 text-xs font-medium rounded-full mt-1">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#F0E7FF] dark:bg-[#7C3AED]/20 text-[#7C3AED] dark:text-[#A78BFA] text-xs font-semibold rounded-full mt-1">
                       <Shield className="h-3 w-3" />
                       Admin
                     </span>
@@ -467,27 +467,27 @@ export default function AdminUsersPage() {
 
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-sm">
-                  <Mail className="h-4 w-4 text-gray-400" />
-                  <span className="text-gray-700">{selectedUser.email}</span>
+                  <Mail className="h-4 w-4 text-[var(--text-muted)]" />
+                  <span className="text-[var(--text-primary)]">{selectedUser.email}</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <Calendar className="h-4 w-4 text-gray-400" />
-                  <span className="text-gray-700">
+                  <Calendar className="h-4 w-4 text-[var(--text-muted)]" />
+                  <span className="text-[var(--text-primary)]">
                     Joined {formatDate(selectedUser.createdAt)}
                   </span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <FolderOpen className="h-4 w-4 text-gray-400" />
-                  <span className="text-gray-700">
+                  <FolderOpen className="h-4 w-4 text-[var(--text-muted)]" />
+                  <span className="text-[var(--text-primary)]">
                     {selectedUser.projectCount ?? 0} projects
                   </span>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-gray-100">
+              <div className="pt-4 border-t border-[var(--border-subtle)]">
                 <button
                   onClick={() => setSelectedUser(null)}
-                  className="w-full px-4 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-200 transition-colors"
+                  className="w-full px-4 py-2.5 bg-[var(--bg-secondary)] hover:bg-[var(--bg-card-hover)] border border-[var(--border-subtle)] text-[var(--text-primary)] text-sm font-medium rounded-xl transition-colors"
                 >
                   Close
                 </button>

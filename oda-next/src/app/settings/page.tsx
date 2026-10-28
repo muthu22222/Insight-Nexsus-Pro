@@ -78,7 +78,7 @@ export default function SettingsPage() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] focus:outline-none focus:border-amber-500"
+                    className="w-full px-3.5 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED]"
                   />
                 </div>
                 <div>
@@ -108,7 +108,7 @@ export default function SettingsPage() {
                   type="checkbox"
                   checked={emailNotifications}
                   onChange={(e) => setEmailNotifications(e.target.checked)}
-                  className="w-4 h-4 rounded accent-amber-600 cursor-pointer"
+                  className="w-4 h-4 rounded accent-[#7C3AED] cursor-pointer"
                 />
               </div>
               <div className="flex items-center justify-between py-2">
@@ -120,7 +120,7 @@ export default function SettingsPage() {
                   type="checkbox"
                   checked={aiSuggestions}
                   onChange={(e) => setAiSuggestions(e.target.checked)}
-                  className="w-4 h-4 rounded accent-amber-600 cursor-pointer"
+                  className="w-4 h-4 rounded accent-[#7C3AED] cursor-pointer"
                 />
               </div>
             </div>
@@ -130,7 +130,7 @@ export default function SettingsPage() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex items-center gap-2 px-6 py-2.5 bg-[#2B1B12] dark:bg-[#FFFFFF] dark:text-[#2B1B12] hover:opacity-90 text-white text-sm font-extrabold rounded-xl border border-black/10 dark:border-white/10 shadow-md hover:scale-[1.02] transition-all cursor-pointer"
+                className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white text-sm font-extrabold rounded-xl shadow-md shadow-[#7C3AED]/25 hover:scale-[1.02] transition-all cursor-pointer"
               >
                 <Save className="w-4 h-4 stroke-[2.5]" />
                 {saving ? "Saving..." : "Save Preferences"}

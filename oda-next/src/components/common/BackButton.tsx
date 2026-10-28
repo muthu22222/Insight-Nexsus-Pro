@@ -63,16 +63,16 @@ export default function BackButton({
   const getVariantStyles = () => {
     switch (variant) {
       case 'subtle':
-        return 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] active:bg-[var(--border)] border-transparent';
+        return 'text-[var(--text-primary)] hover:text-[#6D28D9] hover:bg-[#F0E7FF] dark:hover:bg-[#7C3AED]/15 dark:hover:text-[#A78BFA] active:bg-[var(--border)] border-transparent font-bold';
       case 'floating':
-        return 'bg-[var(--surface)]/95 backdrop-blur-xl text-[var(--text-primary)] border-[var(--border)] shadow-md hover:bg-[var(--surface-secondary)] active:scale-95';
+        return 'bg-[var(--surface)]/95 backdrop-blur-xl text-[var(--text-primary)] border-[var(--border)] shadow-md hover:border-[#7C3AED]/40 hover:text-[#6D28D9] dark:hover:text-[#A78BFA] active:scale-95 font-bold';
       case 'pill':
-        return 'bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:bg-[var(--border)] border-[var(--border)] rounded-full px-4';
+        return 'bg-[var(--surface)] text-[var(--text-primary)] hover:border-[#7C3AED] hover:text-[#6D28D9] dark:hover:text-[#A78BFA] border-[var(--border)] rounded-full px-4 shadow-xs font-bold';
       case 'outline':
-        return 'bg-transparent border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)] active:bg-[var(--surface-secondary)]';
+        return 'bg-transparent border-[var(--border)] text-[var(--text-primary)] hover:bg-[#F0E7FF] dark:hover:bg-[#7C3AED]/15 hover:border-[#7C3AED] hover:text-[#6D28D9] dark:hover:text-[#A78BFA] active:bg-[var(--surface-secondary)] font-bold';
       case 'default':
       default:
-        return 'bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:text-[var(--text-primary)] border-[var(--border)] hover:border-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]/80 shadow-2xs hover:shadow-xs';
+        return 'bg-[var(--surface)] text-[var(--text-primary)] hover:text-[#6D28D9] dark:hover:text-[#A78BFA] border-[var(--border)] hover:border-[#7C3AED] hover:bg-[#F0E7FF] dark:hover:bg-[#7C3AED]/15 shadow-2xs hover:shadow-xs font-bold';
     }
   };
 
@@ -81,7 +81,7 @@ export default function BackButton({
       type="button"
       onClick={handleBack}
       aria-label={ariaLabel}
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg border transition-all duration-150 cursor-pointer select-none group focus:outline-none focus:ring-2 focus:ring-amber-500/20 ${getVariantStyles()} ${className}`}
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg border transition-all duration-150 cursor-pointer select-none group focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/25 ${getVariantStyles()} ${className}`}
     >
       <ArrowLeft className="w-4 h-4 transition-transform duration-150 group-hover:-translate-x-0.5 text-inherit" />
       <span>{label}</span>

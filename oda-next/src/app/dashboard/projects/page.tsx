@@ -260,7 +260,7 @@ export default function ProjectsPage() {
             <ThemeToggle />
             <Link
               href="/designer"
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#2B1B12] dark:bg-[#FFFFFF] dark:text-[#2B1B12] text-white text-sm font-bold rounded-xl shadow-md border border-black/10 dark:border-white/10 hover:opacity-90 hover:scale-[1.02] transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white text-sm font-bold rounded-xl shadow-md shadow-[#7C3AED]/25 border border-[#7C3AED] hover:scale-[1.02] transition-all"
             >
               <Plus className="h-4 w-4 stroke-[3]" />
               New Project
@@ -420,7 +420,7 @@ export default function ProjectsPage() {
                       <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[var(--border)]">
                         <Link
                           href={`/dashboard/projects/${project._id}`}
-                          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-[#2B1B12] dark:bg-[#FFFFFF] dark:text-[#2B1B12] text-white border border-black/10 dark:border-white/10 text-xs font-bold rounded-xl hover:opacity-90 transition-opacity shadow-xs"
+                          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white border border-[#7C3AED] text-xs font-bold rounded-xl transition-all shadow-sm shadow-[#7C3AED]/20"
                         >
                           <Eye className="h-3.5 w-3.5" />
                           <span>View</span>

@@ -324,14 +324,14 @@ export default function ViewerPage() {
               <button
                 onClick={handleSaveProject}
                 disabled={isSaving}
-                className="flex items-center gap-1.5 px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black rounded-xl text-xs font-extrabold transition-all cursor-pointer shadow-xs"
+                className="flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white rounded-xl text-xs font-extrabold transition-all cursor-pointer shadow-sm shadow-[#7C3AED]/25"
               >
                 {isSaving ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 ) : isSaved ? (
-                  <FolderCheck className="w-3.5 h-3.5 text-black" />
+                  <FolderCheck className="w-3.5 h-3.5 text-white" />
                 ) : (
-                  <Save className="w-3.5 h-3.5 text-black" />
+                  <Save className="w-3.5 h-3.5 text-white" />
                 )}
                 <span>{isSaved ? 'Saved in MongoDB' : 'Save Project'}</span>
               </button>
@@ -339,7 +339,7 @@ export default function ViewerPage() {
                 onClick={handleExport}
                 className="flex items-center gap-1.5 px-2.5 py-1 hover:bg-white/15 rounded-xl text-xs font-semibold text-gray-200 transition-colors"
               >
-                <Download className="w-3.5 h-3.5 text-amber-400" />
+                <Download className="w-3.5 h-3.5 text-[#C4B5FD]" />
                 <span>Export HD</span>
               </button>
             </div>
@@ -355,7 +355,7 @@ export default function ViewerPage() {
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               className="bg-black/85 backdrop-blur-xl border border-white/15 rounded-2xl px-3.5 py-1.5 flex items-center gap-2 shadow-2xl text-white text-xs font-bold hover:bg-black transition-all cursor-pointer"
             >
-              <Package className="w-3.5 h-3.5 text-amber-400" />
+              <Package className="w-3.5 h-3.5 text-[#C4B5FD]" />
               <span>{isSidebarOpen ? 'Hide Products' : `View Products (${activeHotspots.length})`}</span>
             </button>
           </div>
@@ -364,13 +364,13 @@ export default function ViewerPage() {
           <div className="absolute bottom-5 left-5 z-40 flex items-center gap-2">
             <div className="bg-black/85 backdrop-blur-xl border border-white/20 rounded-2xl px-3.5 py-2 flex items-center gap-3 shadow-2xl text-white">
               <div className="flex items-center gap-2">
-                <ShoppingCart className="w-4 h-4 text-amber-400" />
+                <ShoppingCart className="w-4 h-4 text-[#C4B5FD]" />
                 <span className="text-xs font-bold">Shopping cart ({cartItemIds.length})</span>
               </div>
               <div className="h-4 w-px bg-white/20" />
               <button
                 onClick={handleAddAllToCart}
-                className="flex items-center gap-1 px-2.5 py-1 bg-amber-500 hover:bg-amber-400 rounded-xl text-xs font-extrabold text-black transition-all cursor-pointer"
+                className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] rounded-xl text-xs font-extrabold text-white transition-all cursor-pointer shadow-sm shadow-[#7C3AED]/20"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add all</span>
@@ -396,7 +396,7 @@ export default function ViewerPage() {
                 className="p-1.5 hover:bg-white/15 rounded-xl text-white transition-colors"
                 title="Send instruction"
               >
-                <Send className="w-3.5 h-3.5 text-amber-400" />
+                <Send className="w-3.5 h-3.5 text-[#A78BFA]" />
               </button>
             </form>
           </div>
@@ -408,11 +408,11 @@ export default function ViewerPage() {
                 onClick={() => setViewMode(viewMode === 'split' ? 'redesign' : 'split')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
                   viewMode === 'split'
-                    ? 'bg-amber-400 text-black shadow font-extrabold'
-                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                    ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow font-extrabold'
+                    : 'text-white/90 hover:text-white hover:bg-white/10 font-bold'
                 }`}
               >
-                <Sliders className="w-3.5 h-3.5 text-amber-400" />
+                <Sliders className="w-3.5 h-3.5 text-[#C4B5FD]" />
                 <span>Compare Images</span>
               </button>
 
@@ -420,8 +420,8 @@ export default function ViewerPage() {
                 onClick={() => setViewMode(viewMode === 'original' ? 'redesign' : 'original')}
                 className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                   viewMode === 'original'
-                    ? 'bg-amber-400 text-black shadow font-extrabold'
-                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                    ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow font-extrabold'
+                    : 'text-white/90 hover:text-white hover:bg-white/10 font-bold'
                 }`}
                 title="Toggle Bare Room"
               >
@@ -444,7 +444,7 @@ export default function ViewerPage() {
               {/* Drawer Header */}
               <div className="p-4 border-b border-[var(--border)] flex items-center justify-between bg-[var(--surface-secondary)]/50 shrink-0">
                 <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-amber-500 text-black flex items-center justify-center text-xs font-black shadow-xs">
+                  <span className="w-6 h-6 rounded-full bg-[#7C3AED] text-white flex items-center justify-center text-xs font-black shadow-xs">
                     {currentItem?.id || 1}
                   </span>
                   <div>
@@ -456,7 +456,7 @@ export default function ViewerPage() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-black text-amber-800 dark:text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded">
+                  <span className="text-xs font-black text-[#7C3AED] dark:text-[#A78BFA] bg-[#F0E7FF] dark:bg-[#7C3AED]/15 border border-[#7C3AED]/30 px-2 py-0.5 rounded">
                     {currentItem?.price}
                   </span>
                   <button
@@ -519,11 +519,11 @@ export default function ViewerPage() {
                     <div className="grid grid-cols-2 gap-2">
                       <div className="bg-[var(--surface)]/70 p-2.5 rounded-xl border border-[var(--border)]">
                         <p className="text-[10px] text-[var(--text-muted)] font-semibold">Estimated Price</p>
-                        <p className="text-xs font-black text-[#F5A900] mt-0.5">{currentItem.price}</p>
+                        <p className="text-xs font-black text-[#D97706] dark:text-[#FBBF24] mt-0.5">{currentItem.price}</p>
                       </div>
                       <div className="bg-[var(--surface)]/70 p-2.5 rounded-xl border border-[var(--border)]">
                         <p className="text-[10px] text-[var(--text-muted)] font-semibold">Style Match</p>
-                        <p className="text-xs font-bold text-[#00C98D] mt-0.5">{currentItem.match || 96}% Match</p>
+                        <p className="text-xs font-bold text-[#0F9D78] dark:text-[#10B981] mt-0.5">{currentItem.match || 96}% Match</p>
                       </div>
                     </div>
 
@@ -556,7 +556,7 @@ export default function ViewerPage() {
                           rel="noopener noreferrer"
                           className="w-full bg-[var(--surface)] hover:bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] py-2 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
                         >
-                          <ExternalLink className="w-3.5 h-3.5 text-amber-500" />
+                          <ExternalLink className="w-3.5 h-3.5 text-[#7C3AED]" />
                           <span>View on {currentItem.store || 'Store'}</span>
                         </a>
                       )}
@@ -565,13 +565,13 @@ export default function ViewerPage() {
                         onClick={() => handleSaveItem(currentItem.id)}
                         className={`w-full border py-2 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
                           savedItems.includes(currentItem.id)
-                            ? 'border-amber-500/40 bg-amber-500/15 text-amber-700 dark:text-amber-300'
+                            ? 'border-[#7C3AED]/40 bg-[#F0E7FF] dark:bg-[#7C3AED]/15 text-[#7C3AED] dark:text-[#A78BFA]'
                             : 'border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]'
                         }`}
                       >
                         <Heart
                           className={`w-3.5 h-3.5 ${
-                            savedItems.includes(currentItem.id) ? 'fill-amber-500 text-amber-500' : ''
+                            savedItems.includes(currentItem.id) ? 'fill-[#7C3AED] text-[#7C3AED]' : ''
                           }`}
                         />
                         {savedItems.includes(currentItem.id) ? 'Saved in Project' : 'Save to Favorites'}
@@ -595,7 +595,7 @@ export default function ViewerPage() {
                             : 'border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]'
                         }`}
                       >
-                        <ShoppingCart className="w-3.5 h-3.5 text-amber-500" />
+                        <ShoppingCart className="w-3.5 h-3.5 text-[#7C3AED]" />
                         <span>
                           {cartItemIds.includes(String(currentItem.id))
                             ? 'Remove from Cart'
@@ -609,7 +609,7 @@ export default function ViewerPage() {
                 {/* All Furniture List */}
                 <div className="border-t border-[var(--border)] pt-3">
                   <h4 className="text-[11px] uppercase tracking-wider text-[var(--text-muted)] font-bold mb-2 flex items-center gap-1.5">
-                    <Armchair className="w-3.5 h-3.5 text-amber-500" />
+                    <Armchair className="w-3.5 h-3.5 text-[#7C3AED]" />
                     <span>All Furniture In Room ({activeHotspots.length})</span>
                   </h4>
 
@@ -622,8 +622,8 @@ export default function ViewerPage() {
                           key={String(item.id)}
                           className={`w-full p-2.5 rounded-xl border transition-all flex items-center justify-between ${
                             isSelected
-                              ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                              : 'border-[var(--border)] hover:border-amber-500/40 bg-[var(--surface)]/50'
+                              ? 'border-[#7C3AED] bg-[#F0E7FF]/60 dark:bg-[#7C3AED]/15 ring-1 ring-[#7C3AED]/30'
+                              : 'border-[var(--border)] hover:border-[#7C3AED]/40 bg-[var(--surface)]/50'
                           }`}
                         >
                           <button
@@ -637,32 +637,32 @@ export default function ViewerPage() {
                             <span
                               className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 transition-colors ${
                                 isSelected
-                                  ? 'bg-amber-500 text-black'
+                                  ? 'bg-[#7C3AED] text-white'
                                   : 'bg-[var(--surface-secondary)] text-[var(--text-secondary)]'
                               }`}
                             >
                               {item.id}
                             </span>
                             <div className="min-w-0">
-                              <p className={`text-xs font-bold truncate ${isSelected ? 'text-amber-600 dark:text-amber-300' : 'text-[var(--text-primary)]'}`}>
+                              <p className={`text-xs font-bold truncate ${isSelected ? 'text-[#7C3AED] dark:text-[#A78BFA]' : 'text-[var(--text-primary)]'}`}>
                                 {item.label}
                               </p>
                               <p className="text-[10px] text-[var(--text-secondary)]">{item.store}</p>
                             </div>
                           </button>
                           <div className="flex items-center gap-2 shrink-0 ml-2">
-                            <span className="text-xs font-black text-[#F5A900]">{item.price}</span>
+                            <span className="text-xs font-black text-[#D97706] dark:text-[#FBBF24]">{item.price}</span>
                             <button
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 const idStr = String(item.id);
                                 if (inCart) {
-                                  removeFromCart(idStr);
-                                  toast('Removed from cart', { icon: '🛒' });
+                                   removeFromCart(idStr);
+                                   toast('Removed from cart', { icon: '🛒' });
                                 } else {
-                                  addToCart(idStr);
-                                  toast.success(`Added ${item.label} to cart`);
+                                   addToCart(idStr);
+                                   toast.success(`Added ${item.label} to cart`);
                                 }
                               }}
                               className={`p-1 rounded-lg border transition-colors cursor-pointer ${

@@ -194,7 +194,7 @@ export default function BudgetPage() {
               className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] p-6 sm:p-8 mb-6 shadow-xs"
             >
               <div className="max-w-lg mx-auto text-center">
-                <div className="h-14 w-14 rounded-2xl bg-[var(--surface-secondary)] border border-[var(--border)] flex items-center justify-center mx-auto mb-4 text-[var(--text-primary)] shadow-xs">
+                <div className="h-14 w-14 rounded-2xl bg-[#F0E7FF] dark:bg-[#7C3AED]/15 border border-[#7C3AED]/30 flex items-center justify-center mx-auto mb-4 text-[#7C3AED] dark:text-[#A78BFA] shadow-xs">
                   <Calculator className="h-7 w-7" />
                 </div>
                 <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2">
@@ -217,13 +217,13 @@ export default function BudgetPage() {
                         setBudget(raw ? parseInt(raw).toLocaleString("en-IN") : "");
                       }}
                       placeholder="2,00,000"
-                      className="w-full pl-9 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-base font-bold text-[var(--text-primary)] placeholder-[var(--text-muted)] text-center focus:outline-none focus:border-[var(--text-primary)]"
+                      className="w-full pl-9 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-base font-bold text-[var(--text-primary)] placeholder-[var(--text-muted)] text-center focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED]"
                     />
                   </div>
                   <button
                     onClick={handleGenerate}
                     disabled={generating || !budget}
-                    className="w-full sm:w-auto px-6 py-3 bg-[#2B1B12] hover:bg-[#433328] text-white font-extrabold text-sm rounded-xl border border-[#2B1B12] shadow-md shadow-[#2B1B12]/15 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+                    className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white font-extrabold text-sm rounded-xl border border-[#7C3AED] shadow-md shadow-[#7C3AED]/25 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shrink-0 cursor-pointer"
                   >
                     {generating ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -419,7 +419,7 @@ export default function BudgetPage() {
                 <div className="flex sm:hidden pb-6">
                   <button
                     onClick={handleDownloadPDF}
-                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-[#2B1B12] hover:bg-[#433328] text-white font-extrabold text-sm rounded-xl border border-[#2B1B12] shadow-lg"
+                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white font-extrabold text-sm rounded-xl border border-[#7C3AED] shadow-md shadow-[#7C3AED]/25"
                   >
                     <Download className="h-4 w-4" />
                     Download Budget PDF

@@ -175,7 +175,7 @@ export default function FurniturePage() {
                 placeholder="Search furniture, brands, decor..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--text-primary)]"
+                className="w-full pl-10 pr-4 py-2.5 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED]"
               />
             </form>
             <div className="flex items-center gap-2">
@@ -189,7 +189,7 @@ export default function FurniturePage() {
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
-                className="px-3 py-2.5 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm font-semibold text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] cursor-pointer"
+                className="px-3 py-2.5 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm font-semibold text-[var(--text-primary)] focus:outline-none focus:border-[#7C3AED] cursor-pointer"
               >
                 {sortOptions.map((opt) => (
                   <option key={opt.value} value={opt.value} className="bg-[var(--surface)] text-[var(--text-primary)]">
@@ -229,7 +229,7 @@ export default function FurniturePage() {
                       setCategory(e.target.value);
                       handleFilterChange();
                     }}
-                    className="w-full px-3 py-2 bg-[var(--background)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] cursor-pointer"
+                    className="w-full px-3 py-2 bg-[var(--background)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#7C3AED] cursor-pointer"
                   >
                     {categories.map((c) => (
                       <option key={c} value={c} className="bg-[var(--surface)] text-[var(--text-primary)]">
@@ -249,7 +249,7 @@ export default function FurniturePage() {
                       setStyle(e.target.value);
                       handleFilterChange();
                     }}
-                    className="w-full px-3 py-2 bg-[var(--background)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] cursor-pointer"
+                    className="w-full px-3 py-2 bg-[var(--background)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] focus:outline-none focus:border-[#7C3AED] cursor-pointer"
                   >
                     {styles.map((s) => (
                       <option key={s} value={s} className="bg-[var(--surface)] text-[var(--text-primary)]">
@@ -275,7 +275,7 @@ export default function FurniturePage() {
                         step={5000}
                         value={minPrice}
                         onChange={(e) => setMinPrice(Number(e.target.value))}
-                        className="w-full h-1.5 mt-1 bg-[var(--surface-secondary)] rounded-full appearance-none cursor-pointer accent-[#2B1B12] dark:accent-white"
+                        className="w-full h-1.5 mt-1 bg-[var(--surface-secondary)] rounded-full appearance-none cursor-pointer accent-[#7C3AED]"
                       />
                     </div>
                     <div>
@@ -289,12 +289,12 @@ export default function FurniturePage() {
                         step={5000}
                         value={maxPrice}
                         onChange={(e) => setMaxPrice(Number(e.target.value))}
-                        className="w-full h-1.5 mt-1 bg-[var(--surface-secondary)] rounded-full appearance-none cursor-pointer accent-[#2B1B12] dark:accent-white"
+                        className="w-full h-1.5 mt-1 bg-[var(--surface-secondary)] rounded-full appearance-none cursor-pointer accent-[#7C3AED]"
                       />
                     </div>
                     <button
                       onClick={handleFilterChange}
-                      className="w-full py-2 text-xs font-bold text-white bg-[#2B1B12] hover:bg-[#433328] border border-[#2B1B12] rounded-xl transition-all shadow-xs cursor-pointer"
+                      className="w-full py-2.5 text-xs font-extrabold text-white bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] border border-[#7C3AED] rounded-xl transition-all shadow-md shadow-[#7C3AED]/25 cursor-pointer"
                     >
                       Apply Price Filter
                     </button>
@@ -307,7 +307,7 @@ export default function FurniturePage() {
             <div className="flex-1 min-w-0">
               {loading ? (
                 <div className="flex items-center justify-center py-20">
-                  <Loader2 className="h-8 w-8 animate-spin text-[var(--text-primary)]" />
+                  <Loader2 className="h-8 w-8 animate-spin text-[#7C3AED]" />
                 </div>
               ) : products.length === 0 ? (
                 <div className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] p-12 text-center">
@@ -331,7 +331,7 @@ export default function FurniturePage() {
                       <motion.div
                         key={product._id}
                         variants={item}
-                        className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] overflow-hidden hover:border-[var(--text-secondary)] hover:shadow-xl transition-all group flex flex-col justify-between"
+                        className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] overflow-hidden hover:border-[#7C3AED]/60 hover:shadow-xl hover:shadow-[#7C3AED]/10 transition-all group flex flex-col justify-between"
                       >
                         <div className="aspect-square bg-[var(--surface-secondary)] relative overflow-hidden">
                           {product.image ? (
@@ -363,7 +363,7 @@ export default function FurniturePage() {
                                 ({product.rating})
                               </span>
                             </div>
-                            <p className="text-base font-black text-[#F5A900] mt-2">
+                            <p className="text-base font-black text-[#D97706] dark:text-[#FBBF24] mt-2">
                               {formatCurrency(product.price)}
                             </p>
                             <p className="text-xs text-[var(--text-secondary)] mt-0.5">
@@ -402,7 +402,7 @@ export default function FurniturePage() {
                       <button
                         onClick={() => setPage((p) => Math.max(1, p - 1))}
                         disabled={page === 1}
-                        className="h-10 w-10 rounded-xl flex items-center justify-center border border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:border-[var(--text-primary)] disabled:opacity-30 transition-colors"
+                        className="h-10 w-10 rounded-xl flex items-center justify-center border border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:border-[#7C3AED] disabled:opacity-30 transition-colors"
                       >
                         <ChevronLeft className="h-4 w-4" />
                       </button>
@@ -433,8 +433,8 @@ export default function FurniturePage() {
                               onClick={() => setPage(p)}
                               className={`h-10 w-10 rounded-xl flex items-center justify-center text-sm font-bold transition-colors ${
                                 page === p
-                                  ? "bg-[#2B1B12] text-white border border-[#2B1B12]"
-                                  : "border border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:border-[var(--text-primary)]"
+                                  ? "bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white border border-[#7C3AED] shadow-sm shadow-[#7C3AED]/25"
+                                  : "border border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:border-[#7C3AED]"
                               }`}
                             >
                               {p}
@@ -446,7 +446,7 @@ export default function FurniturePage() {
                           setPage((p) => Math.min(totalPages, p + 1))
                         }
                         disabled={page === totalPages}
-                        className="h-10 w-10 rounded-xl flex items-center justify-center border border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:border-[var(--text-primary)] disabled:opacity-30 transition-colors"
+                        className="h-10 w-10 rounded-xl flex items-center justify-center border border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:border-[#7C3AED] disabled:opacity-30 transition-colors"
                       >
                         <ChevronRight className="h-4 w-4" />
                       </button>

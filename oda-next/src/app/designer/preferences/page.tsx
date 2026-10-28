@@ -138,8 +138,8 @@ export default function PreferencesPage() {
         </div>
 
         <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/30 px-3.5 py-1 rounded-full mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#7C3AED] dark:text-[#A78BFA] uppercase tracking-widest bg-[#F0E7FF] dark:bg-[#7C3AED]/20 border border-[#7C3AED]/30 px-3.5 py-1 rounded-full mb-3 shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#7C3AED] dark:text-[#A78BFA]" />
             Step 3 of 5
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] mb-1">
@@ -158,16 +158,18 @@ export default function PreferencesPage() {
                 <div className="flex flex-col items-center">
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
-                      index <= 2
-                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black shadow-lg shadow-amber-500/20'
-                        : 'bg-[var(--surface-secondary)] text-[var(--text-muted)] border border-[var(--border)]'
+                      index === 2
+                        ? 'bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white border border-[#7C3AED]/40 shadow-sm shadow-[#7C3AED]/20'
+                        : index < 2
+                        ? 'bg-[#E6F8F1] dark:bg-[#10B981]/20 text-[#0F9D78] dark:text-[#10B981] border border-[#0F9D78]/30 font-bold'
+                        : 'bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]'
                     }`}
                   >
                     {index + 1}
                   </div>
                   <span
                     className={`text-[10px] mt-1 font-semibold ${
-                      index <= 2 ? 'text-amber-600 dark:text-amber-400' : 'text-[var(--text-muted)]'
+                      index === 2 ? 'text-[#7C3AED] dark:text-[#A78BFA] font-bold' : index < 2 ? 'text-[#0F9D78] dark:text-[#10B981] font-bold' : 'text-[var(--text-secondary)]'
                     }`}
                   >
                     {step.label}
@@ -176,7 +178,7 @@ export default function PreferencesPage() {
                 {index < steps.length - 1 && (
                   <div
                     className={`w-10 sm:w-12 h-0.5 mx-1 mb-5 ${
-                      index < 2 ? 'bg-amber-500' : 'bg-[var(--border)]'
+                      index < 2 ? 'bg-[#0F9D78]' : 'bg-[var(--border)]'
                     }`}
                   />
                 )}
@@ -195,8 +197,8 @@ export default function PreferencesPage() {
                 onClick={() => setCurrentSection(index)}
                 className={`flex-1 min-w-[120px] py-3.5 px-4 text-xs font-bold text-center transition-colors border-b-2 cursor-pointer ${
                   currentSection === index
-                    ? 'border-amber-500 text-amber-700 dark:text-amber-400 bg-amber-500/10'
-                    : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]'
+                    ? 'border-[#7C3AED] text-[#7C3AED] dark:text-[#A78BFA] bg-[#F0E7FF]/60 dark:bg-[#7C3AED]/15'
+                    : 'border-transparent text-[var(--text-secondary)] hover:text-[#7C3AED] hover:bg-[#F0E7FF]/20'
                 }`}
               >
                 {section}
@@ -226,16 +228,16 @@ export default function PreferencesPage() {
                         onClick={() => setSelectedStyle(style.id)}
                         className={`relative p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
                           selectedStyle === style.id
-                            ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                            : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
+                            ? 'border-[#7C3AED] bg-[#F0E7FF] dark:bg-[#7C3AED]/20 ring-1 ring-[#7C3AED]/40'
+                            : 'border-[var(--border)] hover:border-[#7C3AED]/50 bg-[var(--surface)] hover:bg-[#F0E7FF]/25'
                         }`}
                       >
                         {selectedStyle === style.id && (
-                          <div className="absolute top-2 right-2 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center">
-                            <Check className="w-3 h-3 text-black stroke-[3]" />
+                          <div className="absolute top-2 right-2 w-5 h-5 bg-[#7C3AED] rounded-full flex items-center justify-center">
+                            <Check className="w-3 h-3 text-white stroke-[3]" />
                           </div>
                         )}
-                        <div className="text-2xl mb-2 text-amber-500">{style.icon}</div>
+                        <div className="text-2xl mb-2 text-[#7C3AED]">{style.icon}</div>
                         <h3 className="text-sm font-bold text-[var(--text-primary)]">{style.label}</h3>
                         <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">{style.desc}</p>
                       </button>
@@ -255,7 +257,7 @@ export default function PreferencesPage() {
                 >
                   <div className="mb-2">
                     <div className="flex items-center gap-2">
-                      <Armchair className="w-4 h-4 text-amber-500" />
+                      <Armchair className="w-4 h-4 text-[#7C3AED]" />
                       <h3 className="text-sm font-bold text-[var(--text-primary)]">Select Furniture & Product Aesthetic</h3>
                     </div>
                     <p className="text-xs text-[var(--text-secondary)]">Directly dictates materials, silhouettes, and catalog product matching</p>
@@ -267,13 +269,13 @@ export default function PreferencesPage() {
                         onClick={() => setSelectedFurnitureStyle(fStyle.id)}
                         className={`relative p-3.5 rounded-xl border-2 text-left transition-all flex flex-col justify-between cursor-pointer ${
                           selectedFurnitureStyle === fStyle.id
-                            ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                            : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
+                            ? 'border-[#7C3AED] bg-[#F0E7FF] dark:bg-[#7C3AED]/20 ring-1 ring-[#7C3AED]/40'
+                            : 'border-[var(--border)] hover:border-[#7C3AED]/50 bg-[var(--surface)] hover:bg-[#F0E7FF]/25'
                         }`}
                       >
                         {selectedFurnitureStyle === fStyle.id && (
-                          <div className="absolute top-2 right-2 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center shadow-xs">
-                            <Check className="w-3 h-3 text-black stroke-[3]" />
+                          <div className="absolute top-2 right-2 w-5 h-5 bg-[#7C3AED] rounded-full flex items-center justify-center shadow-xs">
+                            <Check className="w-3 h-3 text-white stroke-[3]" />
                           </div>
                         )}
                         <div>
@@ -306,13 +308,13 @@ export default function PreferencesPage() {
                         onClick={() => setSelectedMood(mood.id)}
                         className={`relative p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
                           selectedMood === mood.id
-                            ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                            : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
+                            ? 'border-[#7C3AED] bg-[#F0E7FF] dark:bg-[#7C3AED]/20 ring-1 ring-[#7C3AED]/40'
+                            : 'border-[var(--border)] hover:border-[#7C3AED]/50 bg-[var(--surface)] hover:bg-[#F0E7FF]/25'
                         }`}
                       >
                         {selectedMood === mood.id && (
-                          <div className="absolute top-2 right-2 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center">
-                            <Check className="w-3 h-3 text-black stroke-[3]" />
+                          <div className="absolute top-2 right-2 w-5 h-5 bg-[#7C3AED] rounded-full flex items-center justify-center">
+                            <Check className="w-3 h-3 text-white stroke-[3]" />
                           </div>
                         )}
                         <div className={`w-full h-14 rounded-lg bg-gradient-to-br ${mood.color} mb-3 border border-[var(--border)]`} />
@@ -345,13 +347,13 @@ export default function PreferencesPage() {
                         onClick={() => setSelectedColor(color.id)}
                         className={`relative p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
                           selectedColor === color.id
-                            ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                            : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
+                            ? 'border-[#7C3AED] bg-[#F0E7FF] dark:bg-[#7C3AED]/20 ring-1 ring-[#7C3AED]/40'
+                            : 'border-[var(--border)] hover:border-[#7C3AED]/50 bg-[var(--surface)] hover:bg-[#F0E7FF]/25'
                         }`}
                       >
                         {selectedColor === color.id && (
-                          <div className="absolute top-2 right-2 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center">
-                            <Check className="w-3 h-3 text-black stroke-[3]" />
+                          <div className="absolute top-2 right-2 w-5 h-5 bg-[#7C3AED] rounded-full flex items-center justify-center">
+                            <Check className="w-3 h-3 text-white stroke-[3]" />
                           </div>
                         )}
                         <div
@@ -386,8 +388,8 @@ export default function PreferencesPage() {
                       }}
                       className={`w-full p-4 rounded-xl border-2 text-left transition-all flex items-center justify-between cursor-pointer ${
                         !isCustomBudget && selectedBudget === budget.id
-                          ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                          : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
+                          ? 'border-[#7C3AED] bg-[#F0E7FF] dark:bg-[#7C3AED]/20 ring-1 ring-[#7C3AED]/40'
+                          : 'border-[var(--border)] hover:border-[#7C3AED]/50 bg-[var(--surface)] hover:bg-[#F0E7FF]/25'
                       }`}
                     >
                       <div>
@@ -397,12 +399,12 @@ export default function PreferencesPage() {
                       <div
                         className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                           !isCustomBudget && selectedBudget === budget.id
-                            ? 'border-amber-400'
+                            ? 'border-[#7C3AED]'
                             : 'border-[var(--border)]'
                         }`}
                       >
                         {!isCustomBudget && selectedBudget === budget.id && (
-                          <div className="w-2.5 h-2.5 bg-amber-400 rounded-full" />
+                          <div className="w-2.5 h-2.5 bg-[#7C3AED] rounded-full" />
                         )}
                       </div>
                     </button>
@@ -412,19 +414,19 @@ export default function PreferencesPage() {
                     onClick={() => setIsCustomBudget(true)}
                     className={`w-full p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
                       isCustomBudget
-                        ? 'border-amber-400 bg-amber-500/15 ring-1 ring-amber-400/30'
-                        : 'border-[var(--border)] hover:border-amber-500/50 bg-[var(--surface-secondary)]/40 hover:bg-[var(--surface-secondary)]/70'
+                        ? 'border-[#7C3AED] bg-[#F0E7FF] dark:bg-[#7C3AED]/20 ring-1 ring-[#7C3AED]/40'
+                        : 'border-[var(--border)] hover:border-[#7C3AED]/50 bg-[var(--surface)] hover:bg-[#F0E7FF]/25'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <h3 className="text-sm font-bold text-[var(--text-primary)]">Custom Budget</h3>
                       <div
                         className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                          isCustomBudget ? 'border-amber-400' : 'border-[var(--border)]'
+                          isCustomBudget ? 'border-[#7C3AED]' : 'border-[var(--border)]'
                         }`}
                       >
                         {isCustomBudget && (
-                          <div className="w-2.5 h-2.5 bg-amber-400 rounded-full" />
+                          <div className="w-2.5 h-2.5 bg-[#7C3AED] rounded-full" />
                         )}
                       </div>
                     </div>
@@ -439,7 +441,7 @@ export default function PreferencesPage() {
                             value={customBudget}
                             onChange={(e) => setCustomBudget(e.target.value)}
                             placeholder="Enter custom budget in ₹"
-                            className="w-full pl-8 pr-4 py-2 border border-[var(--border)] rounded-lg text-sm text-[var(--text-primary)] bg-[var(--surface)] placeholder-[var(--text-muted)] outline-none focus:border-amber-500"
+                            className="w-full pl-8 pr-4 py-2 border border-[var(--border)] rounded-lg text-sm text-[var(--text-primary)] bg-[var(--surface)] placeholder-[var(--text-muted)] outline-none focus:border-[#7C3AED]"
                             autoFocus
                           />
                         </div>
@@ -456,7 +458,7 @@ export default function PreferencesPage() {
             {currentSection > 0 && (
               <button
                 onClick={handleBack}
-                className="flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer"
+                className="flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] hover:border-[#7C3AED] hover:text-[#7C3AED] hover:bg-[#F0E7FF]/40 dark:hover:bg-[#7C3AED]/10 px-6 py-2.5 rounded-xl font-semibold text-sm transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back
@@ -465,7 +467,7 @@ export default function PreferencesPage() {
             {currentSection < sections.length - 1 ? (
               <button
                 onClick={handleNext}
-                className="flex-1 bg-[var(--surface-secondary)] hover:bg-[var(--border)] text-[var(--text-primary)] py-3 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                className="flex-1 bg-[#F0E7FF] hover:bg-[#E9DEFF] dark:bg-[#7C3AED]/20 dark:hover:bg-[#7C3AED]/30 text-[#7C3AED] dark:text-[#A78BFA] border border-[#7C3AED]/30 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs"
               >
                 Next
                 <ArrowRight className="w-4 h-4" />
@@ -473,7 +475,7 @@ export default function PreferencesPage() {
             ) : (
               <button
                 onClick={handleGenerate}
-                className="flex-1 bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 hover:from-amber-400 hover:to-amber-300 text-black py-3 rounded-xl font-extrabold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 hover:scale-[1.01] cursor-pointer"
+                className="flex-1 bg-gradient-to-r from-[#7C3AED] via-[#8B5CF6] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#9333EA] text-white py-3 rounded-xl font-extrabold text-sm transition-all flex items-center justify-center gap-2 shadow-xl shadow-[#7C3AED]/30 hover:shadow-[#7C3AED]/45 hover:scale-[1.01] active:scale-98 border border-[#7C3AED]/40 cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 stroke-[2.5]" />
                 GENERATE MY DESIGN →

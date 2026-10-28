@@ -35,16 +35,16 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[var(--background)]/95 backdrop-blur-md border-b border-[var(--border)] shadow-sm"
-          : "bg-[var(--background)]/80 backdrop-blur-xs border-b border-transparent"
+          ? "bg-[#FFFFFF]/95 dark:bg-[#16111D]/95 backdrop-blur-md border-b border-[var(--border)] shadow-sm"
+          : "bg-[var(--background)]/85 backdrop-blur-xs border-b border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-1.5 text-xl md:text-2xl font-bold tracking-tight">
-            <span className="text-[var(--text-primary)]">Insight</span>
-            <span className="text-[var(--text-muted)] font-semibold">Nexsus</span>
+          <Link href="/" className="flex items-center gap-1.5 text-xl md:text-2xl font-bold tracking-tight group">
+            <span className="text-[#17131D] dark:text-white">Insight</span>
+            <span className="text-[#7C3AED] dark:text-[#A78BFA] font-extrabold group-hover:opacity-90 transition-opacity">Nexsus</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -53,7 +53,7 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 font-semibold"
+                className="text-sm text-[var(--text-primary)] hover:text-[#6D28D9] dark:hover:text-[#A78BFA] transition-colors duration-200 font-bold"
               >
                 {link.label}
               </a>
@@ -66,7 +66,7 @@ export default function Navbar() {
             {user ? (
               <Link
                 href="/dashboard"
-                className="text-sm font-bold bg-[#2B1B12] hover:bg-[#433328] dark:bg-white dark:hover:bg-[#F5EFE7] text-white dark:text-[#141210] px-5 py-2.5 rounded-lg transition-colors duration-200 flex items-center gap-1.5 shadow-sm border border-[#2B1B12] dark:border-white"
+                className="text-sm font-bold bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#9333EA] text-white px-5 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 shadow-md shadow-[#7C3AED]/25 hover:shadow-lg hover:shadow-[#7C3AED]/35 border border-[#7C3AED]/40 hover:scale-[1.02] active:scale-98"
               >
                 Dashboard
                 <ArrowRight size={16} />
@@ -75,13 +75,13 @@ export default function Navbar() {
               <>
                 <Link
                   href="/auth/login"
-                  className="text-sm text-[var(--text-primary)] hover:text-[var(--text-secondary)] transition-colors duration-200 px-4 py-2 font-semibold"
+                  className="text-sm text-[var(--text-primary)] hover:text-[#6D28D9] dark:hover:text-[#A78BFA] transition-colors duration-200 px-4 py-2 font-bold"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/auth/register"
-                  className="text-sm font-bold bg-[#2B1B12] hover:bg-[#433328] dark:bg-white dark:hover:bg-[#F5EFE7] text-white dark:text-[#141210] px-5 py-2.5 rounded-lg transition-colors duration-200 shadow-sm border border-[#2B1B12] dark:border-white"
+                  className="text-sm font-bold bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#9333EA] text-white px-5 py-2.5 rounded-xl transition-all duration-200 shadow-md shadow-[#7C3AED]/25 hover:shadow-lg hover:shadow-[#7C3AED]/35 border border-[#7C3AED]/40 hover:scale-[1.02] active:scale-98"
                 >
                   Get Started
                 </Link>
@@ -111,7 +111,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="lg:hidden bg-[var(--background)] border-t border-[var(--border)] shadow-xl overflow-hidden"
+            className="lg:hidden bg-[var(--surface)] border-t border-[var(--border)] shadow-xl overflow-hidden"
           >
             <div className="px-4 py-6 space-y-4">
               {navLinks.map((link) => (
@@ -119,7 +119,7 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="block text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 py-2 font-semibold"
+                  className="block text-[var(--text-primary)] hover:text-[#6D28D9] dark:hover:text-[#A78BFA] transition-colors duration-200 py-2 font-bold"
                 >
                   {link.label}
                 </a>
@@ -129,7 +129,7 @@ export default function Navbar() {
                   <Link
                     href="/dashboard"
                     onClick={() => setMobileOpen(false)}
-                    className="block text-center bg-[#2B1B12] hover:bg-[#433328] dark:bg-white dark:hover:bg-[#F5EFE7] text-white dark:text-[#141210] font-bold py-2.5 rounded-lg transition-colors duration-200 border border-[#2B1B12] dark:border-white"
+                    className="block text-center bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white font-bold py-2.5 rounded-xl transition-all duration-200 shadow-md shadow-[#7C3AED]/25 border border-[#7C3AED]/40"
                   >
                     Go to Dashboard
                   </Link>
@@ -138,14 +138,14 @@ export default function Navbar() {
                     <Link
                       href="/auth/login"
                       onClick={() => setMobileOpen(false)}
-                      className="block text-center text-[var(--text-primary)] hover:text-[var(--text-secondary)] py-2.5 border border-[var(--border)] rounded-lg transition-colors duration-200 font-semibold"
+                      className="block text-center text-[var(--text-primary)] hover:text-[#6D28D9] dark:hover:text-[#A78BFA] py-2.5 border border-[var(--border)] rounded-xl transition-colors duration-200 font-bold bg-[var(--background)]"
                     >
                       Sign In
                     </Link>
                     <Link
                       href="/auth/register"
                       onClick={() => setMobileOpen(false)}
-                      className="block text-center bg-[#2B1B12] hover:bg-[#433328] dark:bg-white dark:hover:bg-[#F5EFE7] text-white dark:text-[#141210] font-bold py-2.5 rounded-lg transition-colors duration-200 border border-[#2B1B12] dark:border-white"
+                      className="block text-center bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white font-bold py-2.5 rounded-xl transition-all duration-200 shadow-md shadow-[#7C3AED]/25 border border-[#7C3AED]/40"
                     >
                       Get Started
                     </Link>

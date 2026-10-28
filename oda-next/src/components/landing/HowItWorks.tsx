@@ -50,7 +50,7 @@ const itemVariants = {
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 md:py-32 bg-[var(--surface)] border-y border-[var(--border)]">
+    <section id="how-it-works" className="py-24 md:py-32 bg-[var(--surface-secondary)]/40 border-y border-[var(--border)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -59,10 +59,10 @@ export default function HowItWorks() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16 md:mb-20"
         >
-          <span className="text-[#2B1B12] dark:text-white text-sm font-bold tracking-widest uppercase bg-[var(--surface-secondary)] border border-[var(--border)] px-3.5 py-1 rounded-full inline-block">
+          <span className="text-[#7C3AED] dark:text-[#A78BFA] text-sm font-bold tracking-widest uppercase bg-[#F0E7FF] dark:bg-[#7C3AED]/20 border border-[#7C3AED]/30 px-4 py-1.5 rounded-full inline-block shadow-2xs">
             How It Works
           </span>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-[#2B1B12] dark:text-white mt-4 tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-[#17131D] dark:text-white mt-4 tracking-tight">
             Four Steps to Your Dream Space
           </h2>
         </motion.div>
@@ -83,20 +83,20 @@ export default function HowItWorks() {
                 className="relative group"
               >
                 {/* Large faded number */}
-                <span className="absolute -top-6 -left-2 text-7xl md:text-8xl font-black text-[#2B1B12]/15 dark:text-white/15 select-none pointer-events-none">
+                <span className="absolute -top-6 -left-2 text-7xl md:text-8xl font-black text-[#7C3AED]/15 dark:text-[#A78BFA]/20 select-none pointer-events-none transition-colors group-hover:text-[#7C3AED]/25">
                   {step.number}
                 </span>
 
-                <div className="relative bg-[var(--background)] border border-[var(--border)] rounded-2xl p-8 hover:border-[var(--text-secondary)] transition-all duration-300 hover:shadow-xl h-full backdrop-blur-sm">
-                  <div className="w-14 h-14 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)] flex items-center justify-center mb-6 group-hover:scale-105 transition-all duration-300 shadow-xs">
-                    <Icon size={24} className="text-[#2B1B12] dark:text-white" />
+                <div className="relative bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-8 hover:border-[#7C3AED] transition-all duration-300 hover:shadow-xl hover:shadow-[#7C3AED]/10 h-full backdrop-blur-sm">
+                  <div className="w-14 h-14 rounded-xl bg-[#F0E7FF] dark:bg-[#7C3AED]/20 border border-[#7C3AED]/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 shadow-xs">
+                    <Icon size={24} className="text-[#7C3AED] dark:text-[#A78BFA]" />
                   </div>
 
-                  <h3 className="text-[#2B1B12] dark:text-white text-xl font-bold mb-3">
+                  <h3 className="text-[#17131D] dark:text-white group-hover:text-[#7C3AED] dark:group-hover:text-[#A78BFA] text-xl font-bold mb-3 transition-colors">
                     {step.title}
                   </h3>
 
-                  <p className="text-[#5F5750] dark:text-[#D6CEC5] text-sm leading-relaxed">
+                  <p className="text-[#514858] dark:text-[#E2DCE8] text-sm leading-relaxed font-medium">
                     {step.description}
                   </p>
                 </div>

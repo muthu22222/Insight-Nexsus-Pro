@@ -271,7 +271,7 @@ export default function DashboardPage() {
             <ThemeToggle />
             <Link
               href="/designer"
-              className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-[#2B1B12] hover:bg-[#433328] dark:bg-white dark:hover:bg-[#F5EFE7] text-white dark:text-[#141210] text-sm font-bold rounded-xl shadow-md shadow-[#2B1B12]/15 border border-[#2B1B12] dark:border-white hover:scale-[1.02] transition-all active:scale-98"
+              className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white text-sm font-bold rounded-xl shadow-md shadow-[#7C3AED]/25 border border-[#7C3AED] hover:scale-[1.02] transition-all active:scale-98"
             >
               <Plus className="h-4 w-4 stroke-[3]" />
               New Design
@@ -447,16 +447,16 @@ export default function DashboardPage() {
               <div className="flex flex-col sm:flex-row gap-3.5">
                 <Link
                   href="/designer"
-                  className="flex items-center justify-center gap-2 px-6 py-3.5 bg-[#2B1B12] hover:bg-[#433328] dark:bg-white dark:hover:bg-[#F5EFE7] text-white dark:text-[#141210] text-sm font-bold rounded-xl shadow-md shadow-[#2B1B12]/15 border border-[#2B1B12] dark:border-white hover:scale-[1.01] transition-all"
+                  className="flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white text-sm font-bold rounded-xl shadow-md shadow-[#7C3AED]/25 border border-[#7C3AED] hover:scale-[1.01] transition-all"
                 >
                   <Wand2 className="h-4 w-4 stroke-[2.5]" />
                   Start New AI Design
                 </Link>
                 <Link
                   href="/furniture"
-                  className="flex items-center justify-center gap-2 px-6 py-3.5 bg-[var(--surface-secondary)] border border-[var(--border)] text-[#2B1B12] dark:text-white text-sm font-bold rounded-xl hover:bg-[var(--surface-hover)] transition-colors"
+                  className="flex items-center justify-center gap-2 px-6 py-3.5 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:border-[#7C3AED] hover:text-[#7C3AED] text-sm font-bold rounded-xl hover:bg-[var(--surface-hover)] transition-colors"
                 >
-                  <Sofa className="h-4 w-4 text-[#2B1B12] dark:text-white" />
+                  <Sofa className="h-4 w-4 text-[#7C3AED]" />
                   Browse Catalog Furniture
                 </Link>
               </div>
@@ -466,7 +466,7 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <h2 className="text-lg font-bold text-[var(--text-primary)] flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 text-[#F5A900]" />
+                      <Sparkles className="h-4 w-4 text-[#7C3AED]" />
                       Recent AI Designs
                     </h2>
                     <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]">
@@ -475,7 +475,7 @@ export default function DashboardPage() {
                   </div>
                   <Link
                     href="/dashboard/projects"
-                    className="text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-bold flex items-center gap-1 group"
+                    className="text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[#7C3AED] font-bold flex items-center gap-1 group"
                   >
                     View All Projects
                     <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -487,7 +487,7 @@ export default function DashboardPage() {
                     <motion.div
                       key={design._id}
                       variants={item}
-                      className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] overflow-hidden hover:border-[var(--text-secondary)] hover:shadow-xl transition-all group flex flex-col"
+                      className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] overflow-hidden hover:border-[#7C3AED]/60 hover:shadow-xl hover:shadow-[#7C3AED]/10 transition-all group flex flex-col"
                     >
                       <div className="aspect-[4/3] bg-[var(--surface-secondary)] relative overflow-hidden">
                         {design.generatedImages?.[0] ? (
@@ -523,7 +523,7 @@ export default function DashboardPage() {
                         <div className="mt-4 pt-3 border-t border-[var(--border)] flex items-center justify-between">
                           <Link
                             href={`/dashboard/projects/${design.projectId}`}
-                            className="inline-flex items-center text-xs font-bold text-[var(--text-primary)] hover:underline"
+                            className="inline-flex items-center text-xs font-bold text-[var(--text-primary)] hover:text-[#7C3AED] hover:underline"
                           >
                             View Project
                             <ArrowRight className="h-3 w-3 ml-1" />
@@ -589,7 +589,7 @@ export default function DashboardPage() {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Filter raw records by project name, room, or style..."
-                      className="w-full pl-9 pr-4 py-2.5 bg-[var(--surface-secondary)] rounded-xl border border-[var(--border)] text-xs sm:text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[#2B1B12] dark:focus:border-white transition-all font-medium"
+                      className="w-full pl-9 pr-4 py-2.5 bg-[var(--surface-secondary)] rounded-xl border border-[var(--border)] text-xs sm:text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-all font-medium"
                     />
                     {searchQuery && (
                       <button
@@ -608,8 +608,8 @@ export default function DashboardPage() {
                         onClick={() => setRoomFilter(r)}
                         className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                           roomFilter === r
-                            ? "bg-[#2B1B12] dark:bg-white text-white dark:text-[#141210] shadow-xs"
-                            : "bg-[var(--surface-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border)]"
+                            ? "bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white shadow-sm shadow-[#7C3AED]/25"
+                            : "bg-[var(--surface-secondary)] text-[var(--text-secondary)] hover:text-[#7C3AED] border border-[var(--border)]"
                         }`}
                       >
                         {r}
@@ -756,7 +756,7 @@ export default function DashboardPage() {
                                     </button>
                                     <Link
                                       href={`/dashboard/projects/${p._id}`}
-                                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#2B1B12] hover:bg-[#433328] dark:bg-white dark:hover:bg-[#F5EFE7] text-white dark:text-[#141210] text-xs font-bold transition-colors"
+                                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:from-[#6D28D9] hover:to-[#7C3AED] text-white text-xs font-bold transition-all shadow-sm shadow-[#7C3AED]/20"
                                     >
                                       Open
                                       <ArrowRight className="h-3 w-3" />

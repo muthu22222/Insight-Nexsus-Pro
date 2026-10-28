@@ -2,125 +2,162 @@
 @import "leaflet/dist/leaflet.css";
 
 /* -------------------------------------------------------------
-   INSIGHT NEXUS PRO — GLOBAL COLOR CONTRAST & READABILITY SYSTEM
-   Light Mode (Warm Neutral):
-     Canvas / Base:          #FFF9F2 (Warm Ivory)
-     Card Surface:           #F3F1EE (Warm Light Card Base)
-     Secondary Surface:      #E5E1DC (Soft Warm Neutral / Input Base)
-     Primary Dark Text:      #2B1B12 (Deep Warm Charcoal — WCAG AAA contrast > 11:1)
-     Secondary Text:         #5F5750 (Warm Medium Taupe)
-     Muted / Label Text:     #8A8178 (Warm Muted Neutral)
-     Borders & Dividers:     #E5E1DC / #D5CFC7 (Crisp Warm Border)
+   INSIGHT NEXUS PRO — LUXURY VIOLET & EMERALD DESIGN SYSTEM
+   Light Mode (Warm Luxury Neutral + Vibrant Accents):
+     Main Background / Canvas: #FAF8F5 (Warm ivory neutral)
+     Surface & Card:           #FFFFFF (Pure crisp white)
+     Secondary Surface:        #F5F0F8 (Soft warm violet-tinted neutral)
+     Surface Hover:            #EFE8F4
+     Light Violet Surface:     #F0E7FF
+     Light Mint Surface:       #E6F8F1
+     Primary Text:             #211A23 (Deep charcoal with warm violet undertone, WCAG AAA > 12:1)
+     Secondary Text:           #6B6472 (Medium slate taupe)
+     Muted / Label Text:       #8E8696 (Muted neutral)
+     Borders & Dividers:       #E8E1ED
+     Border Light:             #DDD5E3
+     Primary Accent:           #7C3AED (Vibrant royal violet)
+     Secondary Accent:         #0F9D78 (Rich emerald mint)
 
-   Dark Mode:
-     Canvas / Base:          #141210 (Deep Warm Black)
-     Card Surface:           #1E1A17 (Warm Charcoal Card)
-     Secondary Surface:      #2B2521 (Muted Warm Surface)
-     Primary Bright Text:    #FFFFFF (Pure White — maximum contrast)
-     Secondary Text:         #F5EFE7 (Soft Ivory)
-     Muted Text:             #D6CEC5 (Light Warm Grey)
-     Borders & Dividers:     #3A322C (Visible Warm Dark Border)
+   Dark Mode (Sophisticated Deep Violet Night):
+     Main Background / Canvas: #16111D (Deep dark violet)
+     Surface & Card:           #211A2E (Dark premium section)
+     Secondary Surface:        #2C233D (Elevated dark surface)
+     Surface Hover:            #382C4E
+     Light Violet Surface:     rgba(124, 58, 237, 0.18)
+     Light Mint Surface:       rgba(16, 185, 129, 0.18)
+     Primary Text:             #FAF8F5 (Warm crisp ivory white)
+     Secondary Text:           #C5BFCE (Soft luminous grey)
+     Muted Text:               #958C9F (Medium violet-grey)
+     Borders & Dividers:       #3B3050 (Visible refined dark border)
+     Border Light:             #4C3F66
+     Primary Accent:           #A78BFA (Luminous lavender violet)
+     Secondary Accent:         #10B981 (Bright emerald)
 
-   Semantic Accents:
-     Price:                  #F5A900 (Bold Bright Gold)
-     Success / Match:        #00C98D (Mint Emerald)
-     Amazon CTA:             #FF9900 (Amazon signature yellow with #111111 dark text)
-     Flipkart CTA:           #2874F0 (Flipkart royal blue with #FFFFFF text)
-     Warning:                #F5A900 (Accessible Warm Amber)
-     Error / Danger:         #ef4444 (Accessible Vivid Red)
+   Retail & Semantic Accents:
+     Primary Button Gradient:  linear-gradient(135deg, #7C3AED, #A855F7)
+     Secondary Accent Gradient: linear-gradient(135deg, #10B981, #14B8A6)
+     Price:                    #D97706 / #F59E0B (Bold bright warm amber)
+     Amazon CTA:               #FF9900 (Amazon signature yellow with #111111 dark text)
+     Flipkart CTA:             #2874F0 (Flipkart royal blue with #FFFFFF text)
+     Success / Match:          #0F9D78 / #10B981
+     Warning:                  #F59E0B
+     Error / Danger:           #EF4444
 ------------------------------------------------------------- */
 
 :root,
 .light {
   /* Core Theme Tokens */
   --sidebar-width: 16rem;
-  --background: #FFF9F2;
-  --surface: #F3F1EE;
-  --surface-secondary: #E5E1DC;
-  --surface-hover: #DCD6CF;
-  --text-primary: #2B1B12;
-  --text-secondary: #5F5750;
-  --text-muted: #8A8178;
-  --border: #E5E1DC;
-  --border-light: #D5CFC7;
+  --background: #FAF8F5;
+  --surface: #FFFFFF;
+  --surface-secondary: #F5F0F8;
+  --surface-hover: #EFE8F4;
+  --surface-violet: #F0E7FF;
+  --surface-mint: #E6F8F1;
+  --section-dark: #211A2E;
 
-  /* Primary Action / CTA */
-  --primary: #2B1B12;
-  --primary-hover: #433328;
+  /* High-Contrast Typography Tokens (Strictly matched to user specification) */
+  --text-headings: #17131D;
+  --text-primary: #29232F;
+  --text-secondary: #514858;
+  --text-muted: #514858;
+  --text-placeholder: #6B6472;
+  --text-link: #6D28D9;
+  --border: #E8E1ED;
+  --border-light: #DDD5E3;
+
+  /* Primary Action / CTA (Violet) */
+  --primary: #7C3AED;
+  --primary-hover: #6D28D9;
   --primary-foreground: #FFFFFF;
+  --primary-gradient: linear-gradient(135deg, #7C3AED, #A855F7);
 
-  /* Secondary Action */
-  --secondary: #E5E1DC;
-  --secondary-hover: #DCD6CF;
-  --secondary-foreground: #2B1B12;
+  /* Secondary Action (Emerald) */
+  --secondary: #0F9D78;
+  --secondary-hover: #0B8263;
+  --secondary-foreground: #FFFFFF;
+  --secondary-gradient: linear-gradient(135deg, #10B981, #14B8A6);
 
-  /* Accents */
-  --accent: #E5E1DC;
-  --price: #F5A900;
-  --success: #00C98D;
-  --warning: #F5A900;
-  --error: #ef4444;
-  --danger: #ef4444;
+  /* Semantic Accents */
+  --accent: #7C3AED;
+  --price: #D97706;
+  --success: #0F9D78;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --danger: #EF4444;
 
-  /* Legacy compatibility aliases */
-  --color-canvas: #FFF9F2;
-  --color-surface-card: #F3F1EE;
-  --color-surface-secondary: #E5E1DC;
-  --color-surface-chip: #E5E1DC;
-  --color-surface-hover: #DCD6CF;
-  --color-border-light: #D5CFC7;
-  --color-text-primary: #2B1B12;
-  --color-text-secondary: #5F5750;
-  --color-primary-cta: #2B1B12;
-  --color-primary-cta-hover: #433328;
-  --color-price: #F5A900;
-  --color-success: #00C98D;
-  --foreground: #2B1B12;
+  /* Compatibility aliases */
+  --color-canvas: #FAF8F5;
+  --color-surface-card: #FFFFFF;
+  --color-surface-secondary: #F5F0F8;
+  --color-surface-chip: #F0E7FF;
+  --color-surface-hover: #EFE8F4;
+  --color-border-light: #DDD5E3;
+  --color-text-headings: #17131D;
+  --color-text-primary: #29232F;
+  --color-text-secondary: #514858;
+  --color-primary-cta: #7C3AED;
+  --color-primary-cta-hover: #6D28D9;
+  --color-price: #D97706;
+  --color-success: #0F9D78;
+  --foreground: #29232F;
 }
 
 .dark {
   /* Core Theme Tokens */
-  --background: #141210;
-  --surface: #1E1A17;
-  --surface-secondary: #2B2521;
-  --surface-hover: #38302A;
+  --sidebar-width: 16rem;
+  --background: #16111D;
+  --surface: #211A2E;
+  --surface-secondary: #2C233D;
+  --surface-hover: #382C4E;
+  --surface-violet: rgba(124, 58, 237, 0.18);
+  --surface-mint: rgba(16, 185, 129, 0.18);
+  --section-dark: #211A2E;
+
+  /* High-Contrast Typography Tokens (Dark Mode) */
+  --text-headings: #FFFFFF;
   --text-primary: #FFFFFF;
-  --text-secondary: #F5EFE7;
-  --text-muted: #D6CEC5;
-  --border: #3A322C;
-  --border-light: #3A322C;
+  --text-secondary: #E2DCE8;
+  --text-muted: #C5BFCE;
+  --text-placeholder: #958C9F;
+  --text-link: #C4B5FD;
+  --border: #3B3050;
+  --border-light: #4C3F66;
 
-  /* Primary Action / CTA */
-  --primary: #FFFFFF;
-  --primary-hover: #F5EFE7;
-  --primary-foreground: #141210;
+  /* Primary Action / CTA (Violet) */
+  --primary: #A78BFA;
+  --primary-hover: #C4B5FD;
+  --primary-foreground: #16111D;
+  --primary-gradient: linear-gradient(135deg, #7C3AED, #A855F7);
 
-  /* Secondary Action */
-  --secondary: #2B2521;
-  --secondary-hover: #38302A;
-  --secondary-foreground: #FFFFFF;
+  /* Secondary Action (Emerald) */
+  --secondary: #10B981;
+  --secondary-hover: #34D399;
+  --secondary-foreground: #16111D;
+  --secondary-gradient: linear-gradient(135deg, #10B981, #14B8A6);
 
-  /* Accents */
-  --accent: #2B2521;
-  --price: #F5A900;
-  --success: #00C98D;
-  --warning: #F5A900;
-  --error: #ef4444;
-  --danger: #ef4444;
+  /* Semantic Accents */
+  --accent: #A78BFA;
+  --price: #F59E0B;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --danger: #EF4444;
 
-  /* Legacy compatibility aliases */
-  --color-canvas: #141210;
-  --color-surface-card: #1E1A17;
-  --color-surface-secondary: #2B2521;
-  --color-surface-chip: #2B2521;
-  --color-surface-hover: #38302A;
-  --color-border-light: #3A322C;
+  /* Compatibility aliases */
+  --color-canvas: #16111D;
+  --color-surface-card: #211A2E;
+  --color-surface-secondary: #2C233D;
+  --color-surface-chip: rgba(124, 58, 237, 0.18);
+  --color-surface-hover: #382C4E;
+  --color-border-light: #4C3F66;
+  --color-text-headings: #FFFFFF;
   --color-text-primary: #FFFFFF;
-  --color-text-secondary: #F5EFE7;
-  --color-primary-cta: #FFFFFF;
-  --color-primary-cta-hover: #F5EFE7;
-  --color-price: #F5A900;
-  --color-success: #00C98D;
+  --color-text-secondary: #E2DCE8;
+  --color-primary-cta: #A78BFA;
+  --color-primary-cta-hover: #C4B5FD;
+  --color-price: #F59E0B;
+  --color-success: #10B981;
   --foreground: #FFFFFF;
 }
 
@@ -142,17 +179,26 @@ html.sidebar-collapsed {
   --color-surface: var(--surface);
   --color-surface-secondary: var(--surface-secondary);
   --color-surface-hover: var(--surface-hover);
+  --color-surface-violet: var(--surface-violet);
+  --color-surface-mint: var(--surface-mint);
+  --color-section-dark: var(--section-dark);
+
+  --color-text-headings: var(--text-headings);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
+  --color-text-placeholder: var(--text-placeholder);
+  --color-text-link: var(--text-link);
   --color-border: var(--border);
   --color-border-light: var(--border-light);
+
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-hover: var(--secondary-hover);
   --color-secondary-foreground: var(--secondary-foreground);
+
   --color-accent: var(--accent);
   --color-price: var(--price);
   --color-success: var(--success);
@@ -183,35 +229,85 @@ body {
 }
 
 /* -------------------------------------------------------------
-   ACCESSIBILITY & CONTRAST FOUNDATION
+   ACCESSIBILITY & CONTRAST FOUNDATION (WCAG AAA/AA)
+   Strict User Colors:
+     - Main headings:       #17131D
+     - Body text:           #29232F
+     - Navigation links:    #29232F
+     - Secondary text:      #514858
+     - Labels & form text:  #29232F
+     - Placeholder text:    #6B6472
+     - Links:               #6D28D9
+     - Muted text (light):  #514858
+     - Text (dark bgs):     #FFFFFF
+     - Button text:         #FFFFFF (on dark or gradient primary buttons)
 ------------------------------------------------------------- */
 
-/* Never force white text to dark brown! Pure white text must stay white */
+/* Never force white text to dark! Pure white text must stay white */
 .text-white {
   color: #FFFFFF !important;
 }
 
-/* Form Placeholders */
+/* Headings styling */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-headings);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: #FFFFFF !important;
+}
+
+/* Form labels and input labels */
+label,
+.form-label {
+  color: var(--text-primary) !important;
+  font-weight: 600;
+}
+
+.dark label,
+.dark .form-label {
+  color: #FFFFFF !important;
+}
+
+/* Form Placeholders: Always sharp #6B6472 with full opacity */
 ::placeholder {
-  color: var(--text-muted) !important;
-  opacity: 0.9;
+  color: var(--text-placeholder) !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: var(--text-placeholder) !important;
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--text-muted) !important;
-  opacity: 0.9;
+  color: var(--text-placeholder) !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: var(--text-placeholder) !important;
 }
 
-/* High Contrast Selection */
+/* Links: #6D28D9 with accessible hover states */
+a.text-link {
+  color: #6D28D9 !important;
+}
+
+.dark a.text-link {
+  color: #C4B5FD !important;
+}
+
+/* High Contrast Selection with Violet Glow */
 ::selection {
-  background: #2B1B12;
+  background: #7C3AED;
   color: #FFFFFF;
 }
 
 .dark ::selection {
-  background: #F5EFE7;
-  color: #141210;
+  background: #A78BFA;
+  color: #16111D;
 }
 
 /* Custom Clean Accessible Scrollbars */
@@ -239,20 +335,68 @@ textarea::placeholder {
 }
 
 /* -------------------------------------------------------------
-   BUTTON CONTRAST ENFORCEMENT
+   BUTTON & GRADIENT SYSTEM
 ------------------------------------------------------------- */
 
-/* 1. Dark buttons: Must ALWAYS have bright white/ivory text and bright icons */
+/* Primary Button Gradient Class */
+.btn-primary-gradient {
+  background: linear-gradient(135deg, #7C3AED, #A855F7) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.28);
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  transition: all 0.2s ease;
+}
+
+.btn-primary-gradient:hover {
+  background: linear-gradient(135deg, #6D28D9, #9333EA) !important;
+  box-shadow: 0 6px 20px 0 rgba(124, 58, 237, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-primary-gradient:active {
+  transform: translateY(0);
+}
+
+.btn-primary-gradient * {
+  color: #FFFFFF !important;
+}
+
+/* Secondary Button Gradient Class */
+.btn-secondary-gradient {
+  background: linear-gradient(135deg, #10B981, #14B8A6) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.25);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary-gradient:hover {
+  background: linear-gradient(135deg, #059669, #0D9488) !important;
+  box-shadow: 0 6px 20px 0 rgba(16, 185, 129, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-secondary-gradient:active {
+  transform: translateY(0);
+}
+
+.btn-secondary-gradient * {
+  color: #FFFFFF !important;
+}
+
+/* 1. Dark buttons: Must ALWAYS have bright white text and bright icons */
 button.bg-black,
 button.bg-slate-900,
 button.bg-\[\#0F172A\],
 button.bg-\[\#2B1B12\],
+button.bg-\[\#211A2E\],
 button.bg-\[\#1E293B\],
 button.bg-\[\#5F5750\],
 a.bg-black,
 a.bg-slate-900,
 a.bg-\[\#0F172A\],
 a.bg-\[\#2B1B12\],
+a.bg-\[\#211A2E\],
 a.bg-\[\#1E293B\],
 a.bg-\[\#5F5750\],
 .btn-dark {
@@ -264,12 +408,14 @@ button.bg-black *,
 button.bg-slate-900 *,
 button.bg-\[\#0F172A\] *,
 button.bg-\[\#2B1B12\] *,
+button.bg-\[\#211A2E\] *,
 button.bg-\[\#1E293B\] *,
 button.bg-\[\#5F5750\] *,
 a.bg-black *,
 a.bg-slate-900 *,
 a.bg-\[\#0F172A\] *,
 a.bg-\[\#2B1B12\] *,
+a.bg-\[\#211A2E\] *,
 a.bg-\[\#1E293B\] *,
 a.bg-\[\#5F5750\] *,
 .btn-dark * {
@@ -280,12 +426,14 @@ button.bg-black svg,
 button.bg-slate-900 svg,
 button.bg-\[\#0F172A\] svg,
 button.bg-\[\#2B1B12\] svg,
+button.bg-\[\#211A2E\] svg,
 button.bg-\[\#1E293B\] svg,
 button.bg-\[\#5F5750\] svg,
 a.bg-black svg,
 a.bg-slate-900 svg,
 a.bg-\[\#0F172A\] svg,
 a.bg-\[\#2B1B12\] svg,
+a.bg-\[\#211A2E\] svg,
 a.bg-\[\#1E293B\] svg,
 a.bg-\[\#5F5750\] svg,
 .btn-dark svg {
@@ -299,13 +447,15 @@ a.bg-\[\#5F5750\] svg,
   button.bg-\[\#F1F3F5\],
   button.bg-\[\#E5E1DC\],
   button.bg-\[\#F3F1EE\],
+  button.bg-\[\#F5F0F8\],
   a.bg-white,
   a.bg-\[\#F8F9FA\],
   a.bg-\[\#F1F3F5\],
   a.bg-\[\#E5E1DC\],
   a.bg-\[\#F3F1EE\],
+  a.bg-\[\#F5F0F8\],
   .btn-light {
-    color: #2B1B12 !important;
+    color: #211A23 !important;
   }
 
   button.bg-white svg,
@@ -313,17 +463,19 @@ a.bg-\[\#5F5750\] svg,
   button.bg-\[\#F1F3F5\] svg,
   button.bg-\[\#E5E1DC\] svg,
   button.bg-\[\#F3F1EE\] svg,
+  button.bg-\[\#F5F0F8\] svg,
   a.bg-white svg,
   a.bg-\[\#F8F9FA\] svg,
   a.bg-\[\#F1F3F5\] svg,
   a.bg-\[\#E5E1DC\] svg,
   a.bg-\[\#F3F1EE\] svg,
+  a.bg-\[\#F5F0F8\] svg,
   .btn-light svg {
-    color: #2B1B12 !important;
+    color: #211A23 !important;
   }
 }
 
-/* 3. Retail CTAs (Amazon & Flipkart) */
+/* 3. Retail CTAs (Amazon & Flipkart) - High Contrast Preserved */
 .bg-amazon,
 [data-vendor="amazon"],
 a[href*="amazon"] {
@@ -356,35 +508,42 @@ a[href*="flipkart"] * {
 button:disabled,
 button[disabled],
 a[aria-disabled="true"] {
-  opacity: 0.6 !important;
+  opacity: 0.55 !important;
   cursor: not-allowed !important;
 }
 
 /* -------------------------------------------------------------
-   SEMANTIC UTILITIES FOR WARM NEUTRAL COLOR SYSTEM
+   SEMANTIC UTILITIES FOR PREMIUM COLOR SYSTEM
 ------------------------------------------------------------- */
 .bg-canvas            { background-color: var(--background) !important; }
-.bg-espresso          { background-color: var(--background) !important; }
-.bg-espresso-card     { background-color: var(--surface) !important; }
-.bg-espresso-secondary{ background-color: var(--surface-secondary) !important; }
-.bg-terracotta        { background-color: var(--primary) !important; color: var(--primary-foreground) !important; }
-.bg-gold              { background-color: var(--surface-secondary) !important; color: var(--text-primary) !important; }
-.bg-beige             { background-color: var(--surface-secondary) !important; }
-.bg-ivory             { background-color: var(--background) !important; }
+.bg-card-surface      { background-color: var(--surface) !important; }
+.bg-violet-surface    { background-color: var(--surface-violet) !important; }
+.bg-mint-surface      { background-color: var(--surface-mint) !important; }
+.bg-dark-section      { background-color: #211A2E !important; color: #FAF8F5 !important; }
 
-.text-espresso        { color: var(--text-primary) !important; }
-.text-terracotta      { color: var(--text-primary) !important; }
-.text-gold            { color: var(--text-secondary) !important; }
-.text-beige           { color: var(--text-secondary) !important; }
-.text-ivory           { color: var(--text-primary) !important; }
-.text-muted-beige     { color: var(--text-muted) !important; }
+.text-accent-violet   { color: #7C3AED !important; }
+.text-accent-emerald  { color: #0F9D78 !important; }
+.text-price           { color: var(--price) !important; font-weight: 800 !important; }
+.text-match           { color: #0F9D78 !important; font-weight: 700 !important; }
 
-.text-price           { color: #F5A900 !important; font-weight: 800 !important; }
-.text-match           { color: #00C98D !important; font-weight: 700 !important; }
+.border-accent-violet { border-color: #7C3AED !important; }
+.border-accent-emerald{ border-color: #0F9D78 !important; }
 
-.border-terracotta    { border-color: var(--border-light) !important; }
-.border-gold          { border-color: var(--border-light) !important; }
-.border-beige         { border-color: var(--border-light) !important; }
+/* Focus ring in accent violet */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #7C3AED !important;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: #A78BFA !important;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2) !important;
+}
 
 /* -------------------------------------------------------------
    IMAGE INTEGRITY: Never apply filters to images or canvases
@@ -400,55 +559,70 @@ svg,
 }
 
 /* -------------------------------------------------------------
-   WARM NEUTRAL MAPPINGS IN LIGHT MODE
-   Ensures legacy neutral classes resolve to the curated warm neutral system.
+   LIGHT MODE MAPPINGS — Crisp White Surfaces & High Contrast
 ------------------------------------------------------------- */
 :root:not(.dark),
 .light {
-  /* Surfaces */
+  /* Surfaces: Crisp white cards and warm neutral bases */
   .bg-white,
   .bg-\[\#FFFFFF\] {
-    background-color: #FFF9F2;
+    background-color: #FFFFFF;
   }
 
   .bg-gray-50,
   .bg-slate-50,
   .bg-gray-100\/50,
   .bg-\[\#F8F9FA\] {
-    background-color: #F3F1EE;
+    background-color: #FAF8F5;
   }
 
   .bg-gray-100,
   .bg-slate-100,
   .bg-gray-200,
   .bg-slate-200,
-  .bg-\[\#F1F3F5\] {
-    background-color: #E5E1DC;
+  .bg-\[\#F1F3F5\],
+  .bg-\[\#E5E1DC\],
+  .bg-\[\#F3F1EE\] {
+    background-color: #F5F0F8;
   }
 
   /* Text Contrast Mappings */
+  /* 1. Main Headings: #17131D */
+  .text-headings,
   .text-slate-900,
   .text-slate-800,
   .text-gray-900,
   .text-gray-800,
-  .text-\[\#0F172A\] {
-    color: #2B1B12;
+  .text-\[\#0F172A\],
+  .text-\[\#2B1B12\],
+  .text-\[\#211A23\],
+  .text-\[\#17131D\] {
+    color: #17131D !important;
   }
 
+  /* 2. Body Text, Navigation Links, and Labels: #29232F */
+  .text-body,
   .text-slate-700,
   .text-gray-700,
   .text-slate-600,
   .text-gray-600,
-  .text-\[\#64748B\] {
-    color: #5F5750;
+  .text-\[\#29232F\] {
+    color: #29232F !important;
   }
 
+  /* 3. Secondary Text & Muted Text on Light Surfaces: #514858 */
+  .text-secondary,
+  .text-muted,
   .text-slate-500,
   .text-slate-400,
   .text-gray-500,
   .text-gray-400,
-  .text-\[\#94A3B8\] {
-    color: #8A8178;
+  .text-\[\#94A3B8\],
+  .text-\[\#8A8178\],
+  .text-\[\#6B6472\],
+  .text-\[\#514858\],
+  .text-\[\#8E8696\] {
+    color: #514858 !important;
   }
 
   /* Borders */
@@ -457,8 +631,9 @@ svg,
   .border-gray-200,
   .border-gray-300,
   .border-\[\#E2E8F0\],
+  .border-\[\#E5E1DC\],
   .border-\[\#D5CFC7\] {
-    border-color: #E5E1DC;
+    border-color: #E8E1ED;
   }
 }
 
@@ -467,45 +642,90 @@ svg,
 ------------------------------------------------------------- */
 .dark {
   .bg-white,
-  .bg-\[\#F8F9FA\] {
-    background-color: #1E1A17;
+  .bg-\[\#F8F9FA\],
+  .bg-\[\#F3F1EE\] {
+    background-color: #211A2E;
   }
 
   .bg-\[\#F1F3F5\],
   .bg-slate-100,
-  .bg-gray-100 {
-    background-color: #2B2521;
+  .bg-gray-100,
+  .bg-\[\#E5E1DC\],
+  .bg-\[\#2B2521\] {
+    background-color: #2C233D;
   }
 
+  /* Text on dark backgrounds: #FFFFFF */
+  h1, h2, h3, h4, h5, h6,
+  .text-headings,
   .text-slate-900,
   .text-slate-800,
   .text-gray-900,
   .text-gray-800,
-  .text-\[\#0F172A\] {
-    color: #FFFFFF;
+  .text-\[\#0F172A\],
+  .text-\[\#2B1B12\],
+  .text-\[\#211A23\],
+  .text-\[\#17131D\],
+  .text-\[\#29232F\] {
+    color: #FFFFFF !important;
   }
 
+  /* Body & Secondary Text in Dark Mode: #E2DCE8 (High contrast readable light violet-grey) */
+  .text-body,
   .text-slate-700,
   .text-gray-700,
   .text-slate-600,
-  .text-gray-600,
-  .text-\[\#64748B\] {
-    color: #F5EFE7;
+  .text-gray-600 {
+    color: #E2DCE8 !important;
   }
 
+  /* Muted Text in Dark Mode: #C5BFCE */
+  .text-secondary,
+  .text-muted,
   .text-slate-500,
   .text-slate-400,
   .text-gray-500,
   .text-gray-400,
-  .text-\[\#94A3B8\] {
-    color: #D6CEC5;
+  .text-\[\#94A3B8\],
+  .text-\[\#8A8178\],
+  .text-\[\#6B6472\],
+  .text-\[\#514858\],
+  .text-\[\#8E8696\] {
+    color: #C5BFCE !important;
   }
 
   .border-slate-200,
   .border-slate-300,
   .border-gray-200,
   .border-gray-300,
-  .border-\[\#E2E8F0\] {
-    border-color: #3A322C;
+  .border-\[\#E2E8F0\],
+  .border-\[\#E5E1DC\],
+  .border-\[\#3A322C\] {
+    border-color: #3B3050;
+  }
+}
+
+/* -------------------------------------------------------------
+   DARK PREMIUM SECTIONS & FOOTER CONTRAST ENFORCEMENT
+------------------------------------------------------------- */
+.bg-dark-section,
+.bg-\[\#211A2E\],
+.bg-\[\#16111D\],
+section.bg-\[\#211A2E\],
+div.bg-\[\#211A2E\] {
+  color: #FFFFFF !important;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #FFFFFF !important;
+  }
+
+  p {
+    color: #FFFFFF !important;
+  }
+
+  .text-secondary,
+  .text-muted,
+  span.text-xs {
+    color: #E2DCE8 !important;
   }
 }
